@@ -1,0 +1,112 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <!--@autor Tatiane-->
+    <h:head>
+        <meta charset="utf-8"></meta>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+        <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+        <title>Gerência de Pessoas</title>
+        <link rel="icon" href="../../recursos/imagens/icon-livro.png"></link>
+        <link rel="stylesheet" href="../../recursos/css/bootstrap.css"></link>
+        <link href="../../recursos/css/theme.css" rel="stylesheet"></link>
+        <link rel="stylesheet" href="../../recursos/css/ie10-viewport-bug-workaround.css"></link>
+    </h:head>
+
+    <h:body style="background-color: #9acfea">
+        <center>
+            <h:form id="formAtt">
+                <div class="panel panel-primary" style="width: 850px">
+                    <div class="panel-heading"><h4>Filtros</h4></div>
+                    <div class="panel-body">
+                        <p:outputLabel value="Código: "/>
+                        <p:inputText id="filtroCodigo" value="#{controlePessoa.filtroCodigo}"/>
+                        
+                        <p:spacer width="30"/>
+                        
+                        <p:outputLabel value="CPF: "/>
+                        <p:inputMask id="filtroCpf" value="#{controlePessoa.filtroCpf}" mask="999.999.999-99"/>
+                        
+                        <p:spacer width="30"/>
+                        
+                        <p:outputLabel value="RG: "/>
+                        <p:inputText id="filtroRg" value="#{controlePessoa.filtroRg}"/>
+                        
+                        <br></br><br></br>
+                        
+                        <p:outputLabel value="Tipo de Pessoa: "/>
+                        <p:selectOneMenu id="filtroTipo" value="#{controlePessoa.filtroTipo}">
+                            <f:selectItem itemLabel="" itemValue=""/>
+                            <f:selectItem itemLabel="Balconista" itemValue="Balconista"/>
+                            <f:selectItem itemLabel="Bibliotecário" itemValue="Bibliotecario"/>
+                            <f:selectItem itemLabel="Usuário" itemValue="Usuario"/>
+                        </p:selectOneMenu>
+                        
+                        <p:spacer width="30"/>
+                        
+                        <p:outputLabel value="Nome: "/>
+                        <p:inputText id="filtroNome" value="#{controlePessoa.filtroNome}"/>
+                        
+                        <br></br>
+                        <h:commandButton value="Filtrar" action="#{controlePessoa.listarPessoas()}" class="btn btn-success"/>
+                    </div>
+                </div>
+                <div class="panel panel-primary" style="width: 1300px">
+                    <div class="panel-heading"><h4>Pessoas</h4></div>
+                    <div class="panel-body">
+                        <p:dataTable value="#{controlePessoa.pessoas}" var="pessoa" id="tabelaAtt">
+                            <p:column>
+                                <f:facet name="header">
+                                    Id
+                                </f:facet>
+                                <h:outputText value="#{pessoa.codigo}" />
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    Ativo
+                                </f:facet>
+                                <h:outputText value="#{pessoa.ativo}" />
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    Tipo
+                                </f:facet>
+                                <h:outputText value="#{pessoa.tipoPessoa}" />
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    Nome
+                                </f:facet>
+                                <h:outputText value="#{pessoa.nome}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    CPF
+                                </f:facet>
+                                <h:outputText value="#{pessoa.cpf}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    Email
+                                </f:facet>
+                                <h:outputText value="#{pessoa.email}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    Ação
+                                </f:facet>
+                                <h:commandButton value="Exibir" action="#{controlePessoa.exibirPessoa(pessoa)}" class="btn btn-info"/>
+                            </p:column>
+                        </p:dataTable>
+                    </div>
+                </div>
+                <p></p>
+                <a href="interfaceBalconista.xhtml" class="btn btn-danger">Voltar</a>
+            </h:form>
+        </center>
+    </h:body>
+</html>
+

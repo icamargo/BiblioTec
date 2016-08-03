@@ -1,0 +1,74 @@
+#centrar {
+    position:absolute;
+    top:50%;
+    left: 50%;
+    margin-top: -210px;
+    margin-left: -320px;
+}
+
+.ui-icon.llave {
+    background-image: url(../img/key.png);
+    margin-right: 4px;
+}
+
+.ui-icon.lapiz {
+    background-image: url(../img/pencil.png);
+    margin-right: 4px;
+}
+.ui-icon.principal {
+    background-image: url(../img/principal.png);
+    margin-right: 4px;
+}
+.ui-icon.mantenimiento {
+    background-image: url(../img/mantenimiento.png);
+    margin-right: 4px;
+}
+.ui-icon.cliente {
+    background-image: url(../img/cliente.png);
+    margin-right: 4px;
+}
+.ui-icon.proveedor {
+    background-image: url(../img/proveedor.png);
+    margin-right: 4px;
+}
+.ui-icon.reporte {
+    background-image: url(../img/reporte.png);
+    margin-right: 4px;
+}
+.ui-icon.configuracion {
+    background-image: url(../img/configuracion.png);
+    margin-right: 4px;
+}
+.ui-icon.perfil {
+    background-image: url(../img/perfil.png);
+    margin-right: 4px;
+}
+.ui-icon.usuarios {
+    background-image: url(../img/usuarios.png);
+    margin-right: 4px;
+}
+.ui-icon.contrasena {
+    background-image: url(../img/contrasena.png);
+    margin-right: 4px;
+}
+.ui-icon.salir {
+    background-image: url(../img/salir.png);
+    margin-right: 4px;
+}
+.ui-icon.agregar {
+    background-image: url(../img/agregar.png);
+}
+.ui-icon.editar {
+    background-image: url(../img/editar.png);
+}
+.ui-icon.eliminar {
+    background-image: url(../img/eliminar.png);
+}
+.ui-icon.permiso {
+    background-image: url(../img/permiso.png);
+}
+.ui-icon.guardar {
+    background-image: url(../img/guardar.png);
+}.ui-icon.cancelar {
+    background-image: url(../img/cancelar.png);
+}

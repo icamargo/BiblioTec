@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <meta charset="utf-8"></meta>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+        <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+        <title>Menu - Empréstimo</title>
+        <link rel="icon" href="../../recursos/imagens/icon-livro.png"></link>
+        <link rel="stylesheet" href="../../recursos/css/bootstrap.css"></link>
+        <link rel="stylesheet" href="../../recursos/css/navbar.css"></link>
+        <link rel="stylesheet" href="../../recursos/css/ie10-viewport-bug-workaround.css"></link>
+        <style>
+            .img{background-image: url("../../recursos/imagens/library6.jpg");}
+        </style>
+    </h:head>
+
+    <h:body styleClass="img">
+        <div class="container">
+
+            <nav class="navbar navbar-inverse">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                            <span class="sr-only"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="interfaceUsuario.xhtml">Home</a>
+                    </div>
+                    <div id="navbar" class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav">
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Minha conta<span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="emprestimos.xhtml">Meus empréstimos</a></li>
+                                    <li><a href="reservas.xhtml">Minhas Reservas</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="#">Meus dados</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Obras<span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">Reservar</a></li>
+                                    <li><a href="gerenciarItens.xhtml">Consultar</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Main component for a primary marketing message or call to action -->
+            <div class="jumbotron">
+                <h1>Bem vindo #{loginController.usuario.nome}, suas empréstimos</h1>
+            </div>
+            
+            <h:form>
+                <p:commandButton value="Sair" action="#{loginController.logout()}" class="btn btn-primary"/>
+            </h:form>
+            
+        </div>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="../../recursos/js/jquery.min.js"></script>
+        <script src="../../recursos/js/bootstrap.min.js"></script>
+        <script src="../../recursos/js/ie-emulation-modes-warning.js"></script>
+    </h:body>
+</html>
+

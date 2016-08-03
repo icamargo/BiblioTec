@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <meta charset="utf-8"></meta>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+        <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+        <title>Login</title>
+        <link rel="icon" href="../recursos/imagens/icon-livro.png"></link>
+        <!-- Compiled and minified CSS -->
+        <link type="text/css" href="../recursos/css/theme.css"></link>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css"></link>
+        <!--Import jQuery before materialize.js-->
+        <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <!-- Compiled and minified JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>
+        
+        <link href="../recursos/css/sweetalert.css"></link>
+        <script src="../recursos/js/sweetalert.min.js"></script>
+        
+    </h:head>
+    
+    <h:body styleClass="cyan lighten-5" style="padding-top: 100px">
+        <div class="valign-wrapper" id="login-page">
+            <div class="container">
+                <div class="center-align">
+                    <div class="row">
+                        <div class="col s6 offset-s3">
+                            <div class="card">
+                                <div class="card-content" style="height: 400px">
+                                        <img class="responsive-img" style="max-width: 80px;" src="http://image.flaticon.com/icons/svg/29/29302.svg"/>
+                                        
+                                        <div class="left-align">
+                                            <h:form>
+                                                <div align="center">
+                                                    <p:growl autoUpdate="true"/>
+                                                    <p:messages id="mensagens" autoUpdate="true" />
+                                                    <p><h5>Voce é:</h5></p>
+                                                    <br></br>
+                                                    <p:commandButton value="Usuário" class="btn btn-primary" action="loginUsuario?faces-redirect=true"/>
+                                                    <br></br><br></br>
+                                                    <p:commandButton value="Balconista" class="btn btn-primary" action="loginBa?faces-redirect=true"/>
+                                                    <br></br><br></br>
+                                                    <p:commandButton value="Bibliotecario" class="btn btn-primary" action="loginBi?faces-redirect=true"/>
+                                                </div>
+                                            </h:form>
+                                            <h:form>
+                                                <div class="col s12 input-field" align="center">         
+                                                    <a href="cadastrarUsuario.xhtml">Cadastrar usuário</a>
+                                                    <p></p>
+                                                    <a href="gerenciarItens.xhtml">Consultar livros</a>
+                                                </div>
+                                            </h:form>
+                                        </div>
+                                    </div>                            
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </h:body>
+    
+</html>
+

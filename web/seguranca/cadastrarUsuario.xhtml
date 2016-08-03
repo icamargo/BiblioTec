@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <!--@autor Tatiane-->
+    <h:head>
+        <meta charset="utf-8"></meta>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+        <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+        <title>Cadastro de Usuário</title>
+        <link rel="icon" href="../recursos/imagens/icon-livro.png"></link>
+        <link rel="stylesheet" href="../recursos/css/bootstrap.min.css"></link>
+        <link rel="stylesheet" href="../recursos/css/ie10-viewport-bug-workaround.css"></link>
+
+    </h:head>
+    <h:body style="background-color: #C1C1C1">
+        <center>
+            <h:form >
+                <div class="panel panel-primary" style="width: 100%;">
+                    <div class="panel-heading" align="center"><h3>Cadastro de Usuário</h3></div>
+                    <div class="panel-body">
+                        <p:messages id="mensagens" autoUpdate="true" />
+                        <h:panelGrid columns="2">
+                            <p:outputLabel value="Nome: "/>
+                            <p:inputText id="nomeTxt" value="#{controlePessoa.usuario.nome}" required="true" label="Nome"/>
+                            
+                            <p:outputLabel value="CPF: "/>
+                            <p:inputMask id="cpfTxt" value="#{controlePessoa.usuario.cpf}" mask="999.999.999-99" required=" true" label="CPF"/>
+                            
+                            <p:outputLabel value="RG: "/>
+                            <p:inputText id="rgTxt" value="#{controlePessoa.usuario.rg}"/>
+                            
+                            <p:outputLabel value="Sexo: "/>
+                            <p:selectOneMenu value="#{controlePessoa.usuario.sexo}">
+                                <f:selectItem itemLabel="Masculino" itemValue="masculino"/>
+                                <f:selectItem itemLabel="Feminino" itemValue="feminino"/>
+                            </p:selectOneMenu>
+                            
+                            <p:outputLabel value="Endereço: "/>
+                            <p:inputText id="endereçoTxt" value="#{controlePessoa.usuario.endereco}" required="true" label="Endereço"/>
+                            
+                            <p:outputLabel value="Data de nascimento: "/>
+                            <p:inputMask id="dtNascTxt" value="#{controlePessoa.usuario.dataNascimento}" mask="99/99/9999" required="true" label="Data"/>
+                            
+                            <p:outputLabel value="Email "/>
+                            <p:inputText id="emailTxt" value="#{controlePessoa.usuario.email}" required="true" label="Email"/>
+                            
+                            <p:outputLabel value="Telefone: "/>
+                            <p:inputMask id="telefoneTxt" value="#{controlePessoa.usuario.telefone}" mask="(99) 9999-9999" required="true" label="Telefone"/>
+                            
+                            <p:outputLabel value="Senha: "/>
+                            <p:password id="senha1" value="#{controlePessoa.usuario.senha}" match="senha2" label="Senha" required="true"/>
+                            
+                            <p:outputLabel value="Confirmar senha: "/>
+                            <p:password id="senha2" value="#{controlePessoa.usuario.senha}" label="senha2" required="true"/>
+                            
+                            <br></br>
+                        </h:panelGrid>
+                        <h:commandButton action="#{controlePessoa.adicionarUsuarioSemLogin}" value="Cadastrar" class="btn btn-success"/>
+                        
+                        <p:spacer width="30"/>
+                        
+                        <a href="login.xhtml" class="btn btn-danger" onclick="return confirm('Se voltar os dados não serão salvos! Deseja continuar?')">Voltar</a>
+                    </div>
+                </div>
+            </h:form>
+        </center>
+
+        <script src="../recursos/js/bootstrap.min.js"></script>
+        <script src="../recursos/js/ie-emulation-modes-warning.js"></script>
+    </h:body>
+</html>
