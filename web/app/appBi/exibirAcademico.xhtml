@@ -13,7 +13,7 @@
                 <p:panel id="cadastro" header="Dados do Artigo Acadêmico" style="margin-bottom: auto">
                     <p:messages id="mensagens" showDetail="true" autoUpdate="true" />
                     <h:panelGrid columns="2">
-                        <p:outputLabel value="Número de Catálogo"/>
+                        <p:outputLabel value="Número de Catálogo:"/>
                         <p:inputText id="numCatalogo" value="#{controleItem.academico.numeroCatalogo}" disabled="true"/>
 
                         <p:outputLabel value="Nome: "/>
@@ -51,7 +51,7 @@
                     </h:panelGrid>
                     
                     <h:panelGrid columns="2">
-                        <p:commandButton value="Inativar" action="#{controleItem.inativarAcademico}">
+                        <p:commandButton value="Ativar/Inativar" action="#{controleItem.inativarAcademico}">
                             <p:confirm header="Inativação" message="Confirma Inativação?" icon="ui-icon-alert"/>
                         </p:commandButton>
 

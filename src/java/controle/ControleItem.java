@@ -47,18 +47,22 @@ public class ControleItem {
         ItemPrototype livroNovo = prototipoLivro.clonar();
         livroNovo = livro;
         itemDAO.add(livroNovo);
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Livro cadastrado com sucesso"));
+        livro = new LivroPrototype();
         return "interfaceBibliotecario?faces-redirect=true";     
     }
-    public void adicionarAcademico() throws IOException{
+    public String adicionarAcademico() throws IOException{
         ItemPrototype academicoNovo = prototipoAcademico.clonar();
         academicoNovo = academico;
         itemDAO.add(academicoNovo);
+        academico = new AcademicoPrototype();
+        return "interfaceBibliotecario?faces-redirect=true"; 
     }
-    public void adicionarPeriodico() throws IOException{
+    public String adicionarPeriodico() throws IOException{
         ItemPrototype periodicoNovo = prototipoPeriodico.clonar();
         periodicoNovo = periodico;
         itemDAO.add(periodicoNovo);
+        periodico = new PeriodicoPrototype();
+        return "interfaceBibliotecario?faces-redirect=true"; 
     }
     public List listarItens(){
         int intVlrFiltroNumCatalogo;
@@ -142,19 +146,34 @@ public class ControleItem {
         itemDAO.atualizarItem(periodico);
     }
     public void inativarAcademico() throws IOException{
-        academico.setStatus("Inativo");
+        if(academico.getStatus().equals("Disponivel")){
+            academico.setStatus("Inativo");
+        }
+        else{
+            academico.setStatus("Disponivel");
+        }
         itemDAO.atualizarItem(academico);
         FacesContext.getCurrentInstance().getExternalContext().redirect("gerenciarItens.xhtml");
     }
     
     public void inativarLivro() throws IOException{
-        livro.setStatus("Inativo");
+        if(livro.getStatus().equals("Disponivel")){
+            livro.setStatus("Inativo");
+        }
+        else{
+            livro.setStatus("Disponivel");
+        }
         itemDAO.atualizarItem(livro);
         FacesContext.getCurrentInstance().getExternalContext().redirect("gerenciarItens.xhtml");
     }
     
     public void inativarPeriodico() throws IOException{
-        periodico.setStatus("Inativo");
+        if(periodico.getStatus().equals("Disponivel")){
+            periodico.setStatus("Inativo");
+        }
+        else{
+            periodico.setStatus("Disponivel");
+        }
         itemDAO.atualizarItem(periodico);
         FacesContext.getCurrentInstance().getExternalContext().redirect("gerenciarItens.xhtml");
     }

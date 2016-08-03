@@ -13,7 +13,7 @@ public class LivroPrototype extends ItemPrototype{
     private String isbn;
     
     public LivroPrototype(){
-        status = "Disponível";
+        status = "Disponivel";
     }
     public LivroPrototype(LivroPrototype livro){
         this.isbn = livro.getIsbn();

@@ -44,7 +44,6 @@ public class ControlePessoa {
         usuarioNovo = usuario;
         pessoaDAO.add(usuarioNovo);
         usuario = new UsuarioPrototype();
-        //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Usuario cadastrado com sucesso"));
         return "interfaceBalconista?faces-redirect=true";
     }
     

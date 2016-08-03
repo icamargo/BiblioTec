@@ -14,7 +14,7 @@ public class PeriodicoPrototype extends ItemPrototype{
     private String tipoPeriodico;
     
     public PeriodicoPrototype(){
-        status = "Disponível";
+        status = "Disponivel";
     }
     public PeriodicoPrototype(PeriodicoPrototype periodico){
         this.issn = periodico.getIssn();

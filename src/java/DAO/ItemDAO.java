@@ -37,7 +37,6 @@ public class ItemDAO {
         trans = session.beginTransaction();
         session.save(item);
         FacesContext context = FacesContext.getCurrentInstance();
-        //context.getExternalContext().redirect("interfaceBibliotecario.xhtml");
         context.addMessage(null, new FacesMessage("Item Cadastrado com Sucesso!"));
         trans.commit();
         
@@ -135,9 +134,9 @@ public class ItemDAO {
         session = HibernateUtil.getSessionFactory().openSession();
         trans = session.beginTransaction();
         session.update(item);
-        FacesContext context = FacesContext.getCurrentInstance();
-        context.addMessage(null, new FacesMessage("Item Atualizado com Sucesso!"));
-        context.getExternalContext().redirect("gerenciarItens.xhtml");
+        //FacesContext context = FacesContext.getCurrentInstance();
+        //context.addMessage(null, new FacesMessage("Item Atualizado com Sucesso!"));
+        //context.getExternalContext().redirect("gerenciarItens.xhtml");
         trans.commit();//confirmaçao
     }
 

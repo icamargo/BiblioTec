@@ -13,7 +13,7 @@ public class AcademicoPrototype extends ItemPrototype{
     private String modalidade;
     
     public AcademicoPrototype(){
-        status = "Disponível";
+        status = "Disponivel";
     }
     public AcademicoPrototype (AcademicoPrototype academico){
         this.modalidade = academico.getModalidade();
