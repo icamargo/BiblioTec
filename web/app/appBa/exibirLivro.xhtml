@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <!--@autor Tatiane-->
+    <h:head>
+        <title>Dados do Livro</title>
+    </h:head>
+    <h:body>
+        <center>
+            <h:form>
+                <p:panel id="cadastro" header="Dados do Livro" style="margin-bottom: auto">
+                    <p:messages id="mensagens" showDetail="true" autoUpdate="true" />
+                    <h:panelGrid columns="2">
+                        <p:outputLabel value="Número de Catálogo"/>
+                        <p:inputText id="numCatalogo" value="#{controleItem.livro.numeroCatalogo}" disabled="true"/>
+
+                        <p:outputLabel value="Nome: "/>
+                        <p:inputText id="nomeTxt" value="#{controleItem.livro.nome}" required="true" label="Nome"/>
+
+                        <p:outputLabel value="Status: "/>
+                        <p:inputText id="statusTxt" value="#{controleItem.livro.status}" required="true" label="Status" disabled="true"/>
+
+                        <p:outputLabel value="Edicao: "/>
+                        <p:inputText id="edicaoTxt" value="#{controleItem.livro.edicao}"/>
+
+                        <p:outputLabel value="Autor: "/>
+                        <p:inputText value="#{controleItem.livro.autor}"/>
+
+                        <p:outputLabel value="Editora: "/>
+                        <p:inputText id="editoraTxt" value="#{controleItem.livro.editora}" required="true" label="Editora"/>
+
+                        <p:outputLabel value="Volume: "/>
+                        <p:inputText value="#{controleItem.livro.volume}"/>
+
+                        <p:outputLabel value="Ano Publicação: "/>
+                        <p:inputText value="#{controleItem.livro.anoPublicacao}"/>
+
+                        <p:outputLabel value="Número de Páginas: "/>
+                        <p:inputText value="#{controleItem.livro.numPaginas}"/>
+
+                        <p:outputLabel value="Origem: "/>
+                        <p:inputText value="#{controleItem.livro.origem}"/>
+
+                        <p:outputLabel value="Valor multa dia Atraso: "/>
+                        <p:inputText value="#{controleItem.livro.valorMultaDiaAtraso}"/>
+
+                        <p:outputLabel value="ISBN: "/>
+                        <p:inputText value="#{controleItem.livro.isbn}"/>
+                    </h:panelGrid>
+                </p:panel>
+                <br></br>
+                <a href="gerenciarItens.xhtml" class="btn btn-danger">Voltar</a>
+            </h:form>
+        </center>
+    </h:body>
+</html>
