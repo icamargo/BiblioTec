@@ -48,7 +48,7 @@
                     </div>
                 </div>
 
-                <div class="panel panel-primary" style="width: 1300px">
+                <div class="panel panel-primary" style="width: 100%">
                     <div class="panel-heading"><h4>Itens</h4></div>
                     <div class="panel-body">
 
@@ -121,10 +121,9 @@
                             </p:column>
                             <p:column>
                                 <f:facet name="header">
-                                    Ação
+                                    Reservar
                                 </f:facet>
-                                <h:commandButton value="Exibir" action="#{controleItem.exibirItem(item)}" class="btn btn-info"/>
-                                <h:commandButton value="Solicitar Reserva" action="#{controleReserva.solicitarReserva(item, loginController.usuario)}" class="btn btn-info"/>
+                                <h:commandButton value="Reservar" action="#{controleReserva.solicitarReserva(item, loginController.usuario)}" class="btn btn-info"/>
                             </p:column>
                         </p:dataTable>
                     </div>
