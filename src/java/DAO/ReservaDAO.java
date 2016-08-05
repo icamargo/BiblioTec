@@ -32,7 +32,7 @@ public class ReservaDAO {
     private void preparaSessaoConsulta(){
         session = HibernateUtil.getSessionFactory().openSession();
         trans = session.beginTransaction();
-        cri = session.createCriteria(ItemPrototype.class);
+        cri = session.createCriteria(Reserva.class);
     }
     
     public void add(Reserva reserva) throws IOException{
@@ -52,12 +52,13 @@ public class ReservaDAO {
         return lista;
     }
     
-    public Calendar getMaiorDataDisponibilizacao(){
+    public Calendar getMaiorDataDisponibilizacao(int numeroCatalogo){
         this.preparaSessaoConsulta();
         ProjectionList projList = Projections.projectionList();
         Calendar maiorDataDisponibilizacao = Calendar.getInstance();
         
         projList.add(Projections.max("dataDisponibilizacao"));
+        cri.add(Restrictions.eq("numeroCatalogo", numeroCatalogo));
         cri.setProjection(projList);
         cri.setMaxResults(1);
         maiorDataDisponibilizacao = (Calendar) cri.uniqueResult();

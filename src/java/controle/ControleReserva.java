@@ -1,10 +1,7 @@
 package controle;
 
 import DAO.ReservaDAO;
-import entidade.AcademicoPrototype;
 import entidade.ItemPrototype;
-import entidade.LivroPrototype;
-import entidade.PeriodicoPrototype;
 import entidade.Reserva;
 import entidade.UsuarioPrototype;
 import java.io.IOException;
@@ -23,25 +20,25 @@ import javax.faces.context.FacesContext;
 @SessionScoped
 public class ControleReserva {
     private List reservas;
-    //private UsuarioPrototype usuario;
+    
     private ItemPrototype item;
-    private AcademicoPrototype academico;
-    private LivroPrototype livro;
-    private PeriodicoPrototype peridico;
     
-    private Reserva novaReserva = new Reserva();
+    private Reserva novaReserva;
     
-    private LoginControle loginControle;
     private ReservaDAO reservaDAO = new ReservaDAO();
     
     public void solicitarReserva(ItemPrototype item, UsuarioPrototype usuario) throws IOException{
         FacesContext context = FacesContext.getCurrentInstance();
-        //usuario = loginControle.getUsuario();
         
         if(!(usuario.getSituacao().equals("Inadimplente"))){
-            this.item = item;
-            context.getExternalContext().redirect("reservasItem.xhtml");
-            reservas = reservaDAO.getReservas(item.getNumeroCatalogo());
+            if (!(item.getStatus().equals("Inativo"))){
+                context.getExternalContext().redirect("reservasItem.xhtml");
+                this.item = item;
+                this.reservas = reservaDAO.getReservas(item.getNumeroCatalogo());
+            }
+            else{
+                context.addMessage(null, new FacesMessage("Item Inativo! Não pode ser reservado!"));
+            }
         }
         else{
             context.addMessage(null, new FacesMessage("Usuário Inadimplente! Regularize a situação para então solicitar uma reserva"));
@@ -54,30 +51,17 @@ public class ControleReserva {
         Calendar dataDisponibilizacao = Calendar.getInstance();
         int numeroCatalogo;
 
-        if (reservas != null) {
-            if (reservas.size() > 0){
+        if (reservas.size() > 0){
             //pega a maior data de disponibilização e acrescenta um dia e o resultado sera a data de retirada da reserva
-            dataRetirada = reservaDAO.getMaiorDataDisponibilizacao();
-            dataRetirada.add(Calendar.DAY_OF_MONTH, 1);
-            novaReserva.setDataRetirada(dataRetirada);
-            }
-            
-        } else {
-            dataRetirada.add(Calendar.DAY_OF_MONTH, 1);
-            novaReserva.setDataRetirada(dataRetirada);
+            dataRetirada.setTime(reservaDAO.getMaiorDataDisponibilizacao(item.getNumeroCatalogo()).getTime());
         }
-        //usuario = loginControle.getUsuario();
-
+        dataRetirada.add(Calendar.DAY_OF_MONTH, 1);
+        dataDisponibilizacao.setTime(dataRetirada.getTime());
         dataDisponibilizacao.add(Calendar.DAY_OF_MONTH, 10);
-
+        
         numeroCatalogo = item.getNumeroCatalogo();
 
-        novaReserva.setCodigoUsuario(usuario.getCodigo());
-        novaReserva.setDataReserva(dataReserva);
-        novaReserva.setDataDisponibilizacao(dataDisponibilizacao);
-        novaReserva.setNumeroCatalogo(numeroCatalogo);
-        novaReserva.setStatusReserva("Aberta");
-
+        novaReserva = new Reserva(dataRetirada, dataDisponibilizacao, usuario.getCodigo(), dataReserva, numeroCatalogo, "Aberta");
         reservaDAO.add(novaReserva);
 
         DateFormat formataData = DateFormat.getDateInstance();
@@ -95,14 +79,6 @@ public class ControleReserva {
     public void setReservas(List reservas) {
         this.reservas = reservas;
     }
-
-//    public UsuarioPrototype getUsuario() {
-//        return usuario;
-//    }
-//
-//    public void setUsuario(UsuarioPrototype usuario) {
-//        this.usuario = usuario;
-//    }
 
     public ItemPrototype getItem() {
         return item;

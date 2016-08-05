@@ -32,26 +32,34 @@
                                 <f:facet name="header">
                                     Data da Reserva
                                 </f:facet>
-                                <h:outputText value="#{reserva.dataReserva}"/>
+                                <h:outputText value="#{reserva.dataReserva.time}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText>
                             </p:column>
                             
                             <p:column>
                                 <f:facet name="header">
                                     Data da Retirada
                                 </f:facet>
-                                <h:outputText value="#{reserva.dataRetirada}"/>
+                                <h:outputText value="#{reserva.dataRetirada.time}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText>
                             </p:column>
+                            
                             <p:column>
                                 <f:facet name="header">
                                     Data da Disponibilização
                                 </f:facet>
-                                <h:outputText value="#{reserva.dataDisponibilizacao}"/>
+                                <h:outputText value="#{reserva.dataDisponibilizacao.time}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText> 
                             </p:column>
                         </p:dataTable>
                     </div>
                 </div>
                 <br></br>
                 <h:commandButton value="Criar Reserva" action="#{controleReserva.criarReserva(loginController.usuario)}"/>
+                <a href="gerenciarItens.xhtml" class="btn btn-danger">Voltar</a>
             </h:form>
         </center>
     </h:body>

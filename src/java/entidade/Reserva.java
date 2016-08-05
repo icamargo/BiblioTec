@@ -32,6 +32,15 @@ public class Reserva implements Serializable {
     public Reserva(){
     }
     
+    public Reserva(Calendar dataRetirada, Calendar dataDisponibilizacao, int codigoUsuario, Calendar dataReserva, int numeroCatalogo, String statusReserva){
+        this.dataRetirada = dataRetirada;
+        this.dataDisponibilizacao = dataDisponibilizacao;
+        this.codigoUsuario = codigoUsuario;
+        this.dataReserva = dataReserva;
+        this.numeroCatalogo = numeroCatalogo;
+        this.statusReserva = statusReserva;
+    }
+            
     public int getIdReserva() {
         return idReserva;
     }
