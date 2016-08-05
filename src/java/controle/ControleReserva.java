@@ -27,6 +27,12 @@ public class ControleReserva {
     
     private ReservaDAO reservaDAO = new ReservaDAO();
     
+    public String cancelaReserva(Reserva reservaUser){
+        reservaUser.setStatusReserva("Cancelada");
+        reservaDAO.cancelaReserva(reservaUser);
+        return "reservas?faces-redirect=true";       
+    }
+    
     public void solicitarReserva(ItemPrototype item, UsuarioPrototype usuario) throws IOException{
         FacesContext context = FacesContext.getCurrentInstance();
         
@@ -60,10 +66,11 @@ public class ControleReserva {
         dataDisponibilizacao.add(Calendar.DAY_OF_MONTH, 10);
         
         numeroCatalogo = item.getNumeroCatalogo();
-
+        
         novaReserva = new Reserva(dataRetirada, dataDisponibilizacao, usuario.getCodigo(), dataReserva, numeroCatalogo, "Aberta");
         reservaDAO.add(novaReserva);
-
+        
+        usuario.getReservas().add(novaReserva);
         DateFormat formataData = DateFormat.getDateInstance();
 
         FacesContext context = FacesContext.getCurrentInstance();

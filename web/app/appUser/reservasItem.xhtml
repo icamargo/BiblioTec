@@ -10,23 +10,30 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
         <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
         <title>Reservas do Item</title>
-        <link rel="icon" href="recursos/imagens/icon-livro.png"></link>
-        <link rel="stylesheet" href="recursos/css/bootstrap.min.css"></link>
-        <link href="recursos/css/theme.css" rel="stylesheet"></link>
-        <link rel="stylesheet" href="recursos/css/ie10-viewport-bug-workaround.css"></link>
+        <link rel="icon" href="../../recursos/imagens/icon-livro.png"></link>
+        <link rel="stylesheet" href="../../recursos/css/bootstrap.min.css"></link>
+        <link href="../../recursos/css/theme.css" rel="stylesheet"></link>
+        <link rel="stylesheet" href="../../recursos/css/ie10-viewport-bug-workaround.css"></link>
     </h:head>
     <h:body style="background-color: #9acfea">
         <center>
             <h:form>
-                <div class="panel panel-primary" style="width: 1300px">
+                <div class="panel panel-primary" style="width: 100%">
                     <div class="panel-heading"><h4>Reservas do Item</h4></div>
+                    <p:messages autoUpdate="true"/>
                     <div class="panel-body">
-                        <p:dataTable value="#{controleReserva.reservas}" var="reserva" id="tabelaReservasItem">
+                        <p:dataTable id="dataTable" value="#{controleReserva.reservas}" var="reserva">
                             <p:column>
                                 <f:facet name="header">
                                     Id
                                 </f:facet>
                                 <h:outputText value="#{reserva.idReserva}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    Status
+                                </f:facet>
+                                <h:outputText value="#{reserva.statusReserva}"/>
                             </p:column>
                             <p:column>
                                 <f:facet name="header">
@@ -52,13 +59,13 @@
                                 </f:facet>
                                 <h:outputText value="#{reserva.dataDisponibilizacao.time}">
                                     <f:convertDateTime pattern="dd/MM/yyyy" />
-                                </h:outputText> 
+                                </h:outputText>
                             </p:column>
                         </p:dataTable>
                     </div>
                 </div>
                 <br></br>
-                <h:commandButton value="Criar Reserva" action="#{controleReserva.criarReserva(loginController.usuario)}"/>
+                <p:commandButton value="Criar Reserva" action="#{controleReserva.criarReserva(loginController.usuario)}" class="btn btn-success"/>
                 <a href="gerenciarItens.xhtml" class="btn btn-danger">Voltar</a>
             </h:form>
         </center>

@@ -9,6 +9,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.LogicalExpression;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
@@ -29,6 +30,12 @@ public class ReservaDAO {
         trans = session.beginTransaction();
     }
     
+    public void cancelaReserva(Reserva reserva){
+        this.preparaSessaoSaveUpdate();
+        session.update(reserva);
+        trans.commit();
+    }
+    
     private void preparaSessaoConsulta(){
         session = HibernateUtil.getSessionFactory().openSession();
         trans = session.beginTransaction();
@@ -46,7 +53,8 @@ public class ReservaDAO {
         cri.add(Restrictions.eq("numeroCatalogo", numeroCatalogo));
         Criterion aberta =  Restrictions.eq("statusReserva", "Aberta");
         Criterion efetivada = Restrictions.eq("statusReserva", "Efetivada");
-        LogicalExpression expOu = Restrictions.or(aberta, efetivada);
+        Criterion cancelada = Restrictions.eq("statusReserva", "Cancelada");
+        Disjunction expOu = Restrictions.or(aberta, efetivada, cancelada);
         cri.add(expOu);
         lista = cri.list();
         return lista;

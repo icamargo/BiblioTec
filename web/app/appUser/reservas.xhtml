@@ -2,6 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 
     <h:head>
@@ -46,7 +47,6 @@
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Obras<span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#">Reservar</a></li>
                                     <li><a href="gerenciarItens.xhtml">Consultar</a></li>
                                 </ul>
                             </li>
@@ -58,14 +58,65 @@
             <!-- Main component for a primary marketing message or call to action -->
             <div class="jumbotron">
                 <h1>Bem vindo #{loginController.usuario.nome}, suas reservas</h1>
+                <h:form>
+                    <p:dataTable id="dataTable" value="#{loginController.usuario.reservas}" var="reserva"
+                                 rows="5" rowsPerPageTemplate="5,10" paginator="true"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                            <p:column>
+                                <f:facet name="header">
+                                    Id
+                                </f:facet>
+                                <h:outputText value="#{reserva.idReserva}"/>
+                            </p:column>
+                            <p:column filterBy="#{reserva.statusReserva}">
+                                <f:facet name="filter">
+                                    Status
+                                </f:facet>
+                                <h:outputText value="#{reserva.statusReserva}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    Data da Reserva
+                                </f:facet>
+                                <h:outputText value="#{reserva.dataReserva.time}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText>
+                            </p:column>
+                            
+                            <p:column>
+                                <f:facet name="header">
+                                    Data da Retirada
+                                </f:facet>
+                                <h:outputText value="#{reserva.dataRetirada.time}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText>
+                            </p:column>
+                            
+                            <p:column>
+                                <f:facet name="header">
+                                    Data da Disponibilização
+                                </f:facet>
+                                <h:outputText value="#{reserva.dataDisponibilizacao.time}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText> 
+                            </p:column>
+                             <p:column>
+                                <f:facet name="header">
+                                    Ação
+                                </f:facet>
+                                 
+                                    <h:commandButton value="Cancelar" action="#{controleReserva.cancelaReserva(reserva)}" class="btn btn-info"/>
+                                 
+                             </p:column>
+                        </p:dataTable>
+                </h:form>
             </div>
             <h:form>
                 <p:commandButton value="Sair" action="#{loginController.logout()}" class="btn btn-primary"/>
             </h:form>
             
         </div>
-
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        
         <script src="../../recursos/js/jquery.min.js"></script>
         <script src="../../recursos/js/bootstrap.min.js"></script>
         <script src="../../recursos/js/ie-emulation-modes-warning.js"></script>
