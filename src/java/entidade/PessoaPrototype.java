@@ -20,7 +20,7 @@ public abstract class PessoaPrototype implements Serializable {
  
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    protected int codigo;
+    protected Integer codigo;
     protected String nome;
     protected String cpf;
     protected String rg;
@@ -51,7 +51,7 @@ public abstract class PessoaPrototype implements Serializable {
         return codigo;
     }
 
-    public void setCodigo(int codigo) {
+    public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
 

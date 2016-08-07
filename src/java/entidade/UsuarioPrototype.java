@@ -9,11 +9,18 @@ import java.util.List;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 @Entity
 @DiscriminatorValue(value = "Usuario")
 public class UsuarioPrototype extends PessoaPrototype{
     private String situacao;
+    @OneToOne (mappedBy = "usuario")
+    @Cascade (CascadeType.ALL)
+    private Emprestimo emprestimo;
+    
     @OneToMany
     private List<Reserva> reservas;
 

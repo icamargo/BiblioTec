@@ -28,77 +28,102 @@ public class PessoaDAO {
     private Transaction trans;
     private List<PessoaPrototype> lista;
 
-    public void add(PessoaPrototype pessoa) throws IOException {
-        session = HibernateUtil.getSessionFactory().openSession();
+    private void preparaSessao(){
+        if ((session == null) || (!(session.isOpen()))){
+            session = HibernateUtil.getSessionFactory().openSession();
+        }
         trans = session.beginTransaction();
+    }
+    
+    public void add(PessoaPrototype pessoa) throws IOException {
+        this.preparaSessao();
         session.save(pessoa);
         trans.commit();
+        session.close();
     }
     
     public void addSemLogin(PessoaPrototype pessoa) throws IOException {
-        session = HibernateUtil.getSessionFactory().openSession();
-        trans = session.beginTransaction();
+        this.preparaSessao();
         session.save(pessoa);
         trans.commit();
+        session.close();
     }
     
     public UsuarioPrototype buscarUsuario(UsuarioPrototype usuario) {
-        session = HibernateUtil.getSessionFactory().openSession();
+        if ((session == null) || (!(session.isOpen()))){
+            session = HibernateUtil.getSessionFactory().openSession();
+        }
+        UsuarioPrototype usuarioAux = null;
         String sql = "select u from UsuarioPrototype u where email=:em and senha=:pass";
         Query query = session.createQuery(sql);
         query.setString("em", usuario.getEmail());
         query.setString("pass", usuario.getSenha());
-        return (UsuarioPrototype) query.uniqueResult();
+        usuarioAux = (UsuarioPrototype) query.uniqueResult();
+        session.close();
+        return usuarioAux;
     }
     
     public BalconistaPrototype buscarBa(BalconistaPrototype balconista) {
-        session = HibernateUtil.getSessionFactory().openSession();
+        if ((session == null) || (!(session.isOpen()))){
+            session = HibernateUtil.getSessionFactory().openSession();
+        }
+        BalconistaPrototype balconistaAux = null;
+        
         String sql = "select u from BalconistaPrototype u where email=:em and senha=:pass";
         Query query = session.createQuery(sql);
         query.setString("em", balconista.getEmail());
         query.setString("pass", balconista.getSenha());
-        return (BalconistaPrototype) query.uniqueResult();
+        balconistaAux = (BalconistaPrototype) query.uniqueResult();
+        session.close();
+        return balconistaAux;
     }
     
     public BibliotecarioPrototype buscarBi(BibliotecarioPrototype bi) {
-        session = HibernateUtil.getSessionFactory().openSession();
+        if ((session == null) || (!(session.isOpen()))){
+            session = HibernateUtil.getSessionFactory().openSession();
+        }
+        BibliotecarioPrototype bibliotecarioAux = null;
         String sql = "select u from BibliotecarioPrototype u where email=:em and senha=:pass";
         Query query = session.createQuery(sql);
         query.setString("em", bi.getEmail());
         query.setString("pass", bi.getSenha());
-        return (BibliotecarioPrototype) query.uniqueResult();
+        bibliotecarioAux = (BibliotecarioPrototype) query.uniqueResult();
+        session.close();
+        return bibliotecarioAux;
     }
     
     public List<PessoaPrototype> getPessoaPorCodigo(int vlrFiltroCodigo){
-        session = HibernateUtil.getSessionFactory().openSession();
-        trans = session.beginTransaction();
+        this.preparaSessao();
         Criteria cri = session.createCriteria(PessoaPrototype.class);
         cri.add(Restrictions.eq("codigo", vlrFiltroCodigo));
         this.lista = cri.list();
+        trans.commit();
+        session.close();
         return lista;
     }
     
     public List<PessoaPrototype> getPessoaPorCpf(String vlrFiltroCpf){
-        session = HibernateUtil.getSessionFactory().openSession();
-        trans = session.beginTransaction();
+        this.preparaSessao();
         Criteria cri = session.createCriteria(PessoaPrototype.class);
         cri.add(Restrictions.eq("cpf", vlrFiltroCpf));
         this.lista = cri.list();
+        trans.commit();
+        session.close();
         return lista;
     }
     
     public List<PessoaPrototype> getPessoaPorRg(String vlrFiltroRg){
-        session = HibernateUtil.getSessionFactory().openSession();
-        trans = session.beginTransaction();
+        this.preparaSessao();
         Criteria cri = session.createCriteria(PessoaPrototype.class);
         cri.add(Restrictions.eq("rg", vlrFiltroRg));
         this.lista = cri.list();
+        trans.commit();
+        session.close();
         return lista;
     }
     
     public List<PessoaPrototype> getPessoas(int tipoFiltro, String vlrFiltroTipo, String vlrFiltroNome) {
-        session = HibernateUtil.getSessionFactory().openSession();
-        trans = session.beginTransaction();
+        this.preparaSessao();
         Criteria cri = session.createCriteria(PessoaPrototype.class);
         switch(tipoFiltro){
             case SEM_FILTRO:
@@ -137,13 +162,30 @@ public class PessoaDAO {
             
         }
         this.lista = cri.list();
+        trans.commit();
+        session.close();
         return lista;
     }
     
     public void atualizarPessoa(PessoaPrototype pessoa) throws IOException{
-        session = HibernateUtil.getSessionFactory().openSession();
-        trans = session.beginTransaction();
+        this.preparaSessao();
         session.update(pessoa);
         trans.commit();//confirmaçao
+        session.close();
+    }
+    
+    public UsuarioPrototype getUsuarioPorCodigo(int codigo){
+        UsuarioPrototype usuario = null;
+        
+        this.preparaSessao();
+        Criteria cri = session.createCriteria(UsuarioPrototype.class);
+        
+        cri.add(Restrictions.eq("codigo", codigo));
+        cri.setMaxResults(1);
+        usuario = (UsuarioPrototype) cri.uniqueResult();
+        
+        trans.commit();
+        session.close();
+        return usuario;
     }
 }

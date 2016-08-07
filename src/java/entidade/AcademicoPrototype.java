@@ -28,5 +28,5 @@ public class AcademicoPrototype extends ItemPrototype{
     }
     public void setModalidade(String modalidade) {
         this.modalidade = modalidade;
-    }    
+    }
 }

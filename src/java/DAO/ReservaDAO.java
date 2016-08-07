@@ -1,6 +1,5 @@
 package DAO;
 
-import entidade.ItemPrototype;
 import entidade.Reserva;
 import java.io.IOException;
 import java.util.Calendar;
@@ -9,7 +8,6 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.LogicalExpression;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
@@ -25,27 +23,33 @@ public class ReservaDAO {
     private Criteria cri;
     private List<Reserva> lista;
     
-    private void preparaSessaoSaveUpdate(){
-        session = HibernateUtil.getSessionFactory().openSession();
+    private void preparaSessao(){
+        if ((session == null) || (!(session.isOpen()))){
+            session = HibernateUtil.getSessionFactory().openSession();
+        }
         trans = session.beginTransaction();
     }
     
     public void cancelaReserva(Reserva reserva){
-        this.preparaSessaoSaveUpdate();
+        this.preparaSessao();
         session.update(reserva);
         trans.commit();
+        session.close();
     }
     
     private void preparaSessaoConsulta(){
-        session = HibernateUtil.getSessionFactory().openSession();
+        if ((session == null) || (!(session.isOpen()))){
+            session = HibernateUtil.getSessionFactory().openSession();
+        }
         trans = session.beginTransaction();
         cri = session.createCriteria(Reserva.class);
     }
     
     public void add(Reserva reserva) throws IOException{
-        this.preparaSessaoSaveUpdate();
+        this.preparaSessao();
         session.save(reserva);
         trans.commit();
+        session.close();
     }
     
     public List<Reserva> getReservas(int numeroCatalogo){
@@ -53,10 +57,11 @@ public class ReservaDAO {
         cri.add(Restrictions.eq("numeroCatalogo", numeroCatalogo));
         Criterion aberta =  Restrictions.eq("statusReserva", "Aberta");
         Criterion efetivada = Restrictions.eq("statusReserva", "Efetivada");
-        Criterion cancelada = Restrictions.eq("statusReserva", "Cancelada");
-        Disjunction expOu = Restrictions.or(aberta, efetivada, cancelada);
+        LogicalExpression expOu = Restrictions.or(aberta, efetivada);
         cri.add(expOu);
         lista = cri.list();
+        trans.commit();
+        session.close();
         return lista;
     }
     
@@ -70,7 +75,8 @@ public class ReservaDAO {
         cri.setProjection(projList);
         cri.setMaxResults(1);
         maiorDataDisponibilizacao = (Calendar) cri.uniqueResult();
-        
+        trans.commit();
+        session.close();
         return maiorDataDisponibilizacao;
     }
 }

@@ -32,28 +32,49 @@ public class ItemDAO {
     private Transaction trans;
     private List<ItemPrototype> lista;
     
-    public void add(ItemPrototype item) throws IOException{
-        session = HibernateUtil.getSessionFactory().openSession();
+    private void preparaSessao(){
+        if ((session == null) || (!(session.isOpen()))){
+            session = HibernateUtil.getSessionFactory().openSession();
+        }
         trans = session.beginTransaction();
+    }
+    
+    public void add(ItemPrototype item) throws IOException{
+        this.preparaSessao();
         session.save(item);
         FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage(null, new FacesMessage("Item Cadastrado com Sucesso!"));
         trans.commit();
-        
+        session.close();
     }
 
     public List<ItemPrototype> getItem (int vlrFiltroNumCatalogo){
-        session = HibernateUtil.getSessionFactory().openSession();
-        trans = session.beginTransaction();
+        this.preparaSessao();
         Criteria cri = session.createCriteria(ItemPrototype.class);
         cri.add(Restrictions.eq("numeroCatalogo", vlrFiltroNumCatalogo));
         this.lista = cri.list();
+        trans.commit();
+        session.close();
         return lista;
     }
     
+    public LivroPrototype getLivroPorNumeroCatalogo (int numeroCatalogo){
+        LivroPrototype livro = null;
+        
+        this.preparaSessao();
+        Criteria cri = session.createCriteria(LivroPrototype.class);
+        
+        cri.add(Restrictions.eq("numeroCatalogo", numeroCatalogo));
+        cri.setMaxResults(1);
+        livro = (LivroPrototype) cri.uniqueResult();
+        
+        trans.commit();
+        session.close();
+        return livro;
+    }
+    
     public List<ItemPrototype> getLista(int tipoFiltro, String vlrFiltroNome, String vlrFiltroAutor, String vlrFiltroTipo) {
-        session = HibernateUtil.getSessionFactory().openSession();
-        trans = session.beginTransaction();
+        this.preparaSessao();
         Criteria cri = session.createCriteria(ItemPrototype.class);
         switch(tipoFiltro){
             case SEM_FILTRO:
@@ -127,17 +148,19 @@ public class ItemDAO {
                 break;                        
         }
         this.lista = cri.list();
+        trans.commit();
+        session.close();
         return lista;
     }
     
     public void atualizarItem (ItemPrototype item) throws IOException{
-        session = HibernateUtil.getSessionFactory().openSession();
-        trans = session.beginTransaction();
+        this.preparaSessao();
         session.update(item);
         //FacesContext context = FacesContext.getCurrentInstance();
         //context.addMessage(null, new FacesMessage("Item Atualizado com Sucesso!"));
         //context.getExternalContext().redirect("gerenciarItens.xhtml");
         trans.commit();//confirmaçao
+        session.close();
     }
 
     
