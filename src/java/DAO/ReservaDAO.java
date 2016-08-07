@@ -1,10 +1,12 @@
 package DAO;
 
+import entidade.PessoaPrototype;
 import entidade.Reserva;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.List;
 import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Criterion;
@@ -24,8 +26,10 @@ public class ReservaDAO {
     private List<Reserva> lista;
     
     private void preparaSessao(){
-        if ((session == null) || (!(session.isOpen()))){
-            session = HibernateUtil.getSessionFactory().openSession();
+        try{
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+        }catch(HibernateException e){
+            session = HibernateUtil.getSessionFactory().openSession(); 
         }
         trans = session.beginTransaction();
     }
@@ -37,14 +41,6 @@ public class ReservaDAO {
         session.close();
     }
     
-    private void preparaSessaoConsulta(){
-        if ((session == null) || (!(session.isOpen()))){
-            session = HibernateUtil.getSessionFactory().openSession();
-        }
-        trans = session.beginTransaction();
-        cri = session.createCriteria(Reserva.class);
-    }
-    
     public void add(Reserva reserva) throws IOException{
         this.preparaSessao();
         session.save(reserva);
@@ -53,7 +49,8 @@ public class ReservaDAO {
     }
     
     public List<Reserva> getReservas(int numeroCatalogo){
-        this.preparaSessaoConsulta();
+        this.preparaSessao();
+        cri = session.createCriteria(Reserva.class);
         cri.add(Restrictions.eq("numeroCatalogo", numeroCatalogo));
         Criterion aberta =  Restrictions.eq("statusReserva", "Aberta");
         Criterion efetivada = Restrictions.eq("statusReserva", "Efetivada");
@@ -66,7 +63,8 @@ public class ReservaDAO {
     }
     
     public Calendar getMaiorDataDisponibilizacao(int numeroCatalogo){
-        this.preparaSessaoConsulta();
+        this.preparaSessao();
+        cri = session.createCriteria(Reserva.class);
         ProjectionList projList = Projections.projectionList();
         Calendar maiorDataDisponibilizacao = Calendar.getInstance();
         
@@ -78,5 +76,11 @@ public class ReservaDAO {
         trans.commit();
         session.close();
         return maiorDataDisponibilizacao;
+    }
+    
+    public void atualizarPessoa(PessoaPrototype pessoa){
+        this.preparaSessao();
+        session.update(pessoa);
+        trans.commit();//confirmaçao
     }
 }

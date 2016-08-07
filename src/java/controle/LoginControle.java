@@ -12,7 +12,6 @@ import entidade.PessoaPrototype;
 import entidade.UsuarioPrototype;
 import java.io.IOException;
 import java.io.Serializable;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -29,13 +28,14 @@ public class LoginControle implements Serializable{
     private UsuarioPrototype usuario;
     private BalconistaPrototype balconista;
     private BibliotecarioPrototype bibliotecario;
-
+    private PessoaDAO pessoaDAO;
+    
     public LoginControle(){
     }
     
     public String logarU(){
         
-        PessoaDAO pessoaDAO = new PessoaDAO();
+        pessoaDAO = new PessoaDAO();
         usuario = pessoaDAO.buscarUsuario(usuario);
             
         if(usuario != null){
@@ -56,7 +56,7 @@ public class LoginControle implements Serializable{
     
     public String logarBi(){
         
-        PessoaDAO pessoaDAO = new PessoaDAO();
+        pessoaDAO = new PessoaDAO();
         bibliotecario = pessoaDAO.buscarBi(bibliotecario);
         
         if(bibliotecario != null){
@@ -79,7 +79,7 @@ public class LoginControle implements Serializable{
     
     public String logarBa(){
         
-        PessoaDAO pessoaDAO = new PessoaDAO();
+        pessoaDAO = new PessoaDAO();
         balconista = pessoaDAO.buscarBa(balconista);
         
         if(balconista != null){

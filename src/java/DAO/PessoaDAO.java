@@ -15,6 +15,7 @@ import entidade.UsuarioPrototype;
 import java.io.IOException;
 import java.util.List;
 import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -27,10 +28,12 @@ public class PessoaDAO {
     private Session session;
     private Transaction trans;
     private List<PessoaPrototype> lista;
-
+    
     private void preparaSessao(){
-        if ((session == null) || (!(session.isOpen()))){
-            session = HibernateUtil.getSessionFactory().openSession();
+        try{
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+        }catch(HibernateException e){
+            session = HibernateUtil.getSessionFactory().openSession(); 
         }
         trans = session.beginTransaction();
     }
@@ -50,8 +53,11 @@ public class PessoaDAO {
     }
     
     public UsuarioPrototype buscarUsuario(UsuarioPrototype usuario) {
-        if ((session == null) || (!(session.isOpen()))){
-            session = HibernateUtil.getSessionFactory().openSession();
+        //session = HibernateUtil.getSessionFactory().openSession();
+        try{
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+        }catch(HibernateException e){
+            session = HibernateUtil.getSessionFactory().openSession(); 
         }
         UsuarioPrototype usuarioAux = null;
         String sql = "select u from UsuarioPrototype u where email=:em and senha=:pass";
@@ -64,11 +70,13 @@ public class PessoaDAO {
     }
     
     public BalconistaPrototype buscarBa(BalconistaPrototype balconista) {
-        if ((session == null) || (!(session.isOpen()))){
-            session = HibernateUtil.getSessionFactory().openSession();
+        //session = HibernateUtil.getSessionFactory().openSession();
+        try{
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+        }catch(HibernateException e){
+            session = HibernateUtil.getSessionFactory().openSession(); 
         }
         BalconistaPrototype balconistaAux = null;
-        
         String sql = "select u from BalconistaPrototype u where email=:em and senha=:pass";
         Query query = session.createQuery(sql);
         query.setString("em", balconista.getEmail());
@@ -79,8 +87,11 @@ public class PessoaDAO {
     }
     
     public BibliotecarioPrototype buscarBi(BibliotecarioPrototype bi) {
-        if ((session == null) || (!(session.isOpen()))){
-            session = HibernateUtil.getSessionFactory().openSession();
+        //session = HibernateUtil.getSessionFactory().openSession();
+        try{
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+        }catch(HibernateException e){
+            session = HibernateUtil.getSessionFactory().openSession(); 
         }
         BibliotecarioPrototype bibliotecarioAux = null;
         String sql = "select u from BibliotecarioPrototype u where email=:em and senha=:pass";

@@ -21,6 +21,7 @@ import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.MatchMode;
@@ -33,8 +34,10 @@ public class ItemDAO {
     private List<ItemPrototype> lista;
     
     private void preparaSessao(){
-        if ((session == null) || (!(session.isOpen()))){
-            session = HibernateUtil.getSessionFactory().openSession();
+        try{
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+        }catch(HibernateException e){
+            session = HibernateUtil.getSessionFactory().openSession(); 
         }
         trans = session.beginTransaction();
     }
