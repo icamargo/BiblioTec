@@ -182,6 +182,8 @@ public class ControlePessoa {
         usuario = new UsuarioPrototype();
         return "gerenciarPessoas?faces-redirect=true";
     }
+    
+    
 
     public UsuarioPrototype getUsuario() {
         return usuario;

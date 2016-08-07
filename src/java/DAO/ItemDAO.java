@@ -21,6 +21,7 @@ import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.MatchMode;
@@ -32,9 +33,17 @@ public class ItemDAO {
     private Transaction trans;
     private List<ItemPrototype> lista;
     
-    public void add(ItemPrototype item) throws IOException{
-        session = HibernateUtil.getSessionFactory().openSession();
+    private void preparaSessao(){
+        try{
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+        }catch(HibernateException e){
+            session = HibernateUtil.getSessionFactory().openSession(); 
+        }
         trans = session.beginTransaction();
+    }
+    
+    public void add(ItemPrototype item) throws IOException{
+        this.preparaSessao();
         session.save(item);
         FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage(null, new FacesMessage("Item Cadastrado com Sucesso!"));
@@ -43,17 +52,16 @@ public class ItemDAO {
     }
 
     public List<ItemPrototype> getItem (int vlrFiltroNumCatalogo){
-        session = HibernateUtil.getSessionFactory().openSession();
-        trans = session.beginTransaction();
+        this.preparaSessao();
         Criteria cri = session.createCriteria(ItemPrototype.class);
         cri.add(Restrictions.eq("numeroCatalogo", vlrFiltroNumCatalogo));
         this.lista = cri.list();
+        trans.commit();
         return lista;
     }
     
     public List<ItemPrototype> getLista(int tipoFiltro, String vlrFiltroNome, String vlrFiltroAutor, String vlrFiltroTipo) {
-        session = HibernateUtil.getSessionFactory().openSession();
-        trans = session.beginTransaction();
+        this.preparaSessao();
         Criteria cri = session.createCriteria(ItemPrototype.class);
         switch(tipoFiltro){
             case SEM_FILTRO:
@@ -127,12 +135,12 @@ public class ItemDAO {
                 break;                        
         }
         this.lista = cri.list();
+        trans.commit();
         return lista;
     }
     
     public void atualizarItem (ItemPrototype item) throws IOException{
-        session = HibernateUtil.getSessionFactory().openSession();
-        trans = session.beginTransaction();
+        this.preparaSessao();
         session.update(item);
         //FacesContext context = FacesContext.getCurrentInstance();
         //context.addMessage(null, new FacesMessage("Item Atualizado com Sucesso!"));

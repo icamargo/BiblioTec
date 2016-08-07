@@ -12,6 +12,9 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import utils.HibernateUtil;
 /**
  *
  * @author Igor
@@ -19,13 +22,12 @@ import javax.faces.context.FacesContext;
 @ManagedBean (name = "controleReserva")
 @SessionScoped
 public class ControleReserva {
+    
     private List reservas;
-    
     private ItemPrototype item;
-    
     private Reserva novaReserva;
-    
-    private ReservaDAO reservaDAO = new ReservaDAO();
+    private Session session;
+    private final ReservaDAO reservaDAO = new ReservaDAO();
     
     public String cancelaReserva(Reserva reservaUser){
         reservaUser.setStatusReserva("Cancelada");
@@ -56,8 +58,9 @@ public class ControleReserva {
         Calendar dataReserva = Calendar.getInstance();
         Calendar dataDisponibilizacao = Calendar.getInstance();
         int numeroCatalogo;
-
-        if (reservas.size() > 0){
+        
+        if (reservas!=null && reservas.size() > 0){
+           
             //pega a maior data de disponibilização e acrescenta um dia e o resultado sera a data de retirada da reserva
             dataRetirada.setTime(reservaDAO.getMaiorDataDisponibilizacao(item.getNumeroCatalogo()).getTime());
         }
@@ -68,9 +71,19 @@ public class ControleReserva {
         numeroCatalogo = item.getNumeroCatalogo();
         
         novaReserva = new Reserva(dataRetirada, dataDisponibilizacao, usuario.getCodigo(), dataReserva, numeroCatalogo, "Aberta");
-        reservaDAO.add(novaReserva);
         
         usuario.getReservas().add(novaReserva);
+        
+        try{
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+        }catch(HibernateException e){
+            session = HibernateUtil.getSessionFactory().openSession();
+        }
+        session.beginTransaction();
+        session.save(novaReserva);
+        session.merge(usuario);
+        session.getTransaction().commit();
+
         DateFormat formataData = DateFormat.getDateInstance();
 
         FacesContext context = FacesContext.getCurrentInstance();

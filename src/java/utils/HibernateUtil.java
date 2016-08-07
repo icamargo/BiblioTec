@@ -5,6 +5,15 @@
  */
 package utils;
 
+import entidade.AcademicoPrototype;
+import entidade.BalconistaPrototype;
+import entidade.BibliotecarioPrototype;
+import entidade.ItemPrototype;
+import entidade.LivroPrototype;
+import entidade.PeriodicoPrototype;
+import entidade.PessoaPrototype;
+import entidade.Reserva;
+import entidade.UsuarioPrototype;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
@@ -17,6 +26,17 @@ public class HibernateUtil {
         if (sessionFactory == null) {
             // loads configuration and mappings
             Configuration configuration = new Configuration().configure();
+            
+            configuration.addAnnotatedClass(Reserva.class);
+            configuration.addAnnotatedClass(AcademicoPrototype.class);
+            configuration.addAnnotatedClass(BalconistaPrototype.class);
+            configuration.addAnnotatedClass(BibliotecarioPrototype.class);
+            configuration.addAnnotatedClass(ItemPrototype.class);
+            configuration.addAnnotatedClass(LivroPrototype.class);
+            configuration.addAnnotatedClass(PeriodicoPrototype.class);
+            configuration.addAnnotatedClass(PessoaPrototype.class);
+            configuration.addAnnotatedClass(UsuarioPrototype.class);
+            
             ServiceRegistry serviceRegistry
                 = new StandardServiceRegistryBuilder()
                     .applySettings(configuration.getProperties()).build();
