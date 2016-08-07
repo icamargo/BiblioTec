@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
@@ -23,7 +24,7 @@ public class UsuarioPrototype extends PessoaPrototype{
     @Cascade (CascadeType.ALL)
     private Emprestimo emprestimo;
     
-    @OneToMany
+    @OneToMany (fetch=FetchType.EAGER)
     @JoinTable(name = "usuario_reserva",joinColumns = 
             @JoinColumn(name = "usuario_id"),inverseJoinColumns = @JoinColumn(name = "reserva_id"))
     private List<Reserva> reservas;
