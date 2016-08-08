@@ -15,6 +15,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 @Entity
 @DiscriminatorValue(value = "Usuario")
@@ -23,6 +25,21 @@ public class UsuarioPrototype extends PessoaPrototype{
     @OneToOne (mappedBy = "usuario")
     @Cascade (CascadeType.ALL)
     private Emprestimo emprestimo;
+    
+    @OneToMany (mappedBy = "usuario")
+    @Cascade (CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    //@JoinTable(name = "usuario_emprestimo",joinColumns = 
+    //        @JoinColumn(name = "usuario_id"),inverseJoinColumns = @JoinColumn(name = "empretimo_id"))
+    private List<Emprestimo> emprestimos;
+
+    public List<Emprestimo> getEmprestimos() {
+        return emprestimos;
+    }
+
+    public void setEmprestimos(List<Emprestimo> emprestimos) {
+        this.emprestimos = emprestimos;
+    }
     
     @OneToMany (fetch=FetchType.EAGER)
     @JoinTable(name = "usuario_reserva",joinColumns = 
@@ -41,6 +58,7 @@ public class UsuarioPrototype extends PessoaPrototype{
         this.situacao = "Normal";
         this.ativo = true;
         this.reservas = new ArrayList<>();
+        this.emprestimos = new ArrayList<>();
     }
 
     public UsuarioPrototype(UsuarioPrototype usuario) {

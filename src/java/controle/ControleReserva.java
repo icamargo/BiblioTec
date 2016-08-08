@@ -1,7 +1,10 @@
 package controle;
 
+import DAO.EmprestimoDAO;
 import DAO.ReservaDAO;
+import entidade.Emprestimo;
 import entidade.ItemPrototype;
+import entidade.LivroPrototype;
 import entidade.Reserva;
 import entidade.UsuarioPrototype;
 import java.io.IOException;
@@ -28,6 +31,7 @@ public class ControleReserva {
     private Reserva novaReserva;
     private Session session;
     private final ReservaDAO reservaDAO = new ReservaDAO();
+    private final EmprestimoDAO emprestimoDAO = new EmprestimoDAO();
     
     public String cancelaReserva(Reserva reservaUser){
         reservaUser.setStatusReserva("Cancelada");
@@ -64,7 +68,17 @@ public class ControleReserva {
             //pega a maior data de disponibilização e acrescenta um dia e o resultado sera a data de retirada da reserva
             dataRetirada.setTime(reservaDAO.getMaiorDataDisponibilizacao(item.getNumeroCatalogo()).getTime());
         }
-        dataRetirada.add(Calendar.DAY_OF_MONTH, 1);
+        if(item.getStatus().equals("Emprestado")){
+            Emprestimo emprestimo;
+            
+            emprestimo = emprestimoDAO.getEmpretimo((LivroPrototype) item);
+            dataRetirada = emprestimo.getDataDevPrevista();
+            dataRetirada.add(Calendar.DAY_OF_MONTH, 1);
+        }
+        else{
+            dataRetirada.add(Calendar.DAY_OF_MONTH, 1);
+        }
+        
         dataDisponibilizacao.setTime(dataRetirada.getTime());
         dataDisponibilizacao.add(Calendar.DAY_OF_MONTH, 10);
         
@@ -81,7 +95,7 @@ public class ControleReserva {
         }
         session.beginTransaction();
         session.save(novaReserva);
-        session.merge(usuario);
+        session.update(usuario);
         session.getTransaction().commit();
 
         DateFormat formataData = DateFormat.getDateInstance();

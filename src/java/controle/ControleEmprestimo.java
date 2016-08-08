@@ -3,13 +3,20 @@ package controle;
 import DAO.EmprestimoDAO;
 import DAO.ItemDAO;
 import DAO.PessoaDAO;
+import DAO.ReservaDAO;
 import entidade.Emprestimo;
 import entidade.LivroPrototype;
+import entidade.Reserva;
 import entidade.UsuarioPrototype;
 import java.io.IOException;
 import java.util.Calendar;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import utils.HibernateUtil;
 /**
  *
  * @author Igor
@@ -17,53 +24,126 @@ import javax.faces.bean.SessionScoped;
 @ManagedBean (name = "controleEmprestimo")
 @SessionScoped
 public class ControleEmprestimo {
+    
+    private Session session;
     private Emprestimo emprestimo;
-    private PessoaDAO pessoaDAO = new PessoaDAO();
-    private ItemDAO itemDAO = new ItemDAO();
-    private EmprestimoDAO emprestimoDAO = new EmprestimoDAO();
+    private final PessoaDAO pessoaDAO = new PessoaDAO();
+    private final ItemDAO itemDAO = new ItemDAO();
+    private final EmprestimoDAO emprestimoDAO = new EmprestimoDAO();
+    private final ReservaDAO reservaDAO = new ReservaDAO();
     
     private int codigoUsuario, numeroCatalogo;
-
-    public void criarEmprestimo() throws IOException{
-        String situacaoUsuario;
-        LivroPrototype livro = new LivroPrototype();
-        Calendar dataEmprestimo = Calendar.getInstance();
-        Calendar dataDevPrevista = Calendar.getInstance();
-        UsuarioPrototype usuario = new UsuarioPrototype();
+    
+    public void devolucao() throws IOException{
+        UsuarioPrototype usuario;
+        LivroPrototype livro;
+        Calendar dataDevolvido = Calendar.getInstance();
         
-        emprestimo = new Emprestimo();
-        
-        if(numeroCatalogo != 0){
-            livro = itemDAO.getLivroPorNumeroCatalogo(numeroCatalogo);
-        }
-        else{
-            //MENSAGEM!! Preencha pelo menos um item para emprestimo
-        }
-        
-        usuario = pessoaDAO.getUsuarioPorCodigo(codigoUsuario);
-        situacaoUsuario = usuario.getSituacao();
-        
-        if(!(situacaoUsuario.equals("Inadimplente"))){
-            if(livro.getStatus().equals("Disponível")){
-                dataDevPrevista.add(Calendar.DAY_OF_MONTH, 10);
-
-                livro.setStatus("Emprestado");
-                itemDAO.atualizarItem(livro);
-                
-                emprestimo.setDataDevPrevista(dataDevPrevista);
-                emprestimo.setDataEmprestimo(dataEmprestimo);
-                emprestimo.setUsuario(usuario);
-                emprestimo.setStatusEmprestimo("Aberto");
-                emprestimo.setLivro(livro);
-                emprestimoDAO.add(emprestimo);
+        livro = itemDAO.getLivroPorNumeroCatalogo(numeroCatalogo);
+        if(livro!=null){
+            emprestimo = emprestimoDAO.getEmpretimo(livro);
+            if(emprestimo != null){
+                if(emprestimo.getDataDevPrevista().compareTo(dataDevolvido) == 1 || emprestimo.getDataDevPrevista().compareTo(dataDevolvido) == 0){
+                    livro.setStatus("Disponível");
+                    itemDAO.atualizarItem(livro);
+                    
+                    emprestimo.setStatusEmprestimo("Fechado");
+                    emprestimoDAO.atualizar(emprestimo); 
+                    FacesContext.getCurrentInstance().getExternalContext().redirect("interfaceBalconista.xhtml");
+                }
+                else{
+                    usuario = emprestimo.getUsuario();
+                    usuario.setSituacao("Inadimplente");
+                    pessoaDAO.atualizarPessoa(usuario);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Atraso na entrega favor regularize sua situaçao"));
+                }
             }
-            else{
-                //Livro não stá disponível nao pode ser emprestado
-            }
+        }
+    }
+    
+    public void renovar(Emprestimo emprestimo) throws IOException{
+        UsuarioPrototype usuario;
+        LivroPrototype livro;
+        Reserva reserva;
+        Calendar dataNova;
+        
+        livro = emprestimo.getLivro();
+        numeroCatalogo = livro.getNumeroCatalogo();
+        reserva = reservaDAO.buscarReseva(numeroCatalogo);
+        if(reserva == null){
+            dataNova = emprestimo.getDataDevPrevista();
+            dataNova.add(Calendar.DAY_OF_MONTH, 5);
+            emprestimo.setDataDevPrevista(dataNova);
+            emprestimoDAO.atualizar(emprestimo);
+            FacesContext.getCurrentInstance().getExternalContext().redirect("emprestimos.xhtml");
             
         }
         else{
-            //Usuario inadimplente nao pode emprestar item
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Este item possui reserva"));
+        }
+    }
+    
+    public void criarEmprestimo() throws IOException{
+        
+        String situacaoUsuario;
+        LivroPrototype livro;
+        UsuarioPrototype usuario;
+        Calendar dataEmprestimo = Calendar.getInstance();
+        Calendar dataDevPrevista = Calendar.getInstance();
+        
+        
+        emprestimo = new Emprestimo();
+        livro = itemDAO.getLivroPorNumeroCatalogo(numeroCatalogo);
+        if(livro!=null){
+            
+            
+            usuario = pessoaDAO.getUsuarioPorCodigo(codigoUsuario);
+            
+            if(usuario==null){
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Usuario nao encontrado!"));
+            }
+            else{
+                situacaoUsuario = usuario.getSituacao();
+                if(!(situacaoUsuario.equals("Inadimplente"))){
+                    if(livro.getStatus().equals("Disponível")){
+                        dataDevPrevista.add(Calendar.DAY_OF_MONTH, 10);
+
+                        livro.setStatus("Emprestado");
+                        itemDAO.atualizarItem(livro);
+
+                        emprestimo.setDataDevPrevista(dataDevPrevista);
+                        emprestimo.setDataEmprestimo(dataEmprestimo);
+                        emprestimo.setUsuario(usuario);
+                        emprestimo.setStatusEmprestimo("Aberto");
+                        emprestimo.setLivro(livro);
+                        emprestimoDAO.add(emprestimo);
+
+                        usuario.getEmprestimos().add(emprestimo);
+                        pessoaDAO.atualizarPessoa(usuario);
+                        /*try{
+                            session = HibernateUtil.getSessionFactory().getCurrentSession();
+                        }catch(HibernateException e){
+                            session = HibernateUtil.getSessionFactory().openSession();
+                        }
+                        session.beginTransaction();
+                        session.merge(usuario);
+                        session.beginTransaction().commit();
+                        session.clear();*/
+
+                        FacesContext.getCurrentInstance().getExternalContext().redirect("interfaceBalconista.xhtml");
+                    }
+
+                    else{
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Livro nao esta disponivel para emprestimo!"));
+                    }
+                }
+                else{
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Usuario possui alguma restriçao!"));
+                }
+            }
+        }
+        else{
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Item nao encontrado no catalogo!"));
         }
     }
 

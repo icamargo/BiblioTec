@@ -146,33 +146,33 @@ public class ControleItem {
         itemDAO.atualizarItem(periodico);
     }
     public void inativarAcademico() throws IOException{
-        if(academico.getStatus().equals("Disponivel")){
+        if(academico.getStatus().equals("Disponível")){
             academico.setStatus("Inativo");
         }
         else{
-            academico.setStatus("Disponivel");
+            academico.setStatus("Disponível");
         }
         itemDAO.atualizarItem(academico);
         FacesContext.getCurrentInstance().getExternalContext().redirect("gerenciarItens.xhtml");
     }
     
     public void inativarLivro() throws IOException{
-        if(livro.getStatus().equals("Disponivel")){
+        if(livro.getStatus().equals("Disponível")){
             livro.setStatus("Inativo");
         }
         else{
-            livro.setStatus("Disponivel");
+            livro.setStatus("Disponível");
         }
         itemDAO.atualizarItem(livro);
         FacesContext.getCurrentInstance().getExternalContext().redirect("gerenciarItens.xhtml");
     }
     
     public void inativarPeriodico() throws IOException{
-        if(periodico.getStatus().equals("Disponivel")){
+        if(periodico.getStatus().equals("Disponível")){
             periodico.setStatus("Inativo");
         }
         else{
-            periodico.setStatus("Disponivel");
+            periodico.setStatus("Disponível");
         }
         itemDAO.atualizarItem(periodico);
         FacesContext.getCurrentInstance().getExternalContext().redirect("gerenciarItens.xhtml");

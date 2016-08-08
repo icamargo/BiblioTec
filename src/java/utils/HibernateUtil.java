@@ -8,6 +8,7 @@ package utils;
 import entidade.AcademicoPrototype;
 import entidade.BalconistaPrototype;
 import entidade.BibliotecarioPrototype;
+import entidade.Emprestimo;
 import entidade.ItemPrototype;
 import entidade.LivroPrototype;
 import entidade.PeriodicoPrototype;
@@ -28,6 +29,7 @@ public class HibernateUtil {
             Configuration configuration = new Configuration().configure();
             
             configuration.addAnnotatedClass(Reserva.class);
+            configuration.addAnnotatedClass(Emprestimo.class);
             configuration.addAnnotatedClass(AcademicoPrototype.class);
             configuration.addAnnotatedClass(BalconistaPrototype.class);
             configuration.addAnnotatedClass(BibliotecarioPrototype.class);

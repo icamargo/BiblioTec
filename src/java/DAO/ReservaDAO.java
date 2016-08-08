@@ -1,5 +1,6 @@
 package DAO;
 
+import entidade.LivroPrototype;
 import entidade.PessoaPrototype;
 import entidade.Reserva;
 import java.io.IOException;
@@ -82,5 +83,20 @@ public class ReservaDAO {
         this.preparaSessao();
         session.update(pessoa);
         trans.commit();//confirmaçao
+    }
+    
+    public Reserva buscarReseva(int livro){
+        Reserva reserva = null;
+        
+        this.preparaSessao();
+        cri = session.createCriteria(Reserva.class);
+        
+        cri.add(Restrictions.eq("numeroCatalogo", livro));
+        cri.setMaxResults(1);
+        reserva = (Reserva) cri.uniqueResult();
+        
+        trans.commit();
+        session.close();
+        return reserva;
     }
 }
