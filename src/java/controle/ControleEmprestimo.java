@@ -34,28 +34,37 @@ public class ControleEmprestimo {
     public void devolucao() throws IOException{
         UsuarioPrototype usuario;
         LivroPrototype livro;
+        List<Emprestimo> emprestimos;
         Calendar dataDevolvido = Calendar.getInstance();
         
         livro = itemDAO.getLivroPorNumeroCatalogo(numeroCatalogo);
         if(livro!=null){
-            emprestimo = emprestimoDAO.getEmpretimo(livro);
-            if(emprestimo != null){
-                if(emprestimo.getDataDevPrevista().compareTo(dataDevolvido) == 1 || emprestimo.getDataDevPrevista().compareTo(dataDevolvido) == 0){
-                    livro.setStatus("Disponível");
-                    itemDAO.atualizarItem(livro);
-                    
-                    emprestimo.setStatusEmprestimo("Fechado");
-                    emprestimo.setDataDevolucao(dataDevolvido);
-                    emprestimoDAO.atualizar(emprestimo); 
-                    FacesContext.getCurrentInstance().getExternalContext().redirect("interfaceBalconista.xhtml");
-                }
-                else{
-                    usuario = emprestimo.getUsuario();
-                    usuario.setSituacao("Inadimplente");
-                    pessoaDAO.atualizarPessoa(usuario);
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Atraso na entrega favor regularize sua situaçao"));
-                }
+            emprestimos = emprestimoDAO.getEmprestimos(livro);
+            if(emprestimos!=null && emprestimos.size() > 0){
+                for(Emprestimo emp: emprestimos){
+                    if(emp.getStatusEmprestimo().equals("Aberto")){
+                        emprestimo = emp;
+                        if(emprestimo.getDataDevPrevista().compareTo(dataDevolvido) == 1 || emprestimo.getDataDevPrevista().compareTo(dataDevolvido) == 0){
+                            livro.setStatus("Disponível");
+                            itemDAO.atualizarItem(livro);
+
+                            emprestimo.setStatusEmprestimo("Fechado");
+                            emprestimo.setDataDevolucao(dataDevolvido);
+                            emprestimoDAO.atualizar(emprestimo); 
+                            FacesContext.getCurrentInstance().getExternalContext().redirect("interfaceBalconista.xhtml");
+                        }
+                        else{
+                            usuario = emprestimo.getUsuario();
+                            usuario.setSituacao("Inadimplente");
+                            pessoaDAO.atualizarPessoa(usuario);
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Atraso na entrega favor regularize sua situaçao"));
+                        }  
+                    }
+                }                      
             }
+        }
+        else{
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Item nao encontrado"));
         }
     }
     

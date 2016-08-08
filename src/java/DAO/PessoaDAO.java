@@ -180,7 +180,7 @@ public class PessoaDAO {
     
     public void atualizarPessoa(PessoaPrototype pessoa) throws IOException{
         this.preparaSessao();
-        session.merge(pessoa);
+        session.update(pessoa);
         trans.commit();//confirmaçao
         session.close();
     }
