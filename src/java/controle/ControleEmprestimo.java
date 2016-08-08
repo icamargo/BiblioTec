@@ -87,6 +87,7 @@ public class ControleEmprestimo {
             dataNova = emprestimo.getDataDevPrevista();
             dataNova.add(Calendar.DAY_OF_MONTH, 5);
             emprestimo.setDataDevPrevista(dataNova);
+            emprestimo.setQtdeRenovacoes(emprestimo.getQtdeRenovacoes()+1);
             emprestimoDAO.atualizar(emprestimo);
             FacesContext.getCurrentInstance().getExternalContext().redirect("emprestimos.xhtml");
         }
@@ -141,6 +142,7 @@ public class ControleEmprestimo {
                             emprestimo.setUsuario(usuario);
                             emprestimo.setStatusEmprestimo("Aberto");
                             emprestimo.setLivro(livro);
+                            emprestimo.setQtdeRenovacoes(0);
                             emprestimoDAO.add(emprestimo);
 
                             usuario.getEmprestimos().add(emprestimo);
