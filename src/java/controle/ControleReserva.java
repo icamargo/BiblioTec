@@ -97,6 +97,7 @@ public class ControleReserva {
         session.save(novaReserva);
         session.update(usuario);
         session.getTransaction().commit();
+        session.close();
 
         DateFormat formataData = DateFormat.getDateInstance();
 

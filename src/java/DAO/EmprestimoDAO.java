@@ -2,7 +2,6 @@ package DAO;
 
 import entidade.Emprestimo;
 import entidade.LivroPrototype;
-import entidade.UsuarioPrototype;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -49,7 +48,7 @@ public class EmprestimoDAO {
     
     public void atualizar(Emprestimo emprestimo){
         this.preparaSessao();
-        session.update(emprestimo);
+        session.merge(emprestimo);
         trans.commit();
         session.close();
     }

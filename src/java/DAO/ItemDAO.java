@@ -158,7 +158,7 @@ public class ItemDAO {
     
     public void atualizarItem (ItemPrototype item) throws IOException{
         this.preparaSessao();
-        session.update(item);
+        session.merge(item);
         //FacesContext context = FacesContext.getCurrentInstance();
         //context.addMessage(null, new FacesMessage("Item Atualizado com Sucesso!"));
         //context.getExternalContext().redirect("gerenciarItens.xhtml");

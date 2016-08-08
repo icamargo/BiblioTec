@@ -37,7 +37,7 @@ public class ReservaDAO {
     
     public void cancelaReserva(Reserva reserva){
         this.preparaSessao();
-        session.update(reserva);
+        session.merge(reserva);
         trans.commit();
         session.close();
     }
@@ -81,7 +81,7 @@ public class ReservaDAO {
     
     public void atualizarPessoa(PessoaPrototype pessoa){
         this.preparaSessao();
-        session.update(pessoa);
+        session.merge(pessoa);
         trans.commit();//confirmaçao
     }
     
