@@ -24,41 +24,44 @@
                         <p:messages id="mensagens" autoUpdate="true" />
                         <h:panelGrid columns="2">
                             <p:outputLabel value="Código: "/>
-                            <p:inputText value="#{controlePessoa.balconista.codigo}" disabled="true"/>
+                            <p:inputText value="#{controlePessoa.balconista.codigo}" disabled="true" label="Código"/>
                             
                             <p:outputLabel value="Ativo: "/>
-                            <p:inputText value="#{controlePessoa.balconista.ativo}" disabled="true"/>
+                            <p:inputText value="#{controlePessoa.balconista.ativo}" disabled="true" label="Ativo"/>
                             
                             <p:outputLabel value="Nome: "/>
                             <p:inputText id="nomeTxt" value="#{controlePessoa.balconista.nome}" required="true" label="Nome"/>
                             
                             <p:outputLabel value="CPF: "/>
-                            <p:inputMask id="cpfTxt" value="#{controlePessoa.balconista.cpf}" mask="999.999.999-99" required=" true" label="CPF"/>
+                            <p:inputMask id="cpfTxt" value="#{controlePessoa.balconista.cpf}" mask="999.999.999-99" required="true" label="CPF"/>
                             
                             <p:outputLabel value="RG: "/>
-                            <p:inputText id="rgTxt" value="#{controlePessoa.balconista.rg}"/>
+                            <p:inputText id="rgTxt" value="#{controlePessoa.balconista.rg}" label="RG"/>
                             
                             <p:outputLabel value="Sexo: "/>
-                            <p:selectOneMenu value="#{controlePessoa.balconista.sexo}">
-                                <f:selectItem itemLabel="Masculino" itemValue="masculino"/>
-                                <f:selectItem itemLabel="Feminino" itemValue="feminino"/>
+                            <p:selectOneMenu value="#{controlePessoa.balconista.sexo}" label="Sexo">
+                                <f:selectItem itemLabel="Masculino" itemValue="Masculino"/>
+                                <f:selectItem itemLabel="Feminino" itemValue="Feminino"/>
                             </p:selectOneMenu>
                             
                             <p:outputLabel value="Endereço: "/>
                             <p:inputText id="endereçoTxt" value="#{controlePessoa.balconista.endereco}" required="true" label="Endereço"/>
                             
-                            <p:outputLabel value="Data de nascimento: "/>
-                            <p:inputMask id="dtNascTxt" value="#{controlePessoa.balconista.dataNascimento}" mask="99/99/9999" required="true" label="Data"/>
+                            <p:outputLabel value="Data de Nascimento: "/>
+                            <p:inputMask id="dtNascTxt" value="#{controlePessoa.balconista.dataNascimento}" mask="99/99/9999" required="true" label="Data de Nascimento"/>
                             
-                            <p:outputLabel value="Email "/>
-                            <p:inputText id="emailTxt" value="#{controlePessoa.balconista.email}" required="true" label="Email"/>
+                            <p:outputLabel value="E-mail "/>
+                            <p:inputText id="emailTxt" value="#{controlePessoa.balconista.email}" required="true" label="E-mail"/>
                             
                             <p:outputLabel value="Telefone: "/>
                             <p:inputMask id="telefoneTxt" value="#{controlePessoa.balconista.telefone}" mask="(99) 9999-9999" required="true" label="Telefone"/>
                             
-                            <p:outputLabel value="Turno de Trabalho: "/>
-                            <p:inputText value="#{controlePessoa.balconista.turnoTrabalho}"/>
-                            
+                            <p:outputLabel value="Turno de Trabalho "/>
+                            <p:selectOneMenu value="#{controlePessoa.balconista.turnoTrabalho}" required="true" label="Turno de Trabalho">
+                                <f:selectItem itemLabel="Manhã" itemValue="Manhã"/>
+                                <f:selectItem itemLabel="Tarde" itemValue="Tarde"/>
+                                <f:selectItem itemLabel="Noite" itemValue="Noite"/>
+                            </p:selectOneMenu>
                             
                             <br></br>
                         </h:panelGrid>

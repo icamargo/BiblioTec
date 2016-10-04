@@ -5,54 +5,65 @@
       xmlns:p="http://primefaces.org/ui">
     <!--@autor Tatiane-->
     <h:head>
+        <meta charset="utf-8"></meta>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+        <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
         <title>Dados do Artigo Acadêmico</title>
+        <link rel="icon" href="../../recursos/imagens/icon-livro.png"></link>
+        <link rel="stylesheet" href="../../recursos/css/bootstrap.min.css"></link>
+        <link rel="stylesheet" href="../../recursos/css/ie10-viewport-bug-workaround.css"></link>
     </h:head>
-    <h:body>
+    <h:body style="background-color: #C1C1C1">
         <center>
             <h:form>
-                <p:panel id="cadastro" header="Dados do Artigo Acadêmico" style="margin-bottom: auto">
-                    <p:messages id="mensagens" showDetail="true" autoUpdate="true" />
-                    <h:panelGrid columns="2">
-                        <p:outputLabel value="Número de Catálogo:"/>
-                        <p:inputText id="numCatalogo" value="#{controleItem.academico.numeroCatalogo}" disabled="true"/>
+                <div class="panel panel-primary" style="width: 100%;">
+                    <div class="panel-heading" align="center"><h3>Dados do Artigo Acadêmico</h3></div>
+                    <div class="panel-body">
+                        <p:messages id="mensagens" showDetail="true" autoUpdate="true" />
+                        <h:panelGrid columns="2">
+                            <p:outputLabel value="Número de Catálogo:"/>
+                            <p:inputText id="numCatalogo" value="#{controleItem.academico.numeroCatalogo}" disabled="true"/>
 
-                        <p:outputLabel value="Nome: "/>
-                        <p:inputText id="nomeTxt" value="#{controleItem.academico.nome}" required="true" label="Nome"/>
+                            <p:outputLabel value="Nome: "/>
+                            <p:inputText id="nomeTxt" value="#{controleItem.academico.nome}" required="true" label="Nome"/>
 
-                        <p:outputLabel value="Status: "/>
-                        <p:inputText id="statusTxt" value="#{controleItem.academico.status}" required="true" label="Status" disabled="true"/>
+                            <p:outputLabel value="Status: "/>
+                            <p:inputText id="statusTxt" value="#{controleItem.academico.status}" required="true" label="Status" disabled="true"/>
 
-                        <p:outputLabel value="Edicao: "/>
-                        <p:inputText id="edicaoTxt" value="#{controleItem.academico.edicao}"/>
+                            <p:outputLabel value="Edicao: "/>
+                            <p:inputText id="edicaoTxt" value="#{controleItem.academico.edicao}"/>
 
-                        <p:outputLabel value="Autor: "/>
-                        <p:inputText value="#{controleItem.academico.autor}"/>
+                            <p:outputLabel value="Autor: "/>
+                            <p:inputText value="#{controleItem.academico.autor}"/>
 
-                        <p:outputLabel value="Editora: "/>
-                        <p:inputText id="editoraTxt" value="#{controleItem.academico.editora}" required="true" label="Editora"/>
+                            <p:outputLabel value="Editora: "/>
+                            <p:inputText id="editoraTxt" value="#{controleItem.academico.editora}" required="true" label="Editora"/>
 
-                        <p:outputLabel value="Volume: "/>
-                        <p:inputText value="#{controleItem.academico.volume}"/>
+                            <p:outputLabel value="Volume: "/>
+                            <p:inputText value="#{controleItem.academico.volume}"/>
 
-                        <p:outputLabel value="Ano Publicação: "/>
-                        <p:inputText value="#{controleItem.academico.anoPublicacao}"/>
+                            <p:outputLabel value="Ano Publicação: "/>
+                            <p:inputText value="#{controleItem.academico.anoPublicacao}"/>
 
-                        <p:outputLabel value="Número de Páginas: "/>
-                        <p:inputText value="#{controleItem.academico.numPaginas}"/>
+                            <p:outputLabel value="Número de Páginas: "/>
+                            <p:inputText value="#{controleItem.academico.numPaginas}"/>
 
-                        <p:outputLabel value="Origem: "/>
-                        <p:inputText value="#{controleItem.academico.origem}"/>
+                            <p:outputLabel value="Origem: "/>
+                            <p:inputText value="#{controleItem.academico.origem}"/>
 
-                        <p:outputLabel value="Valor multa dia Atraso: "/>
-                        <p:inputText value="#{controleItem.academico.valorMultaDiaAtraso}"/>
+                            <p:outputLabel value="Valor multa dia Atraso: "/>
+                            <p:inputText value="#{controleItem.academico.valorMultaDiaAtraso}"/>
 
-                        <p:outputLabel value="Modalidade: "/>
-                        <p:inputText value="#{controleItem.academico.modalidade}"/>
-                    </h:panelGrid>
-                </p:panel>
-                <br></br>
-                <a href="gerenciarItens.xhtml" class="btn btn-danger">Voltar</a>
+                            <p:outputLabel value="Modalidade: "/>
+                            <p:inputText value="#{controleItem.academico.modalidade}"/>
+                        </h:panelGrid>
+                        <br></br>
+                        <a href="gerenciarItens.xhtml" class="btn btn-danger">Voltar</a>
+                    </div>
+                </div>
             </h:form>
         </center>
+        <script src="../../recursos/js/bootstrap.min.js"></script>
+        <script src="../../recursos/js/ie-emulation-modes-warning.js"></script>
     </h:body>
 </html>

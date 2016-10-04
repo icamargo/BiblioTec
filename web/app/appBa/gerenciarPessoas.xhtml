@@ -23,22 +23,22 @@
                     <div class="panel-heading"><h4>Filtros</h4></div>
                     <div class="panel-body">
                         <p:outputLabel value="Código: "/>
-                        <p:inputText id="filtroCodigo" value="#{controlePessoa.filtroCodigo}"/>
+                        <p:inputText id="filtroCodigo" value="#{controlePessoa.filtroCodigo}" label="Filtro Código"/>
                         
-                        <p:spacer width="30"/>
+                        <p:spacer width="15"/>
                         
                         <p:outputLabel value="CPF: "/>
-                        <p:inputMask id="filtroCpf" value="#{controlePessoa.filtroCpf}" mask="999.999.999-99"/>
+                        <p:inputMask id="filtroCpf" value="#{controlePessoa.filtroCpf}" mask="999.999.999-99" label="Filtro CPF"/>
                         
-                        <p:spacer width="30"/>
+                        <p:spacer width="15"/>
                         
                         <p:outputLabel value="RG: "/>
-                        <p:inputText id="filtroRg" value="#{controlePessoa.filtroRg}"/>
+                        <p:inputText id="filtroRg" value="#{controlePessoa.filtroRg}" label="Filtro RG"/>
                         
                         <br></br><br></br>
                         
                         <p:outputLabel value="Tipo de Pessoa: "/>
-                        <p:selectOneMenu id="filtroTipo" value="#{controlePessoa.filtroTipo}">
+                        <p:selectOneMenu id="filtroTipo" value="#{controlePessoa.filtroTipo}" label="Filtro Tipo">
                             <f:selectItem itemLabel="" itemValue=""/>
                             <f:selectItem itemLabel="Balconista" itemValue="Balconista"/>
                             <f:selectItem itemLabel="Bibliotecário" itemValue="Bibliotecario"/>
@@ -48,13 +48,13 @@
                         <p:spacer width="30"/>
                         
                         <p:outputLabel value="Nome: "/>
-                        <p:inputText id="filtroNome" value="#{controlePessoa.filtroNome}"/>
+                        <p:inputText id="filtroNome" value="#{controlePessoa.filtroNome}" label="Filtro Nome"/>
                         
                         <br></br>
                         <h:commandButton value="Filtrar" action="#{controlePessoa.listarPessoas()}" class="btn btn-success"/>
                     </div>
                 </div>
-                <div class="panel panel-primary" style="width: 1300px">
+                <div class="panel panel-primary" style="width: 100%">
                     <div class="panel-heading"><h4>Pessoas</h4></div>
                     <div class="panel-body">
                         <p:dataTable value="#{controlePessoa.pessoas}" var="pessoa" id="tabelaAtt">

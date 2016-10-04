@@ -19,7 +19,7 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Pedro
+ * @author Igor
  */
 @ManagedBean(name = "loginController")
 @SessionScoped

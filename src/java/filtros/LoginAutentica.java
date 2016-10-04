@@ -24,7 +24,7 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Pedro
+ * @author Igor
  */
 @WebFilter(filterName = "LoginAutentica", urlPatterns = {"/seguranca/*"})
 public class LoginAutentica implements Filter {

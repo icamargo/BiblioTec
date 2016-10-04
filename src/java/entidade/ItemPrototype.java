@@ -1,5 +1,5 @@
 package entidade;
-//@author igor_
+//@author Igor
 
 import java.io.Serializable;
 import javax.persistence.Column;

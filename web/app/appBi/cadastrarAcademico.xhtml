@@ -23,34 +23,34 @@
                         <p:messages id="mensagens" autoUpdate="true" />
                         <h:panelGrid columns="2">
                             <p:outputLabel value="Nome: "/>
-                            <p:inputText id="nomeTxt" value="#{controleItem.academico.nome}" label="Nome"/>
+                            <p:inputText id="nomeTxt" value="#{controleItem.academico.nome}" label="Nome" required="true"/>
 
-                            <p:outputLabel value="Edicao: "/>
-                            <p:inputText id="edicaoTxt" value="#{controleItem.academico.edicao}"/>
+                            <p:outputLabel value="Edição: "/>
+                            <p:inputText id="edicaoTxt" value="#{controleItem.academico.edicao}" label="Edição"/>
 
                             <p:outputLabel value="Autor: "/>
-                            <p:inputText value="#{controleItem.academico.autor}"/>
+                            <p:inputText value="#{controleItem.academico.autor}" required="true" label="Autor"/>
 
                             <p:outputLabel value="Editora: "/>
                             <p:inputText id="editoraTxt" value="#{controleItem.academico.editora}" label="Editora"/>
 
                             <p:outputLabel value="Volume: "/>
-                            <p:inputText value="#{controleItem.academico.volume}"/>
+                            <p:inputText value="#{controleItem.academico.volume}" label="Volume"/>
 
-                            <p:outputLabel value="Ano Publicação: "/>
-                            <p:inputText value="#{controleItem.academico.anoPublicacao}"/>
+                            <p:outputLabel value="Ano de Publicação: "/>
+                            <p:inputText value="#{controleItem.academico.anoPublicacao}" label="Ano de Publicação" required="true"/>
 
                             <p:outputLabel value="Número de Páginas: "/>
-                            <p:inputText value="#{controleItem.academico.numPaginas}"/>
+                            <p:inputText value="#{controleItem.academico.numPaginas}" label="Número de Páginas" required="true"/>
 
                             <p:outputLabel value="Origem: "/>
-                            <p:inputText value="#{controleItem.academico.origem}"/>
+                            <p:inputText value="#{controleItem.academico.origem}" label="Origem"/>
 
-                            <p:outputLabel value="Valor multa dia Atraso: "/>
-                            <p:inputText value="#{controleItem.academico.valorMultaDiaAtraso}"/>
+                            <p:outputLabel value="Valor da multa por dia de atraso: "/>
+                            <p:inputText value="#{controleItem.academico.valorMultaDiaAtraso}" required="true" label="Valor da multa por dia de Atraso"/>
 
                             <p:outputLabel value="Modalidade: "/>
-                            <p:inputText value="#{controleItem.academico.modalidade}"/>
+                            <p:inputText value="#{controleItem.academico.modalidade}" required="true" label="Modalidade"/>
                             <br></br>
                         </h:panelGrid>
                         <h:commandButton value="Cadastrar" action="#{controleItem.adicionarAcademico}" class="btn btn-success"/>

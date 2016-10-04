@@ -18,7 +18,7 @@ import org.hibernate.criterion.Restrictions;
 import utils.HibernateUtil;
 /**
  *
- * @author Reserva
+ * @author Igor
  */
 public class ReservaDAO {
     private Session session;

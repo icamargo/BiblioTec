@@ -24,41 +24,44 @@
                         <p:messages id="mensagens" autoUpdate="true" />
                         <h:panelGrid columns="2">
                             <p:outputLabel value="Código: "/>
-                            <p:inputText value="#{controlePessoa.bibliotecario.codigo}" disabled="true"/>
+                            <p:inputText value="#{controlePessoa.bibliotecario.codigo}" disabled="true" label="Código"/>
                             
                             <p:outputLabel value="Ativo: "/>
-                            <p:inputText value="#{controlePessoa.bibliotecario.ativo}" disabled="true"/>
+                            <p:inputText value="#{controlePessoa.bibliotecario.ativo}" disabled="true" label="Ativo"/>
                             
                             <p:outputLabel value="Nome: "/>
                             <p:inputText id="nomeTxt" value="#{controlePessoa.bibliotecario.nome}" required="true" label="Nome"/>
                             
                             <p:outputLabel value="CPF: "/>
-                            <p:inputMask id="cpfTxt" value="#{controlePessoa.bibliotecario.cpf}" mask="999.999.999-99" required=" true" label="CPF"/>
+                            <p:inputMask id="cpfTxt" value="#{controlePessoa.bibliotecario.cpf}" mask="999.999.999-99" required="true" label="CPF"/>
                             
                             <p:outputLabel value="RG: "/>
-                            <p:inputText id="rgTxt" value="#{controlePessoa.bibliotecario.rg}"/>
+                            <p:inputText id="rgTxt" value="#{controlePessoa.bibliotecario.rg}" label="RG"/>
                             
                             <p:outputLabel value="Sexo: "/>
-                            <p:selectOneMenu value="#{controlePessoa.bibliotecario.sexo}">
+                            <p:selectOneMenu value="#{controlePessoa.bibliotecario.sexo}" label="Sexo">
                                 <f:selectItem itemLabel="Masculino" itemValue="masculino"/>
                                 <f:selectItem itemLabel="Feminino" itemValue="feminino"/>
                             </p:selectOneMenu>
                             
                             <p:outputLabel value="Endereço: "/>
-                            <p:inputText id="endereçoTxt" value="#{controlePessoa.bibliotecario.endereco}" required="true" label="Endereço"/>
+                            <p:inputText id="endereçoTxt" value="#{controlePessoa.bibliotecario.endereco}" label="Endereço"/>
                             
-                            <p:outputLabel value="Data de nascimento: "/>
-                            <p:inputMask id="dtNascTxt" value="#{controlePessoa.bibliotecario.dataNascimento}" mask="99/99/9999" required="true" label="Data"/>
+                            <p:outputLabel value="Data de Nascimento: "/>
+                            <p:inputMask id="dtNascTxt" value="#{controlePessoa.bibliotecario.dataNascimento}" mask="99/99/9999" label="Data de Nascimento"/>
                             
-                            <p:outputLabel value="Email "/>
-                            <p:inputText id="emailTxt" value="#{controlePessoa.bibliotecario.email}" required="true" label="Email"/>
+                            <p:outputLabel value="E-mail: "/>
+                            <p:inputText id="emailTxt" value="#{controlePessoa.bibliotecario.email}" required="true" label="E-mail"/>
                             
                             <p:outputLabel value="Telefone: "/>
                             <p:inputMask id="telefoneTxt" value="#{controlePessoa.bibliotecario.telefone}" mask="(99) 9999-9999" required="true" label="Telefone"/>
                             
                             <p:outputLabel value="Setor: "/>
-                            <p:inputText value="#{controlePessoa.bibliotecario.setor}"/>
-                            
+                            <p:selectOneMenu value="#{controlePessoa.bibliotecario.setor}" required="true" label="Setor">
+                                <f:selectItem itemLabel="Periódicos" itemValue="Periódicos"/>
+                                <f:selectItem itemLabel="Artigos Acadêmicos" itemValue="Acadêmicos"/>
+                                <f:selectItem itemLabel="Livros" itemValue="Livros"/>
+                            </p:selectOneMenu>
                             
                             <br></br>
                         </h:panelGrid>

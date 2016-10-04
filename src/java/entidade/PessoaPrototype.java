@@ -1,6 +1,6 @@
 /**
  *
- * @author Pedro
+ * @author Igor
  */
 package entidade;
 

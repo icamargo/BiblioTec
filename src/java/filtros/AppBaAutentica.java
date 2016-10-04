@@ -24,7 +24,7 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Pedro
+ * @author Igor
  */
 @WebFilter(filterName = "AppAutentica", urlPatterns = {"/app/appBa/*"})
 public class AppBaAutentica implements Filter {

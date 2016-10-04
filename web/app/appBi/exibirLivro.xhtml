@@ -5,67 +5,79 @@
       xmlns:p="http://primefaces.org/ui">
     <!--@autor Tatiane-->
     <h:head>
+        <meta charset="utf-8"></meta>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+        <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
         <title>Dados do Livro</title>
+        <link rel="icon" href="../../recursos/imagens/icon-livro.png"></link>
+        <link rel="stylesheet" href="../../recursos/css/bootstrap.min.css"></link>
+        <link rel="stylesheet" href="../../recursos/css/ie10-viewport-bug-workaround.css"></link>
     </h:head>
-    <h:body>
+    <h:body style="background-color: #C1C1C1">
         <center>
             <h:form>
-                <p:panel id="cadastro" header="Dados do Livro" style="margin-bottom: auto">
-                    <p:messages id="mensagens" showDetail="true" autoUpdate="true" />
-                    <h:panelGrid columns="2">
-                        <p:outputLabel value="Número de Catálogo"/>
-                        <p:inputText id="numCatalogo" value="#{controleItem.livro.numeroCatalogo}" disabled="true"/>
+                <div class="panel panel-primary" style="width: 100%;">
+                    <div class="panel-heading" align="center"><h3>Dados do Livro</h3></div>
+                    <div class="panel-body">
+                        <p:messages id="mensagens" showDetail="true" autoUpdate="true" />
+                        <h:panelGrid columns="2">
+                            <p:outputLabel value="Número de Catálogo"/>
+                            <p:inputText id="numCatalogo" value="#{controleItem.livro.numeroCatalogo}" disabled="true"/>
 
-                        <p:outputLabel value="Nome: "/>
-                        <p:inputText id="nomeTxt" value="#{controleItem.livro.nome}" required="true" label="Nome"/>
+                            <p:outputLabel value="Nome: "/>
+                            <p:inputText id="nomeTxt" value="#{controleItem.livro.nome}" required="true" label="Nome"/>
 
-                        <p:outputLabel value="Status: "/>
-                        <p:inputText id="statusTxt" value="#{controleItem.livro.status}" required="true" label="Status" disabled="true"/>
+                            <p:outputLabel value="Status: "/>
+                            <p:inputText id="statusTxt" value="#{controleItem.livro.status}" required="true" label="Status" disabled="true"/>
 
-                        <p:outputLabel value="Edicao: "/>
-                        <p:inputText id="edicaoTxt" value="#{controleItem.livro.edicao}"/>
+                            <p:outputLabel value="Edição: "/>
+                            <p:inputText id="edicaoTxt" value="#{controleItem.livro.edicao}" required="true" label="Edição"/>
 
-                        <p:outputLabel value="Autor: "/>
-                        <p:inputText value="#{controleItem.livro.autor}"/>
+                            <p:outputLabel value="Autor: "/>
+                            <p:inputText value="#{controleItem.livro.autor}" required="true" label="Autor"/>
 
-                        <p:outputLabel value="Editora: "/>
-                        <p:inputText id="editoraTxt" value="#{controleItem.livro.editora}" required="true" label="Editora"/>
+                            <p:outputLabel value="Editora: "/>
+                            <p:inputText id="editoraTxt" value="#{controleItem.livro.editora}" required="true" label="Editora"/>
 
-                        <p:outputLabel value="Volume: "/>
-                        <p:inputText value="#{controleItem.livro.volume}"/>
+                            <p:outputLabel value="Volume: "/>
+                            <p:inputText value="#{controleItem.livro.volume}" label="Volume"/>
 
-                        <p:outputLabel value="Ano Publicação: "/>
-                        <p:inputText value="#{controleItem.livro.anoPublicacao}"/>
+                            <p:outputLabel value="Ano de Publicação: "/>
+                            <p:inputText value="#{controleItem.livro.anoPublicacao}" label="Ano de Publicação"/>
 
-                        <p:outputLabel value="Número de Páginas: "/>
-                        <p:inputText value="#{controleItem.livro.numPaginas}"/>
+                            <p:outputLabel value="Número de Páginas: "/>
+                            <p:inputText value="#{controleItem.livro.numPaginas}" label="Número de Páginas"/>
 
-                        <p:outputLabel value="Origem: "/>
-                        <p:inputText value="#{controleItem.livro.origem}"/>
+                            <p:outputLabel value="Origem: "/>
+                            <p:inputText value="#{controleItem.livro.origem}" label="Origem" required="true"/>
 
-                        <p:outputLabel value="Valor multa dia Atraso: "/>
-                        <p:inputText value="#{controleItem.livro.valorMultaDiaAtraso}"/>
+                            <p:outputLabel value="Valor da multa por dia de atraso: "/>
+                            <p:inputText value="#{controleItem.livro.valorMultaDiaAtraso}" label="Valor da multa por dia de atraso" required="true"/>
 
-                        <p:outputLabel value="ISBN: "/>
-                        <p:inputText value="#{controleItem.livro.isbn}"/>
-                    </h:panelGrid>
-                    <h:panelGrid columns="2">
-                        <p:commandButton value="Ativar/Inativar" action="#{controleItem.inativarLivro}">
-                            <p:confirm header="Inativação" message="Confirma Inativação?" icon="ui-icon-alert"/>
-                        </p:commandButton>
+                            <p:outputLabel value="ISBN: "/>
+                            <p:inputText value="#{controleItem.livro.isbn}" label="ISBN" required="true"/>
+                            
+                            <br></br>
+                        </h:panelGrid>
+                            <p:commandButton value="Ativar/Inativar" action="#{controleItem.inativarLivro}" class="btn btn-warning">
+                                <p:confirm header="Inativação" message="Confirma Inativação?" icon="ui-icon-alert"/>
+                            </p:commandButton>
+                        
+                        <p:spacer width="30"/>
 
-                        <p:commandButton value="Atualizar" action="#{controleItem.atualizarLivro}">
-                            <p:confirm header="Atualização" message="Confirma Modificações?" icon="ui-icon-alert"/>
-                        </p:commandButton>
+                            <p:commandButton value="Atualizar" action="#{controleItem.atualizarLivro}" class="btn btn-success">
+                                <p:confirm header="Atualização" message="Confirma Modificações?" icon="ui-icon-alert"/>
+                            </p:commandButton>
+                        
+                        <p:spacer width="30"/>
 
-                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                            <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                            <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-                        </p:confirmDialog>
-                    </h:panelGrid>
-                </p:panel>
-                <br></br>
-                <a href="gerenciarItens.xhtml" class="btn btn-danger" onclick="return confirm('Se voltar os dados não serão salvos! Deseja continuar?')">Voltar</a>
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
+                        <a href="gerenciarItens.xhtml" class="btn btn-danger" onclick="return confirm('Se voltar os dados não serão salvos! Deseja continuar?')">Voltar</a>
+                    </div>
+                </div>
             </h:form>
         </center>
     </h:body>

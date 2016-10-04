@@ -27,25 +27,25 @@
                             <p:inputText id="nomeTxt" value="#{controlePessoa.usuario.nome}" required="true" label="Nome"/>
                             
                             <p:outputLabel value="CPF: "/>
-                            <p:inputMask id="cpfTxt" value="#{controlePessoa.usuario.cpf}" mask="999.999.999-99" required=" true" label="CPF"/>
+                            <p:inputMask id="cpfTxt" value="#{controlePessoa.usuario.cpf}" mask="999.999.999-99" required="true" label="CPF"/>
                             
                             <p:outputLabel value="RG: "/>
                             <p:inputText id="rgTxt" value="#{controlePessoa.usuario.rg}"/>
                             
                             <p:outputLabel value="Sexo: "/>
                             <p:selectOneMenu value="#{controlePessoa.usuario.sexo}">
-                                <f:selectItem itemLabel="Masculino" itemValue="masculino"/>
-                                <f:selectItem itemLabel="Feminino" itemValue="feminino"/>
+                                <f:selectItem itemLabel="Masculino" itemValue="Masculino"/>
+                                <f:selectItem itemLabel="Feminino" itemValue="Feminino"/>
                             </p:selectOneMenu>
                             
                             <p:outputLabel value="Endereço: "/>
-                            <p:inputText id="endereçoTxt" value="#{controlePessoa.usuario.endereco}" required="true" label="Endereço"/>
+                            <p:inputText id="endereçoTxt" value="#{controlePessoa.usuario.endereco}" label="Endereço"/>
                             
-                            <p:outputLabel value="Data de nascimento: "/>
-                            <p:inputMask id="dtNascTxt" value="#{controlePessoa.usuario.dataNascimento}" mask="99/99/9999" required="true" label="Data"/>
+                            <p:outputLabel value="Data de Nascimento: "/>
+                            <p:inputMask id="dtNascTxt" value="#{controlePessoa.usuario.dataNascimento}" mask="99/99/9999" label="Data de Nascimento"/>
                             
                             <p:outputLabel value="Email "/>
-                            <p:inputText id="emailTxt" value="#{controlePessoa.usuario.email}" required="true" label="Email"/>
+                            <p:inputText id="emailTxt" value="#{controlePessoa.usuario.email}" required="true" label="E-mail"/>
                             
                             <p:outputLabel value="Telefone: "/>
                             <p:inputMask id="telefoneTxt" value="#{controlePessoa.usuario.telefone}" mask="(99) 9999-9999" required="true" label="Telefone"/>
@@ -53,8 +53,8 @@
                             <p:outputLabel value="Senha: "/>
                             <p:password id="senha1" value="#{controlePessoa.usuario.senha}" match="senha2" label="Senha" required="true"/>
                             
-                            <p:outputLabel value="Confirmar senha: "/>
-                            <p:password id="senha2" value="#{controlePessoa.usuario.senha}" label="senha2" required="true"/>
+                            <p:outputLabel value="Confirmar Senha: "/>
+                            <p:password id="senha2" value="#{controlePessoa.usuario.senha}" label="Confirmar Senha" required="true"/>
                             
                             <br></br>
                         </h:panelGrid>

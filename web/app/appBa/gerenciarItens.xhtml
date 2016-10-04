@@ -48,7 +48,7 @@
                     </div>
                 </div>
 
-                <div class="panel panel-primary" style="width: 1300px">
+                <div class="panel panel-primary" style="width: 100%">
                     <div class="panel-heading"><h4>Itens</h4></div>
                     <div class="panel-body">
 
@@ -58,6 +58,12 @@
                                     Número de Catálogo
                                 </f:facet>
                                 <h:outputText value="#{item.numeroCatalogo}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    Tipo
+                                </f:facet>
+                                <h:outputText value="#{item.tipoItem}" />
                             </p:column>
                             <p:column>
                                 <f:facet name="header">
@@ -85,36 +91,6 @@
                             </p:column>
                             <p:column>
                                 <f:facet name="header">
-                                    Editora
-                                </f:facet>
-                                <h:outputText value="#{item.editora}"/>
-                            </p:column>
-                            <p:column>
-                                <f:facet name="header">
-                                    Volume
-                                </f:facet>
-                                <h:outputText value="#{item.volume}"/>
-                            </p:column>
-                            <p:column>
-                                <f:facet name="header">
-                                    Ano de Publicação
-                                </f:facet>
-                                <h:outputText value="#{item.anoPublicacao}"/>
-                            </p:column>
-                            <p:column>
-                                <f:facet name="header">
-                                    Número de Páginas
-                                </f:facet>
-                                <h:outputText value="#{item.numPaginas}"/>
-                            </p:column>
-                            <p:column>
-                                <f:facet name="header">
-                                    Origem
-                                </f:facet>
-                                <h:outputText value="#{item.origem}"/>
-                            </p:column>
-                            <p:column>
-                                <f:facet name="header">
                                     Valor Multa dia Atraso
                                 </f:facet>
                                 <h:outputText value="#{item.valorMultaDiaAtraso}"/>
@@ -124,7 +100,6 @@
                                     Ação
                                 </f:facet>
                                 <h:commandButton value="Exibir" action="#{controleItem.exibirItem(item)}" class="btn btn-info"/>
-                                <h:commandButton value="Solicitar Reserva" action="#{controleReserva.solicitarReserva(item)}" class="btn btn-info"/>
                             </p:column>
                         </p:dataTable>
                     </div>
