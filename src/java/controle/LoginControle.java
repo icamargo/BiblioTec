@@ -43,14 +43,14 @@ public class LoginControle implements Serializable{
                 HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
                 session.setAttribute("pessoa", usuario);
 
-                return "/app/appUser/interfaceUsuario?faces-redirect=true";
+                return "/AcessoAutenticado/AcessoUsuario/interfaceUsuario?faces-redirect=true";
             }
             else{
-                return "/seguranca/login?faces-redirect=true";
+                return "/AcessoLivre/login?faces-redirect=true";
             }
         }
         else{
-            return "/seguranca/login?faces-redirect=true";
+            return "/AcessoLivre/login?faces-redirect=true";
         }
     }
     
@@ -65,15 +65,15 @@ public class LoginControle implements Serializable{
                 HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
                 session.setAttribute("pessoa", bibliotecario);
 
-                return "/app/appBi/interfaceBibliotecario?faces-redirect=true";
+                return "/AcessoAutenticado/AcessoBibliotecario/interfaceBibliotecario?faces-redirect=true";
             }
             else{
-                return "/seguranca/login?faces-redirect=true";
+                return "/AcessoLivre/login?faces-redirect=true";
             }
         }
         else{
             System.out.println("saiu");
-            return "/seguranca/login?faces-redirect=true";
+            return "/AcessoLivre/login?faces-redirect=true";
         }
     }
     
@@ -87,20 +87,20 @@ public class LoginControle implements Serializable{
                 HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
                 session.setAttribute("pessoa", balconista);
 
-                return "/app/appBa/interfaceBalconista?faces-redirect=true";
+                return "/AcessoAutenticado/AcessoBalconista/interfaceBalconista?faces-redirect=true";
             }
             else{
-                return "/seguranca/login?faces-redirect=true";
+                return "/AcessoLivre/login?faces-redirect=true";
             }
         }
         else{
-            return "/seguranca/login?faces-redirect=true";
+            return "/AcessoLivre/login?faces-redirect=true";
         }
     }
     
     public void logout() throws IOException{
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-        FacesContext.getCurrentInstance().getExternalContext().redirect("seguranca/login.xhtml");
+        FacesContext.getCurrentInstance().getExternalContext().redirect("AcessoLivre/login.xhtml");
                 
     }
 

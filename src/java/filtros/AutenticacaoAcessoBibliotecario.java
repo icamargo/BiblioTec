@@ -25,8 +25,8 @@ import javax.servlet.http.HttpSession;
  *
  * @author Igor
  */
-@WebFilter(filterName = "AppBiAutentica", urlPatterns = {"/app/appBi/*"})
-public class AppBiAutentica implements Filter {
+@WebFilter(filterName = "AutenticacaoAcessoBibliotecario", urlPatterns = {"/AcessoAutenticado/AcessoBibliotecario/*"})
+public class AutenticacaoAcessoBibliotecario implements Filter {
     
     private static final boolean debug = true;
 
@@ -35,7 +35,7 @@ public class AppBiAutentica implements Filter {
     // configured. 
     private FilterConfig filterConfig = null;
     
-    public AppBiAutentica() {
+    public AutenticacaoAcessoBibliotecario() {
     }    
     
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
@@ -61,16 +61,16 @@ public class AppBiAutentica implements Filter {
         
         
         if(pessoa == null){
-            res.sendRedirect(req.getContextPath() + "/seguranca/login.xhtml");
+            res.sendRedirect(req.getContextPath() + "/AcessoLivre/login.xhtml");
         }
         else if(pessoa.getTipoPessoa().equals("Usuario")){
-            res.sendRedirect(req.getContextPath() + "/app/appUser/interfaceUsuario.xhtml");
+            res.sendRedirect(req.getContextPath() + "/AcessoAutenticado/AcessoUsuario/interfaceUsuario.xhtml");
         }
         else if(pessoa.getTipoPessoa().equals("Bibliotecario")){
             chain.doFilter(request, response);
         }
         else if(pessoa.getTipoPessoa().equals("Balconista")){
-            res.sendRedirect(req.getContextPath() + "/app/appBa/interfaceBalconista.xhtml");
+            res.sendRedirect(req.getContextPath() + "/AcessoAutenticado/AcessoBalconista/interfaceBalconista.xhtml");
         }
     }
 
@@ -103,7 +103,7 @@ public class AppBiAutentica implements Filter {
         this.filterConfig = filterConfig;
         if (filterConfig != null) {
             if (debug) {                
-                log("AppBiAutentica:Initializing filter");
+                log("AutenticacaoAcessoBibliotecario:Initializing filter");
             }
         }
     }
@@ -114,9 +114,9 @@ public class AppBiAutentica implements Filter {
     @Override
     public String toString() {
         if (filterConfig == null) {
-            return ("AppBiAutentica()");
+            return ("AutenticacaoAcessoBibliotecario()");
         }
-        StringBuffer sb = new StringBuffer("AppBiAutentica(");
+        StringBuffer sb = new StringBuffer("AutenticacaoAcessoBibliotecario(");
         sb.append(filterConfig);
         sb.append(")");
         return (sb.toString());

@@ -25,8 +25,8 @@ import javax.servlet.http.HttpSession;
  *
  * @author Igor
  */
-@WebFilter(filterName = "appUserAutentica", urlPatterns = {"/app/appUser/*"})
-public class appUserAutentica implements Filter {
+@WebFilter(filterName = "AutenticacaoAcessoUsuario", urlPatterns = {"/AcessoAutenticado/AcessoUsuario/*"})
+public class AutenticacaoAcessoUsuario implements Filter {
     
     private static final boolean debug = true;
 
@@ -35,7 +35,7 @@ public class appUserAutentica implements Filter {
     // configured. 
     private FilterConfig filterConfig = null;
     
-    public appUserAutentica() {
+    public AutenticacaoAcessoUsuario() {
     }    
     
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
@@ -62,16 +62,16 @@ public class appUserAutentica implements Filter {
         
         
         if(pessoa == null){
-            res.sendRedirect(req.getContextPath() + "/seguranca/login.xhtml");
+            res.sendRedirect(req.getContextPath() + "/AcessoLivre/login.xhtml");
         }
         else if(pessoa.getTipoPessoa().equals("Usuario")){
             chain.doFilter(request, response);
         }
         else if(pessoa.getTipoPessoa().equals("Bibliotecario")){
-            res.sendRedirect(req.getContextPath() + "/app/appBi/interfaceBibliotecario.xhtml");
+            res.sendRedirect(req.getContextPath() + "/AcessoAutenticado/AcessoBibliotecario/interfaceBibliotecario.xhtml");
         }
         else if(pessoa.getTipoPessoa().equals("Balconista")){
-            res.sendRedirect(req.getContextPath() + "/app/appBa/interfaceBalconista.xhtml");
+            res.sendRedirect(req.getContextPath() + "/AcessoAutenticado/AcessoBalconista/interfaceBalconista.xhtml");
         }
     }
 
@@ -104,7 +104,7 @@ public class appUserAutentica implements Filter {
         this.filterConfig = filterConfig;
         if (filterConfig != null) {
             if (debug) {                
-                log("appUserAutentica:Initializing filter");
+                log("AutenticacaoAcessoUsuario:Initializing filter");
             }
         }
     }
@@ -115,9 +115,9 @@ public class appUserAutentica implements Filter {
     @Override
     public String toString() {
         if (filterConfig == null) {
-            return ("appUserAutentica()");
+            return ("AutenticacaoAcessoUsuario()");
         }
-        StringBuffer sb = new StringBuffer("appUserAutentica(");
+        StringBuffer sb = new StringBuffer("AutenticacaoAcessoUsuario(");
         sb.append(filterConfig);
         sb.append(")");
         return (sb.toString());

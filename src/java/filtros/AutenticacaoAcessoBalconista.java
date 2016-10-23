@@ -26,14 +26,14 @@ import javax.servlet.http.HttpSession;
  *
  * @author Igor
  */
-@WebFilter(filterName = "AppAutentica", urlPatterns = {"/app/appBa/*"})
-public class AppBaAutentica implements Filter {
+@WebFilter(filterName = "AutenticacaoAcessoBalconista", urlPatterns = {"/AcessoAutenticado/AcessoBalconista/*"})
+public class AutenticacaoAcessoBalconista implements Filter {
     
     private static final boolean debug = true;
 
     private FilterConfig filterConfig = null;
     
-    public AppBaAutentica() {
+    public AutenticacaoAcessoBalconista() {
     }    
     
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
@@ -60,13 +60,13 @@ public class AppBaAutentica implements Filter {
         
         
         if(pessoa == null){
-            res.sendRedirect(req.getContextPath() + "/seguranca/login.xhtml");
+            res.sendRedirect(req.getContextPath() + "/AcessoLivre/login.xhtml");
         }
         else if(pessoa.getTipoPessoa().equals("Usuario")){
-            res.sendRedirect(req.getContextPath() + "/app/appUser/interfaceUsuario.xhtml");
+            res.sendRedirect(req.getContextPath() + "/AcessoAutenticado/AcessoUsuario/interfaceUsuario.xhtml");
         }
         else if(pessoa.getTipoPessoa().equals("Bibliotecario")){
-            res.sendRedirect(req.getContextPath() + "/app/appBi/interfaceBibliotecario.xhtml");
+            res.sendRedirect(req.getContextPath() + "/AcessoAutenticado/AcessoBibliotecario/interfaceBibliotecario.xhtml");
         }
         else if(pessoa.getTipoPessoa().equals("Balconista")){
             chain.doFilter(request, response);
@@ -102,7 +102,7 @@ public class AppBaAutentica implements Filter {
         this.filterConfig = filterConfig;
         if (filterConfig != null) {
             if (debug) {                
-                log("AppAutentica:Initializing filter");
+                log("AutenticacaoAcessoBalconista:Initializing filter");
             }
         }
     }
@@ -113,9 +113,9 @@ public class AppBaAutentica implements Filter {
     @Override
     public String toString() {
         if (filterConfig == null) {
-            return ("AppAutentica()");
+            return ("AutenticacaoAcessoBalconista()");
         }
-        StringBuffer sb = new StringBuffer("AppAutentica(");
+        StringBuffer sb = new StringBuffer("AutenticacaoAcessoBalconista(");
         sb.append(filterConfig);
         sb.append(")");
         return (sb.toString());
