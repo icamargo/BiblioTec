@@ -12,6 +12,7 @@
     <mapping class="entidade.LivroPrototype"/>
     <mapping class="entidade.AcademicoPrototype"/>
     <mapping class="entidade.PeriodicoPrototype"/>
+    <mapping class="entidade.PessoaPrototype"/>
     <mapping class="entidade.BalconistaPrototype"/>
     <mapping class="entidade.BibliotecarioPrototype"/>
     <mapping class="entidade.UsuarioPrototype"/>

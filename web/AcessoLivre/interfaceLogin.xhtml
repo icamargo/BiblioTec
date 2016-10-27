@@ -35,15 +35,15 @@
                                             <h:form>
                                                 <p:growl autoUpdate="true"/>
                                                 <div class="col s12 input-field">
-                                                    <h:inputText id="email" value="#{loginController.usuario.email}" required="true" requiredMessage="É necessario o E-mail"/>
+                                                    <h:inputText id="email" value="#{controleLogin.email}" required="true" requiredMessage="É necessario o E-mail"/>
                                                     <h:outputLabel for="email" value="Email"/>
                                                 </div>
                                                 <div class="col s12 input-field">
-                                                    <h:inputSecret id="senha" value="#{loginController.usuario.senha}" required="true" requiredMessage="É necessario a Senha"/>
+                                                    <h:inputSecret id="senha" value="#{controleLogin.senha}" required="true" requiredMessage="É necessario a Senha"/>
                                                     <h:outputLabel for="senha" value="Senha"/>
                                                 </div>
                                                 <div class="col s12 input-field" align="center">
-                                                    <h:commandButton value="Login"  styleClass="btn btn-large" action="#{loginController.logarU}"/>                               
+                                                    <h:commandButton value="Login"  styleClass="btn btn-large" action="#{controleLogin.autenticarAcesso}"/>                               
                                                 </div>
                                                 <div class="col s12 input-field" align="center">         
                                                     <a href="AcessoLivre/cadastrarUsuario.xhtml">Cadastrar Usuário</a>

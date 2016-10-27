@@ -49,10 +49,10 @@
             </nav>
 
             <div class="jumbotron">
-                <h1>Bem vindo #{loginController.bibliotecario.nome}, suas notificações</h1>
+                <h1>Bem vindo #{controleLogin.bibliotecario.nome}, suas notificações</h1>
             </div>
             <h:form>
-                <p:commandButton action="#{loginController.logout()}" value="Sair" class="btn btn-primary"/>
+                <p:commandButton action="#{controleLogin.logout()}" value="Sair" class="btn btn-primary"/>
             </h:form>
         </div>
 

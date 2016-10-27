@@ -52,57 +52,6 @@ public class PessoaDAO {
         session.close();
     }
     
-    public UsuarioPrototype buscarUsuario(UsuarioPrototype usuario) {
-        //session = HibernateUtil.getSessionFactory().openSession();
-        try{
-            session = HibernateUtil.getSessionFactory().getCurrentSession();
-        }catch(HibernateException e){
-            session = HibernateUtil.getSessionFactory().openSession(); 
-        }
-        UsuarioPrototype usuarioAux = null;
-        String sql = "select u from UsuarioPrototype u where email=:em and senha=:pass";
-        Query query = session.createQuery(sql);
-        query.setString("em", usuario.getEmail());
-        query.setString("pass", usuario.getSenha());
-        usuarioAux = (UsuarioPrototype) query.uniqueResult();
-        session.close();
-        return usuarioAux;
-    }
-    
-    public BalconistaPrototype buscarBa(BalconistaPrototype balconista) {
-        //session = HibernateUtil.getSessionFactory().openSession();
-        try{
-            session = HibernateUtil.getSessionFactory().getCurrentSession();
-        }catch(HibernateException e){
-            session = HibernateUtil.getSessionFactory().openSession(); 
-        }
-        BalconistaPrototype balconistaAux = null;
-        String sql = "select u from BalconistaPrototype u where email=:em and senha=:pass";
-        Query query = session.createQuery(sql);
-        query.setString("em", balconista.getEmail());
-        query.setString("pass", balconista.getSenha());
-        balconistaAux = (BalconistaPrototype) query.uniqueResult();
-        session.close();
-        return balconistaAux;
-    }
-    
-    public BibliotecarioPrototype buscarBi(BibliotecarioPrototype bi) {
-        //session = HibernateUtil.getSessionFactory().openSession();
-        try{
-            session = HibernateUtil.getSessionFactory().getCurrentSession();
-        }catch(HibernateException e){
-            session = HibernateUtil.getSessionFactory().openSession(); 
-        }
-        BibliotecarioPrototype bibliotecarioAux = null;
-        String sql = "select u from BibliotecarioPrototype u where email=:em and senha=:pass";
-        Query query = session.createQuery(sql);
-        query.setString("em", bi.getEmail());
-        query.setString("pass", bi.getSenha());
-        bibliotecarioAux = (BibliotecarioPrototype) query.uniqueResult();
-        session.close();
-        return bibliotecarioAux;
-    }
-    
     public List<PessoaPrototype> getPessoaPorCodigo(int vlrFiltroCodigo){
         this.preparaSessao();
         Criteria cri = session.createCriteria(PessoaPrototype.class);
@@ -197,6 +146,77 @@ public class PessoaDAO {
         
         trans.commit();
         session.close();
+        return usuario;
+    }
+    
+    public String getPerfilAcesso(String email, String senha){
+        String perfil;
+        
+        this.preparaSessao();
+        
+        String sql = "SELECT tipoPessoa FROM PessoaPrototype WHERE email =:email AND senha =:senha";
+        Query consulta = session.createQuery(sql);
+        consulta.setString("email", email);
+        consulta.setString("senha", senha);
+        perfil = (String) consulta.uniqueResult();
+        
+        trans.commit();
+        session.close();
+       
+        return perfil;        
+    }
+    
+    public BalconistaPrototype buscarBalconista(String email){
+        this.preparaSessao();
+        
+        BalconistaPrototype balconista = null;
+        
+        Criteria cri = session.createCriteria(BalconistaPrototype.class);
+        
+        cri.add(Restrictions.eq("email", email));
+        cri.setMaxResults(1);
+        
+        balconista = (BalconistaPrototype) cri.uniqueResult();
+        
+        trans.commit();
+        session.close();
+        
+        return balconista;
+    }
+    
+    public BibliotecarioPrototype buscarBibliotecario(String email){
+        this.preparaSessao();
+        
+        BibliotecarioPrototype bibliotecario = null;
+        
+        Criteria cri = session.createCriteria(BibliotecarioPrototype.class);
+        
+        cri.add(Restrictions.eq("email", email));
+        cri.setMaxResults(1);
+        
+        bibliotecario = (BibliotecarioPrototype) cri.uniqueResult();
+        
+        trans.commit();
+        session.close();
+        
+        return bibliotecario;
+    }
+    
+    public UsuarioPrototype buscarUsuario(String email){
+        this.preparaSessao();
+        
+        UsuarioPrototype usuario = null;
+        
+        Criteria cri = session.createCriteria(UsuarioPrototype.class);
+        
+        cri.add(Restrictions.eq("email", email));
+        cri.setMaxResults(1);
+        
+        usuario = (UsuarioPrototype) cri.uniqueResult();
+        
+        trans.commit();
+        session.close();
+        
         return usuario;
     }
 }

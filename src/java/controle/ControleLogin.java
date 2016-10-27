@@ -1,86 +1,66 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controle;
 
 import DAO.PessoaDAO;
 import entidade.BalconistaPrototype;
 import entidade.BibliotecarioPrototype;
-import entidade.PessoaPrototype;
 import entidade.UsuarioPrototype;
 import java.io.IOException;
 import java.io.Serializable;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
-
 /**
  *
  * @author Igor
  */
-@ManagedBean(name = "loginController")
+@ManagedBean(name = "controleLogin")
 @SessionScoped
-public class LoginControle implements Serializable{
+public class ControleLogin implements Serializable{
+    
+    private String email;
+    private String senha;
+    private String perfil;
+    
+    private ControlePessoa controlePessoa;
     
     private UsuarioPrototype usuario;
     private BalconistaPrototype balconista;
     private BibliotecarioPrototype bibliotecario;
     private PessoaDAO pessoaDAO;
     
-    public LoginControle(){
+    public ControleLogin(){
     }
     
-    public String logarU(){
+    public String autenticarAcesso(){
+        controlePessoa = new ControlePessoa();
         
-        pessoaDAO = new PessoaDAO();
-        usuario = pessoaDAO.buscarUsuario(usuario);
-            
-        if(usuario != null){
-            if(usuario.isAtivo()){
-                HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-                session.setAttribute("pessoa", usuario);
+        perfil = controlePessoa.buscarPefilAcesso(email, senha);
+        if (perfil != null) {
+            switch (perfil) {
+                case "Balconista":
+                    return this.autenticarBalconista();
 
-                return "/AcessoAutenticado/AcessoUsuario/interfaceUsuario?faces-redirect=true";
-            }
-            else{
-                return "/AcessoLivre/login?faces-redirect=true";
-            }
-        }
-        else{
-            return "/AcessoLivre/login?faces-redirect=true";
-        }
-    }
-    
-    public String logarBi(){
-        
-        pessoaDAO = new PessoaDAO();
-        bibliotecario = pessoaDAO.buscarBi(bibliotecario);
-        
-        if(bibliotecario != null){
-            System.out.println("entro");
-            if(bibliotecario.isAtivo()){
-                HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-                session.setAttribute("pessoa", bibliotecario);
+                case "Bibliotecario":
+                    return this.autenticarBibliotecario();
 
-                return "/AcessoAutenticado/AcessoBibliotecario/interfaceBibliotecario?faces-redirect=true";
+                case "Usuario":
+                    return this.autenticarUsuario();
             }
-            else{
-                return "/AcessoLivre/login?faces-redirect=true";
-            }
+            return null;
         }
-        else{
-            System.out.println("saiu");
-            return "/AcessoLivre/login?faces-redirect=true";
-        }
+        else 
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("E-mail/Senha não encontrado!"));
+        return null;
     }
     
-    public String logarBa(){
-        
+    public String autenticarBalconista(){
         pessoaDAO = new PessoaDAO();
-        balconista = pessoaDAO.buscarBa(balconista);
+        
+        balconista = new BalconistaPrototype();
+        
+        balconista = pessoaDAO.buscarBalconista(email);
         
         if(balconista != null){
             if(balconista.isAtivo()){
@@ -98,10 +78,55 @@ public class LoginControle implements Serializable{
         }
     }
     
+    public String autenticarBibliotecario(){
+        pessoaDAO = new PessoaDAO();
+        
+        bibliotecario = new BibliotecarioPrototype();
+        
+        bibliotecario = pessoaDAO.buscarBibliotecario(email);
+        
+        if(bibliotecario != null){
+            if(bibliotecario.isAtivo()){
+                HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+                session.setAttribute("pessoa", bibliotecario);
+
+                return "/AcessoAutenticado/AcessoBibliotecario/interfaceBibliotecario?faces-redirect=true";
+            }
+            else{
+                return "/AcessoLivre/login?faces-redirect=true";
+            }
+        }
+        else{
+            return "/AcessoLivre/login?faces-redirect=true";
+        }
+    }
+    
+    public String autenticarUsuario(){
+        pessoaDAO = new PessoaDAO();
+        
+        usuario = new UsuarioPrototype();
+        
+        usuario = pessoaDAO.buscarUsuario(email);
+            
+        if(usuario != null){
+            if(usuario.isAtivo()){
+                HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+                session.setAttribute("pessoa", usuario);
+
+                return "/AcessoAutenticado/AcessoUsuario/interfaceUsuario?faces-redirect=true";
+            }
+            else{
+                return "/AcessoLivre/login?faces-redirect=true";
+            }
+        }
+        else{
+            return "/AcessoLivre/login?faces-redirect=true";
+        }
+    }
+    
     public void logout() throws IOException{
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-        FacesContext.getCurrentInstance().getExternalContext().redirect("AcessoLivre/login.xhtml");
-                
+        FacesContext.getCurrentInstance().getExternalContext().redirect("AcessoLivre/interfaceLogin.xhtml");            
     }
 
     public UsuarioPrototype getUsuario() {
@@ -135,5 +160,29 @@ public class LoginControle implements Serializable{
 
     public void setBibliotecario(BibliotecarioPrototype bibliotecario) {
         this.bibliotecario = bibliotecario;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
+    public String getPerfil() {
+        return perfil;
+    }
+
+    public void setPerfil(String perfil) {
+        this.perfil = perfil;
     }
 }

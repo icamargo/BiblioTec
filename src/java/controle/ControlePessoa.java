@@ -182,6 +182,13 @@ public class ControlePessoa {
         return "gerenciarPessoas?faces-redirect=true";
     }
     
+    public String buscarPefilAcesso(String email, String senha){
+        String perfil;
+        
+        perfil = pessoaDAO.getPerfilAcesso(email, senha);
+        
+        return perfil;
+    }
     
 
     public UsuarioPrototype getUsuario() {

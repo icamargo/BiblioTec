@@ -61,7 +61,7 @@ public class AutenticacaoAcessoBibliotecario implements Filter {
         
         
         if(pessoa == null){
-            res.sendRedirect(req.getContextPath() + "/AcessoLivre/login.xhtml");
+            res.sendRedirect(req.getContextPath() + "/AcessoLivre/interfaceLogin.xhtml");
         }
         else if(pessoa.getTipoPessoa().equals("Usuario")){
             res.sendRedirect(req.getContextPath() + "/AcessoAutenticado/AcessoUsuario/interfaceUsuario.xhtml");
