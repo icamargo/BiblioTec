@@ -1,6 +1,7 @@
 package controle;
 
 import DAO.PessoaDAO;
+import entidade.Administrador;
 import entidade.BalconistaPrototype;
 import entidade.BibliotecarioPrototype;
 import entidade.UsuarioPrototype;
@@ -28,30 +29,42 @@ public class ControleLogin implements Serializable{
     private UsuarioPrototype usuario;
     private BalconistaPrototype balconista;
     private BibliotecarioPrototype bibliotecario;
+    private Administrador administrador;
     private PessoaDAO pessoaDAO;
     
     public ControleLogin(){
     }
     
-    public String autenticarAcesso(){
+    public String autenticarAcesso() throws IOException{
         controlePessoa = new ControlePessoa();
-        
-        perfil = controlePessoa.buscarPefilAcesso(email, senha);
-        if (perfil != null) {
-            switch (perfil) {
-                case "Balconista":
-                    return this.autenticarBalconista();
 
-                case "Bibliotecario":
-                    return this.autenticarBibliotecario();
+        if (!(email.equals("Administrador"))) {
+            try {
+                perfil = controlePessoa.buscarPefilAcesso(email, senha);
 
-                case "Usuario":
-                    return this.autenticarUsuario();
+                switch (perfil) {
+                    case "Balconista":
+                        return this.autenticarBalconista();
+
+                    case "Bibliotecario":
+                        return this.autenticarBibliotecario();
+
+                    case "Usuario":
+                        return this.autenticarUsuario();
+                }
+                return null;
+            } catch (NullPointerException e) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("E-mail/Senha não encontrado!"));
             }
-            return null;
         }
-        else 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("E-mail/Senha não encontrado!"));
+        else{
+            if (senha.equals("BiblioTec")){
+                return this.autenticarAdministrador();
+            }
+            else{
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Senha Incorreta!"));
+            }
+        }
         return null;
     }
     
@@ -124,6 +137,23 @@ public class ControleLogin implements Serializable{
         }
     }
     
+    public String autenticarAdministrador() throws IOException{
+        pessoaDAO = new PessoaDAO();
+        
+        administrador = pessoaDAO.buscarAdm(email);
+        
+        if(administrador == null){
+            administrador = new Administrador();
+            pessoaDAO.add(administrador);
+            administrador = pessoaDAO.buscarAdm(email);
+        }
+        
+        HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+        session.setAttribute("pessoa", administrador);
+
+        return "/AcessoAutenticado/AcessoAdministrador/interfaceAdministrador?faces-redirect=true";
+    }
+    
     public void logout() throws IOException{
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
         FacesContext.getCurrentInstance().getExternalContext().redirect("AcessoLivre/interfaceLogin.xhtml");            
@@ -184,5 +214,13 @@ public class ControleLogin implements Serializable{
 
     public void setPerfil(String perfil) {
         this.perfil = perfil;
+    }
+
+    public Administrador getAdministrador() {
+        return administrador;
+    }
+
+    public void setAdministrador(Administrador administrador) {
+        this.administrador = administrador;
     }
 }

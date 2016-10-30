@@ -73,6 +73,9 @@ public class AutenticacaoAcessoUsuario implements Filter {
         else if(pessoa.getTipoPessoa().equals("Balconista")){
             res.sendRedirect(req.getContextPath() + "/AcessoAutenticado/AcessoBalconista/interfaceBalconista.xhtml");
         }
+        else if(pessoa.getTipoPessoa().equals("Administrador")){
+            res.sendRedirect(req.getContextPath() + "/AcessoAutenticado/AcessoAdministrador/interfaceAdministrador.xhtml");
+        }
     }
 
     /**

@@ -26,14 +26,14 @@ import javax.servlet.http.HttpSession;
  *
  * @author Igor
  */
-@WebFilter(filterName = "AutenticacaoAcessoBalconista", urlPatterns = {"/AcessoAutenticado/AcessoBalconista/*"})
-public class AutenticacaoAcessoBalconista implements Filter {
+@WebFilter(filterName = "AutenticacaoAcessoAdministrador", urlPatterns = {"/AcessoAutenticado/AcessoAdministrador/*"})
+public class AutenticacaoAcessoAdministrador implements Filter {
     
     private static final boolean debug = true;
 
     private FilterConfig filterConfig = null;
     
-    public AutenticacaoAcessoBalconista() {
+    public AutenticacaoAcessoAdministrador() {
     }    
     
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
@@ -69,10 +69,10 @@ public class AutenticacaoAcessoBalconista implements Filter {
             res.sendRedirect(req.getContextPath() + "/AcessoAutenticado/AcessoBibliotecario/interfaceBibliotecario.xhtml");
         }
         else if(pessoa.getTipoPessoa().equals("Balconista")){
-            chain.doFilter(request, response);
+            res.sendRedirect(req.getContextPath() + "/AcessoAutenticado/AcessoBalconista/interfaceBalconista.xhtml");
         }
         else if(pessoa.getTipoPessoa().equals("Administrador")){
-            res.sendRedirect(req.getContextPath() + "/AcessoAutenticado/AcessoAdministrador/interfaceAdministrador.xhtml");
+            chain.doFilter(request, response);
         }
     }
 
@@ -105,7 +105,7 @@ public class AutenticacaoAcessoBalconista implements Filter {
         this.filterConfig = filterConfig;
         if (filterConfig != null) {
             if (debug) {                
-                log("AutenticacaoAcessoBalconista:Initializing filter");
+                log("AutenticacaoAcessoAdministrador:Initializing filter");
             }
         }
     }
@@ -116,9 +116,9 @@ public class AutenticacaoAcessoBalconista implements Filter {
     @Override
     public String toString() {
         if (filterConfig == null) {
-            return ("AutenticacaoAcessoBalconista()");
+            return ("AutenticacaoAcessoAdministrador()");
         }
-        StringBuffer sb = new StringBuffer("AutenticacaoAcessoBalconista(");
+        StringBuffer sb = new StringBuffer("AutenticacaoAcessoAdministrador(");
         sb.append(filterConfig);
         sb.append(")");
         return (sb.toString());

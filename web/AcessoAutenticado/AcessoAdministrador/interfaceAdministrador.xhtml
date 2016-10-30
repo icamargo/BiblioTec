@@ -31,18 +31,25 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="interfaceBalconista.xhtml">Home</a>
+                        <a class="navbar-brand" href="interfaceAdministrador.xhtml">Home</a>
                     </div>
                     <div id="navbar" class="navbar-collapse collapse">
                         <ul class="nav navbar-nav">
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Cadastrar<span class="caret"></span></a>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Cadastrar Pessoas<span class="caret"></span></a>
                                 <ul class="dropdown-menu">
+                                    <li><a href="cadastrarBalconista.xhtml">Cadastrar Balconista</a></li>
+                                    <li><a href="cadastrarBibliotecario.xhtml">Cadastrar Bibliotecário</a></li>
                                     <li><a href="cadastrarUsuario.xhtml">Cadastrar Usuário</a></li>
                                 </ul>
                             </li>
-                            <li class="dropdown"><a href="gerenciarPessoas.xhtml">Gerenciar Pessoas</a></li>
-                            <li class="dropdown"><a href="gerenciarItens.xhtml">Consultar Acervo</a></li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Consultas<span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="gerenciarPessoas.xhtml">Consultar Pessoas</a></li>
+                                    <li><a href="gerenciarItens.xhtml">Consultar Acervo</a></li>
+                                </ul>
+                            </li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Empréstimos<span class="caret"></span></a>
                                 <ul class="dropdown-menu">
@@ -56,7 +63,7 @@
             </nav>
 
             <div class="jumbotron">
-                <h1>Bem vindo #{controleLogin.balconista.nome}, suas notificações</h1>
+                <h1>Bem vindo #{controleLogin.administrador.nome}, suas notificações</h1>
             </div>
             <h:form>
                 <p:commandButton value="Sair" action="#{controleLogin.logout()}" class="btn btn-primary"/>

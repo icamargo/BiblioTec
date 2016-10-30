@@ -51,7 +51,7 @@ public class ControlePessoa {
         usuarioNovo = usuario;
         pessoaDAO.addSemLogin(usuarioNovo);
         usuario = new UsuarioPrototype();
-        return "login?faces-redirect=true";
+        return "interfaceLogin?faces-redirect=true";
     }
     
     public String adicionarBalconista() throws IOException{

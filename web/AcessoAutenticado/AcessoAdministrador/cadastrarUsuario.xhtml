@@ -4,12 +4,12 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
-    <!--@autor Tatiane-->     
+    <!--@autor Tatiane-->
     <h:head>
         <meta charset="utf-8"></meta>
         <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
         <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
-        <title>Cadastro de Balconista</title>
+        <title>Cadastro de Usuário</title>
         <link rel="icon" href="../../recursos/imagens/icon-livro.png"></link>
         <link rel="stylesheet" href="../../recursos/css/bootstrap.min.css"></link>
         <link rel="stylesheet" href="../../recursos/css/ie10-viewport-bug-workaround.css"></link>
@@ -19,57 +19,50 @@
         <center>
             <h:form >
                 <div class="panel panel-primary" style="width: 100%;">
-                    <div class="panel-heading" align="center"><h3>Cadastro de Balconista</h3></div>
+                    <div class="panel-heading" align="center"><h3>Cadastro de Usuário</h3></div>
                     <div class="panel-body">
                         <p:messages id="mensagens" autoUpdate="true" />
                         <h:panelGrid columns="2">
                             <p:outputLabel value="Nome: "/>
-                            <p:inputText id="nomeTxt" value="#{controlePessoa.balconista.nome}" required="true" label="Nome"/>
+                            <p:inputText id="nomeTxt" value="#{controlePessoa.usuario.nome}" required="true" label="Nome"/>
                             
                             <p:outputLabel value="CPF: "/>
-                            <p:inputMask id="cpfTxt" value="#{controlePessoa.balconista.cpf}" mask="999.999.999-99" required="true" label="CPF"/>
+                            <p:inputMask id="cpfTxt" value="#{controlePessoa.usuario.cpf}" mask="999.999.999-99" required="true" label="CPF"/>
                             
                             <p:outputLabel value="RG: "/>
-                            <p:inputText id="rgTxt" value="#{controlePessoa.balconista.rg}"/>
+                            <p:inputText id="rgTxt" value="#{controlePessoa.usuario.rg}"/>
                             
                             <p:outputLabel value="Sexo: "/>
-                            <p:selectOneMenu value="#{controlePessoa.balconista.sexo}">
+                            <p:selectOneMenu value="#{controlePessoa.usuario.sexo}">
                                 <f:selectItem itemLabel="Masculino" itemValue="Masculino"/>
                                 <f:selectItem itemLabel="Feminino" itemValue="Feminino"/>
                             </p:selectOneMenu>
                             
                             <p:outputLabel value="Endereço: "/>
-                            <p:inputText id="endereçoTxt" value="#{controlePessoa.balconista.endereco}" label="Endereço"/>
+                            <p:inputText id="endereçoTxt" value="#{controlePessoa.usuario.endereco}" label="Endereço"/>
                             
                             <p:outputLabel value="Data de Nascimento: "/>
-                            <p:inputMask id="dtNascTxt" value="#{controlePessoa.balconista.dataNascimento}" mask="99/99/9999" label="Data de Nascimento"/>
+                            <p:inputMask id="dtNascTxt" value="#{controlePessoa.usuario.dataNascimento}" mask="99/99/9999" label="Data de Nascimento"/>
                             
-                            <p:outputLabel value="E-mail "/>
-                            <p:inputText id="emailTxt" value="#{controlePessoa.balconista.email}" required="true" label="E-mail"/>
+                            <p:outputLabel value="Email "/>
+                            <p:inputText id="emailTxt" value="#{controlePessoa.usuario.email}" required="true" label="E-mail"/>
                             
                             <p:outputLabel value="Telefone: "/>
-                            <p:inputMask id="telefoneTxt" value="#{controlePessoa.balconista.telefone}" mask="(99) 9999-9999" required="true" label="Telefone"/>
-                            
-                            <p:outputLabel value="Turno de Trabalho "/>
-                            <p:selectOneMenu value="#{controlePessoa.balconista.turnoTrabalho}" required="true" label="Turno de Trabalho">
-                                <f:selectItem itemLabel="Manhã" itemValue="Manhã"/>
-                                <f:selectItem itemLabel="Tarde" itemValue="Tarde"/>
-                                <f:selectItem itemLabel="Noite" itemValue="Noite"/>
-                            </p:selectOneMenu>
+                            <p:inputMask id="telefoneTxt" value="#{controlePessoa.usuario.telefone}" mask="(99) 9999-9999" required="true" label="Telefone"/>
                             
                             <p:outputLabel value="Senha: "/>
-                            <p:password id="password1" value="#{controlePessoa.balconista.senha}" match="password2" label="Senha" required="true"/>
+                            <p:password id="senha1" value="#{controlePessoa.usuario.senha}" match="senha2" label="Senha" required="true"/>
                             
                             <p:outputLabel value="Confirmar Senha: "/>
-                            <p:password id="password2" value="#{controlePessoa.balconista.senha}" label="Confirmar Senha" required="true"/>
+                            <p:password id="senha2" value="#{controlePessoa.usuario.senha}" label="Confirmar Senha" required="true"/>
                             
                             <br></br>
                         </h:panelGrid>
-                        <h:commandButton action="#{controlePessoa.adicionarBalconista}" value="Cadastrar" class="btn btn-success"/>
+                        <h:commandButton action="#{controlePessoa.adicionarUsuario}" value="Cadastrar" class="btn btn-success"/>
                         
                         <p:spacer width="30"/>
                         
-                        <a href="interfaceBalconista.xhtml" class="btn btn-danger" onclick="return confirm('Se voltar os dados não serão salvos! Deseja continuar?')">Voltar</a>
+                        <a href="interfaceAdministrador.xhtml" class="btn btn-danger" onclick="return confirm('Se voltar os dados não serão salvos! Deseja continuar?')">Voltar</a>
                     </div>
                 </div>
             </h:form>

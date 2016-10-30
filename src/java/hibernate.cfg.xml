@@ -18,5 +18,6 @@
     <mapping class="entidade.UsuarioPrototype"/>
     <mapping class="entidade.Reserva"/>
     <mapping class="entidade.Emprestimo"/>
+    <mapping class="entidade.Administrador"/>
   </session-factory>
 </hibernate-configuration>

@@ -8,6 +8,7 @@ import static controle.ControleItem.FILTRO_NOME;
 import static controle.ControleItem.FILTRO_TIPO;
 import static controle.ControleItem.FILTRO_TIPO_NOME;
 import static controle.ControleItem.SEM_FILTRO;
+import entidade.Administrador;
 import entidade.BalconistaPrototype;
 import entidade.BibliotecarioPrototype;
 import entidade.PessoaPrototype;
@@ -218,5 +219,23 @@ public class PessoaDAO {
         session.close();
         
         return usuario;
+    }
+    
+    public Administrador buscarAdm(String email){
+        this.preparaSessao();
+        
+        Administrador administrador = null;
+        
+        Criteria cri = session.createCriteria(Administrador.class);
+        
+        cri.add(Restrictions.eq("email", email));
+        cri.setMaxResults(1);
+        
+        administrador = (Administrador) cri.uniqueResult();
+        
+        trans.commit();
+        session.close();
+        
+        return administrador;
     }
 }
