@@ -29,6 +29,7 @@ public class PessoaDAO {
     private Session session;
     private Transaction trans;
     private List<PessoaPrototype> lista;
+    private List<UsuarioPrototype> listaUsuarios;
     
     private void preparaSessao(){
         try{
@@ -63,6 +64,16 @@ public class PessoaDAO {
         return lista;
     }
     
+    public List<UsuarioPrototype> getUsuariosPorCodigo(int vlrFiltroCodigo){
+        this.preparaSessao();
+        Criteria cri = session.createCriteria(UsuarioPrototype.class);
+        cri.add(Restrictions.eq("codigo", vlrFiltroCodigo));
+        this.listaUsuarios = cri.list();
+        trans.commit();
+        session.close();
+        return listaUsuarios;
+    }
+    
     public List<PessoaPrototype> getPessoaPorCpf(String vlrFiltroCpf){
         this.preparaSessao();
         Criteria cri = session.createCriteria(PessoaPrototype.class);
@@ -73,6 +84,16 @@ public class PessoaDAO {
         return lista;
     }
     
+    public List<UsuarioPrototype> getUsuarioPorCpf(String vlrFiltroCpf){
+        this.preparaSessao();
+        Criteria cri = session.createCriteria(UsuarioPrototype.class);
+        cri.add(Restrictions.eq("cpf", vlrFiltroCpf));
+        this.listaUsuarios = cri.list();
+        trans.commit();
+        session.close();
+        return listaUsuarios;
+    }
+    
     public List<PessoaPrototype> getPessoaPorRg(String vlrFiltroRg){
         this.preparaSessao();
         Criteria cri = session.createCriteria(PessoaPrototype.class);
@@ -81,6 +102,35 @@ public class PessoaDAO {
         trans.commit();
         session.close();
         return lista;
+    }
+    
+    public List<UsuarioPrototype> getUsuarioPorRg(String vlrFiltroRg){
+        this.preparaSessao();
+        Criteria cri = session.createCriteria(UsuarioPrototype.class);
+        cri.add(Restrictions.eq("rg", vlrFiltroRg));
+        this.listaUsuarios = cri.list();
+        trans.commit();
+        session.close();
+        return listaUsuarios;
+    }
+    
+    public List<UsuarioPrototype> getUsuarioPorNome(String vlrFiltroNome){
+        this.preparaSessao();
+        Criteria cri = session.createCriteria(UsuarioPrototype.class);
+        cri.add(Restrictions.ilike("nome", vlrFiltroNome, MatchMode.ANYWHERE));
+        this.listaUsuarios = cri.list();
+        trans.commit();
+        session.close();
+        return listaUsuarios;
+    }
+    
+    public List<UsuarioPrototype> getUsuarios(){
+        this.preparaSessao();
+        Criteria cri = session.createCriteria(UsuarioPrototype.class);
+        this.listaUsuarios = cri.list();
+        trans.commit();
+        session.close();
+        return listaUsuarios;
     }
     
     public List<PessoaPrototype> getPessoas(int tipoFiltro, String vlrFiltroTipo, String vlrFiltroNome) {

@@ -110,6 +110,37 @@ public class ControlePessoa {
         }
         return pessoas;
     }
+    
+    public List listarUsuarios() {
+        int vlrFiltroCodigo;
+        
+        if(!(filtroCodigo.equals(""))){
+            //filtra por codigo
+            vlrFiltroCodigo = Integer.parseInt(filtroCodigo);
+            pessoas = pessoaDAO.getUsuariosPorCodigo(vlrFiltroCodigo);
+        }
+        else if(!(filtroCpf.equals(""))){
+            //filtra por cpf
+            pessoas = pessoaDAO.getUsuarioPorCpf(filtroCpf);
+        }
+        else if(!(filtroRg.equals(""))){
+            //filtra por rg
+            pessoas = pessoaDAO.getUsuarioPorRg(filtroRg);
+        }
+        else if(!(filtroNome.equals(""))){
+            //filtra por nome
+            pessoas = pessoaDAO.getUsuarioPorNome(filtroNome);
+        }
+        else {
+            //não filtra por nada
+            pessoas = pessoaDAO.getUsuarios();
+        }
+        //não tem pessoas cadastrados
+        if (pessoas == null) {
+            pessoas = new DAO.PessoaDAO().getPessoas(SEM_FILTRO, filtroTipo, filtroNome);
+        }
+        return pessoas;
+    }
 
     public void exibirPessoa(PessoaPrototype pessoa) throws IOException{
         String tipoPessoa;

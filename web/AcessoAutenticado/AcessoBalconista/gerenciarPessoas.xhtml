@@ -37,21 +37,11 @@
                         
                         <br></br><br></br>
                         
-                        <p:outputLabel value="Tipo de Pessoa: "/>
-                        <p:selectOneMenu id="filtroTipo" value="#{controlePessoa.filtroTipo}" label="Filtro Tipo">
-                            <f:selectItem itemLabel="" itemValue=""/>
-                            <f:selectItem itemLabel="Balconista" itemValue="Balconista"/>
-                            <f:selectItem itemLabel="Bibliotecário" itemValue="Bibliotecario"/>
-                            <f:selectItem itemLabel="Usuário" itemValue="Usuario"/>
-                        </p:selectOneMenu>
-                        
-                        <p:spacer width="30"/>
-                        
                         <p:outputLabel value="Nome: "/>
                         <p:inputText id="filtroNome" value="#{controlePessoa.filtroNome}" label="Filtro Nome"/>
                         
-                        <br></br>
-                        <h:commandButton value="Filtrar" action="#{controlePessoa.listarPessoas()}" class="btn btn-success"/>
+                        <br></br><br></br>
+                        <h:commandButton value="Filtrar" action="#{controlePessoa.listarUsuarios}" class="btn btn-success"/>
                     </div>
                 </div>
                 <div class="panel panel-primary" style="width: 100%">
