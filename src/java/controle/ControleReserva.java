@@ -33,10 +33,10 @@ public class ControleReserva {
     private final ReservaDAO reservaDAO = new ReservaDAO();
     private final EmprestimoDAO emprestimoDAO = new EmprestimoDAO();
     
-    public String cancelaReserva(Reserva reservaUser){
+    public void cancelaReserva(Reserva reservaUser){
         reservaUser.setStatusReserva("Cancelada");
         reservaDAO.cancelaReserva(reservaUser);
-        return "reservas?faces-redirect=true";       
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Reserva Cancelada com Sucesso!"));    
     }
     
     public void solicitarReserva(ItemPrototype item, UsuarioPrototype usuario) throws IOException{
@@ -44,9 +44,14 @@ public class ControleReserva {
         
         if(!(usuario.getSituacao().equals("Inadimplente"))){
             if (!(item.getStatus().equals("Inativo"))){
-                context.getExternalContext().redirect("reservasItem.xhtml");
-                this.item = item;
-                this.reservas = reservaDAO.getReservas(item.getNumeroCatalogo());
+                if(!(this.existeReserva(usuario, item))){
+                    context.getExternalContext().redirect("reservasItem.xhtml");
+                    this.item = item;
+                    this.reservas = reservaDAO.getReservas(item.getNumeroCatalogo());
+                }
+                else {
+                    context.addMessage(null, new FacesMessage("Você possui uma reserva em aberto para este item!"));
+                }
             }
             else{
                 context.addMessage(null, new FacesMessage("Item Inativo! Não pode ser reservado!"));
@@ -105,6 +110,15 @@ public class ControleReserva {
         context.getExternalContext().redirect("gerenciarItens.xhtml");
         context.addMessage(null, new FacesMessage("Reserva Criada com Sucesso! Data de Retirada do Item: " + formataData.format(dataRetirada.getTime())));
 
+    }
+    // Método que busca se o usuáiro já possui uma reserva em aberto para um determinado item
+    public boolean existeReserva(UsuarioPrototype usuario, ItemPrototype item){
+        if(reservaDAO.buscaReservaExistente(usuario.getCodigo(), item.getNumeroCatalogo()) == null){
+           return false; 
+        }
+        else {
+            return true;
+        }
     }
 
     public List getReservas() {

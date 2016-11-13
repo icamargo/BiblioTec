@@ -99,4 +99,18 @@ public class ReservaDAO {
         session.close();
         return reserva;
     }
+    public Reserva buscaReservaExistente(int codigoUsuario, int numeroCatalogo){
+        Reserva reserva = null;
+        this.preparaSessao();
+        cri = session.createCriteria(Reserva.class);
+        
+        cri.add(Restrictions.eq("codigoUsuario", codigoUsuario));
+        cri.add(Restrictions.eq("numeroCatalogo", numeroCatalogo));
+        cri.add(Restrictions.eq("statusReserva", "Aberta"));
+        reserva = (Reserva) cri.uniqueResult();
+        
+        trans.commit();
+        session.close();
+        return reserva;
+    }
 }

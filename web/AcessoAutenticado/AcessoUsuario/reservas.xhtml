@@ -55,62 +55,63 @@
 
             <!-- Main component for a primary marketing message or call to action -->
             <div class="jumbotron">
-                <h1>Bem vindo #{loginController.usuario.nome}, suas reservas</h1>
+                <h1>Bem vindo #{controleLogin.usuario.nome}, suas reservas</h1>
                 <h:form>
-                    <p:dataTable id="dataTable" value="#{loginController.usuario.reservas}" var="reserva"
+                    <p:growl autoUpdate="true"/>
+                    <p:dataTable id="dataTable" value="#{controleLogin.usuario.reservas}" var="reserva"
                                  rows="5" rowsPerPageTemplate="5,10" paginator="true"
                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
-                            <p:column>
-                                <f:facet name="header">
-                                    Id
-                                </f:facet>
-                                <h:outputText value="#{reserva.idReserva}"/>
-                            </p:column>
-                            <p:column filterBy="#{reserva.statusReserva}">
-                                <f:facet name="filter">
-                                    Status
-                                </f:facet>
-                                <h:outputText value="#{reserva.statusReserva}"/>
-                            </p:column>
-                            <p:column>
-                                <f:facet name="header">
-                                    Data da Reserva
-                                </f:facet>
-                                <h:outputText value="#{reserva.dataReserva.time}">
-                                    <f:convertDateTime pattern="dd/MM/yyyy" />
-                                </h:outputText>
-                            </p:column>
-                            
-                            <p:column>
-                                <f:facet name="header">
-                                    Data da Retirada
-                                </f:facet>
-                                <h:outputText value="#{reserva.dataRetirada.time}">
-                                    <f:convertDateTime pattern="dd/MM/yyyy" />
-                                </h:outputText>
-                            </p:column>
-                            
-                            <p:column>
-                                <f:facet name="header">
-                                    Data da Disponibilização
-                                </f:facet>
-                                <h:outputText value="#{reserva.dataDisponibilizacao.time}">
-                                    <f:convertDateTime pattern="dd/MM/yyyy" />
-                                </h:outputText> 
-                            </p:column>
-                             <p:column>
-                                <f:facet name="header">
-                                    Ação
-                                </f:facet>
-                                 
-                                    <h:commandButton value="Cancelar" action="#{controleReserva.cancelaReserva(reserva)}" class="btn btn-info"/>
-                                 
-                             </p:column>
-                        </p:dataTable>
+                        <p:column>
+                            <f:facet name="header">
+                                Id
+                            </f:facet>
+                            <h:outputText value="#{reserva.idReserva}"/>
+                        </p:column>
+                        <p:column filterBy="#{reserva.statusReserva}">
+                            <f:facet name="filter">
+                                Status
+                            </f:facet>
+                            <h:outputText value="#{reserva.statusReserva}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                Data da Reserva
+                            </f:facet>
+                            <h:outputText value="#{reserva.dataReserva.time}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                Data da Retirada
+                            </f:facet>
+                            <h:outputText value="#{reserva.dataRetirada.time}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                Data da Disponibilização
+                            </f:facet>
+                            <h:outputText value="#{reserva.dataDisponibilizacao.time}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText> 
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                Ação
+                            </f:facet>
+
+                            <h:commandButton value="Cancelar" action="#{controleReserva.cancelaReserva(reserva)}" class="btn btn-info"/>
+
+                        </p:column>
+                    </p:dataTable>
                 </h:form>
             </div>
             <h:form>
-                <p:commandButton value="Sair" action="#{loginController.logout()}" class="btn btn-primary"/>
+                <p:commandButton value="Sair" action="#{controleLogin.logout()}" class="btn btn-primary"/>
             </h:form>
             
         </div>

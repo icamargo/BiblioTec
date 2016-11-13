@@ -18,6 +18,7 @@
     <h:body style="background-color: #9acfea">
         <center>
             <h:form>
+                <p:growl autoUpdate="true"/>
                 <div class="panel panel-primary" style="width: 100%">
                     <div class="panel-heading"><h4>Filtros</h4></div>
                     <div class="panel-body">
@@ -112,7 +113,7 @@
                                     Reservar
                                 </f:facet>
                                 <h:commandButton value="Exibir" action="#{controleItem.exibirItem(item)}" class="btn btn-info"/>
-                                <h:commandButton value="Reservar" action="#{controleReserva.solicitarReserva(item, loginController.usuario)}" class="btn btn-info"/>
+                                <h:commandButton value="Reservar" action="#{controleReserva.solicitarReserva(item, controleLogin.usuario)}" class="btn btn-info"/>
                             </p:column>
                         </p:dataTable>
                     </div>

@@ -55,10 +55,10 @@
 
             <!-- Main component for a primary marketing message or call to action -->
             <div class="jumbotron">
-                <h1>Bem vindo #{loginController.usuario.nome}, seus empréstimos</h1>
+                <h1>Bem vindo #{controleLogin.usuario.nome}, seus empréstimos</h1>
                 <p:messages autoUpdate="true"/>
                 <h:form>
-                    <p:dataTable id="dataTable" value="#{loginController.usuario.emprestimos}" var="emprestimo"
+                    <p:dataTable id="dataTable" value="#{controleLogin.usuario.emprestimos}" var="emprestimo"
                                  rows="5" rowsPerPageTemplate="5,10" paginator="true"
                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
                             <p:column>
@@ -111,7 +111,7 @@
             </div>
             
             <h:form>
-                <p:commandButton value="Sair" action="#{loginController.logout()}" class="btn btn-primary"/>
+                <p:commandButton value="Sair" action="#{controleLogin.logout()}" class="btn btn-primary"/>
             </h:form>
             
         </div>
