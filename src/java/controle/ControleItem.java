@@ -72,7 +72,7 @@ public class ControleItem {
             intVlrFiltroNumCatalogo = Integer.parseInt(filtroNumCatalogo);
             itens = itemDAO.getItem(intVlrFiltroNumCatalogo);
         }
-        else if(!(filtroTipo.equals(""))){
+        else if((filtroTipo != null) && !(filtroTipo.equals(""))){
             if(!(filtroNome.equals(""))){
                 if(!(filtroAutor.equals(""))){
                     //filtra por tipo, nome e autor
