@@ -84,19 +84,21 @@ public class ControleEmprestimo {
                     return;
                 }
             }
-            dataNova = emprestimo.getDataDevPrevista();
-            dataNova.add(Calendar.DAY_OF_MONTH, 5);
-            emprestimo.setDataDevPrevista(dataNova);
-            emprestimo.setQtdeRenovacoes(emprestimo.getQtdeRenovacoes()+1);
-            emprestimoDAO.atualizar(emprestimo);
-            FacesContext.getCurrentInstance().getExternalContext().redirect("emprestimos.xhtml");
         }
         else{
-            dataNova = emprestimo.getDataDevPrevista();
-            dataNova.add(Calendar.DAY_OF_MONTH, 5);
-            emprestimo.setDataDevPrevista(dataNova);
-            emprestimoDAO.atualizar(emprestimo); 
-            FacesContext.getCurrentInstance().getExternalContext().redirect("emprestimos.xhtml");
+            if (emprestimo.getQtdeRenovacoes() < 5) {
+                dataNova = emprestimo.getDataDevPrevista();
+                dataNova.add(Calendar.DAY_OF_MONTH, 5);
+                emprestimo.setDataDevPrevista(dataNova);
+
+                emprestimo.setQtdeRenovacoes(emprestimo.getQtdeRenovacoes() + 1);
+                emprestimoDAO.atualizar(emprestimo);
+                FacesContext.getCurrentInstance().getExternalContext().redirect("emprestimos.xhtml");
+            }
+            else{
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Quantidade máxima de renovações atingidas (5)"));
+            }
+            
         }
     }
 

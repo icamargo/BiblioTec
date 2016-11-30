@@ -14,6 +14,8 @@ import entidade.BibliotecarioPrototype;
 import entidade.PessoaPrototype;
 import entidade.UsuarioPrototype;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
@@ -172,7 +174,7 @@ public class PessoaDAO {
                 break;
             
         }
-        this.lista = cri.list();
+        this.lista = duplicidade(cri.list());
         trans.commit();
         session.close();
         return lista;
@@ -183,6 +185,16 @@ public class PessoaDAO {
         session.update(pessoa);
         trans.commit();//confirmaçao
         session.close();
+    }
+    
+    private List<PessoaPrototype> duplicidade(List<PessoaPrototype> pessoas){
+        List<PessoaPrototype> pessoasTemp = new ArrayList<PessoaPrototype>();
+        for (int i = 0; i < pessoas.size(); i++) {
+            if(!pessoasTemp.contains(pessoas.get(i))){
+                pessoasTemp.add(pessoas.get(i));
+            }
+        }
+        return pessoasTemp;
     }
     
     public UsuarioPrototype getUsuarioPorCodigo(int codigo){

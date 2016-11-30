@@ -59,7 +59,7 @@ public class ControlePessoa {
         balconistaNovo = balconista;
         pessoaDAO.add(balconistaNovo);
         balconista = new BalconistaPrototype();
-        return "interfaceBalconista?faces-redirect=true";
+        return "interfaceAdministrador?faces-redirect=true";
     }
     
     public String adicionarBibliotecario() throws IOException{
@@ -67,7 +67,7 @@ public class ControlePessoa {
         bibliotecarioNovo = bibliotecario;
         pessoaDAO.add(bibliotecarioNovo);
         bibliotecario = new BibliotecarioPrototype();
-        return "interfaceBalconista?faces-redirect=true";
+        return "interfaceAdministrador?faces-redirect=true";
     }
     
     public List listarPessoas() {
