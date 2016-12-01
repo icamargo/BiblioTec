@@ -35,6 +35,13 @@ public class ReservaDAO {
         trans = session.beginTransaction();
     }
     
+    public void atualizaReserva(Reserva reserva){
+        this.preparaSessao();
+        session.merge(reserva);
+        trans.commit();
+        session.close();
+    }
+    
     public void cancelaReserva(Reserva reserva){
         this.preparaSessao();
         session.merge(reserva);

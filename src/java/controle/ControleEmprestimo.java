@@ -118,15 +118,20 @@ public class ControleEmprestimo {
         if(livro!=null){
    
             reservas = reservaDAO.getReservas(numeroCatalogo);
+            usuario = pessoaDAO.getUsuarioPorCodigo(codigoUsuario);
+            
             if(reservas!=null && reservas.size() > 0){
                 for(Reserva res: reservas){
                     if(res.getStatusReserva().equals("Aberta")){
+                        if(res.getCodigoUsuario() == usuario.getCodigo()){
+                            res.setStatusReserva("Efetivada");
+                            reservaDAO.atualizaReserva(res);
+                            break;
+                        }
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Item possui reserva"));
                         return;
                     }
-                }
-                usuario = pessoaDAO.getUsuarioPorCodigo(codigoUsuario);
-            
+                }           
                 if(usuario==null){
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Usuario nao encontrado!"));
                 }
