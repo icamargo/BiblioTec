@@ -44,20 +44,24 @@ public class ControleEmprestimo {
                 for(Emprestimo emp: emprestimos){
                     if(emp.getStatusEmprestimo().equals("Aberto")){
                         emprestimo = emp;
+                        livro.setStatus("Disponível");
+                        itemDAO.atualizarItem(livro);
                         if(emprestimo.getDataDevPrevista().compareTo(dataDevolvido) == 1 || emprestimo.getDataDevPrevista().compareTo(dataDevolvido) == 0){
-                            livro.setStatus("Disponível");
-                            itemDAO.atualizarItem(livro);
 
                             emprestimo.setStatusEmprestimo("Fechado");
                             emprestimo.setDataDevolucao(dataDevolvido);
                             emprestimoDAO.atualizar(emprestimo); 
-                            FacesContext.getCurrentInstance().getExternalContext().redirect("interfaceBalconista.xhtml");
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Item devolvido com sucesso!"));
+                            //FacesContext.getCurrentInstance().getExternalContext().redirect("interfaceBalconista.xhtml");
                         }
                         else{
                             usuario = emprestimo.getUsuario();
                             usuario.setSituacao("Inadimplente");
                             pessoaDAO.atualizarPessoa(usuario);
-                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Atraso na entrega favor regularize sua situaçao"));
+                            int calculaMulta;
+                            calculaMulta = dataDevolvido.get(Calendar.DAY_OF_MONTH) - emprestimo.getDataDevPrevista().get(Calendar.DAY_OF_MONTH);
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Atraso na entrega multa de: R$" +
+                                     livro.getValorMultaDiaAtraso() * calculaMulta));
                         }  
                     }
                 }                      
@@ -125,7 +129,7 @@ public class ControleEmprestimo {
                     if(res.getStatusReserva().equals("Aberta")){
                         if(res.getCodigoUsuario() == usuario.getCodigo()){
                             res.setStatusReserva("Efetivada");
-                            reservaDAO.atualizaReserva(res);
+                            reservaDAO.atualizaReserva(res);                      
                             break;
                         }
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Item possui reserva"));
@@ -154,8 +158,8 @@ public class ControleEmprestimo {
 
                             usuario.getEmprestimos().add(emprestimo);
                             pessoaDAO.atualizarPessoa(usuario);
-
-                            FacesContext.getCurrentInstance().getExternalContext().redirect("interfaceBalconista.xhtml");
+                            
+                            //FacesContext.getCurrentInstance().getExternalContext().redirect("interfaceBalconista.xhtml");
                         }
 
                         else{
@@ -191,8 +195,8 @@ public class ControleEmprestimo {
 
                             usuario.getEmprestimos().add(emprestimo);
                             pessoaDAO.atualizarPessoa(usuario);
-
-                            FacesContext.getCurrentInstance().getExternalContext().redirect("interfaceBalconista.xhtml");
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Emprestimo realizado com sucesso"));
+                            //FacesContext.getCurrentInstance().getExternalContext().redirect("interfaceBalconista.xhtml");
                         }
 
                         else{

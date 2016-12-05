@@ -26,13 +26,13 @@
                             <p:spacer width="10"/>
                             <p:inputText id="numCatalogo" value="#{controleEmprestimo.numeroCatalogo}" required="true" label="Número de Catálogo do Item"/>
                             
-                            <br></br>
+                            <br></br> 
                         </h:panelGrid>
                         <h:commandButton action="#{controleEmprestimo.devolucao}" value="Devoluçao" class="btn btn-success"/>
                         
                         <p:spacer width="30"/>
                         
-                        <a href="interfaceBalconista.xhtml" class="btn btn-danger" onclick="return confirm('Se voltar os dados não serão salvos! Deseja continuar?')">Voltar</a>
+                         <a href="interfaceBalconista.xhtml" class="btn btn-danger" onclick="return confirm('Deseja voltar?')">Voltar</a>
                     </div>
                 </div>
             </h:form>
