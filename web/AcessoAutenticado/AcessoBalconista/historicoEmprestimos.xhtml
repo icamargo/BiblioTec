@@ -14,69 +14,63 @@
         <link rel="stylesheet" href="../../recursos/css/bootstrap.css"></link>
         <link rel="stylesheet" href="../../recursos/css/navbar.css"></link>
         <link rel="stylesheet" href="../../recursos/css/ie10-viewport-bug-workaround.css"></link>
-
     </h:head>
-
+    
     <h:body style="background-color: #C1C1C1">
         <center>
-            <h:form id="formAtt">
-                <div class="panel panel-primary" style="width: 100%;">
-                    <div class="panel-heading" align="center"><h2>Histórico de empréstimos</h2></div>
-                    <p:spacer width="15"/> 
-                    <p:dataTable id="dataTable" value="#{controleLogin.usuario.emprestimos}" var="emprestimo" rows="5" rowsPerPageTemplate="5,10" paginator="true"
+        <div class="jumbotron">
+            <h2>Histórico de empréstimos</h2>
+            <p:messages autoUpdate="true"/>
+                <h:form>
+                    <p:dataTable id="dataTable" value="#{controleLogin.usuario.emprestimos}" var="emprestimo"
+                                 rows="5" rowsPerPageTemplate="5,10" paginator="true"
                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
-                           
                         <p:column>
                             <f:facet name="header">
-                                    Id
-                                </f:facet>
+                                Id
+                            </f:facet>
                                 <h:outputText value="#{emprestimo.idEmprestimo}"/>
-                            </p:column>
+                        </p:column>
                         <p:column filterBy="#{emprestimo.statusEmprestimo}">
-                                <f:facet name="filter">
-                                    Status
-                                </f:facet>
+                            <f:facet name="filter">
+                                Status
+                            </f:facet>
                             <h:outputText value="#{emprestimo.statusEmprestimo}"/>
-                            </p:column>
-                            <p:column>
-                                <f:facet name="header">
-                                    Data do Empréstimo
-                                </f:facet>
-                                <h:outputText value="#{emprestimo.dataEmprestimo.time}">
-                                    <f:convertDateTime pattern="dd/MM/yyyy" />
-                                </h:outputText>
-                            </p:column>
-                            
-                            <p:column>
-                                <f:facet name="header">
-                                    Data para Devolução
-                                </f:facet>
-                                <h:outputText value="#{emprestimo.dataDevPrevista.time}">
-                                    <f:convertDateTime pattern="dd/MM/yyyy" />
-                                </h:outputText>
-                            </p:column>
-                            
-                            <p:column>
-                                <f:facet name="header">
-                                    Livro
-                                </f:facet>
-                                <h:outputText value="#{emprestimo.livro.nome}">
-                                </h:outputText> 
-                            </p:column>
-                             <p:column>
-                                <f:facet name="header">
-                                    Ação
-                                </f:facet>
-                                 
-                                 <h:commandButton value="Renovar" action="#{controleEmprestimo.renovar(emprestimo)}" class="btn btn-info"/>
-                                 
-                             </p:column>
-                        </p:dataTable>
-                </div>
-                <a href="gerenciarPessoas.xhtml" class="btn btn-danger">Voltar</a>
-            </h:form >
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                Data do Empréstimo
+                            </f:facet>
+                            <h:outputText value="#{emprestimo.dataEmprestimo.time}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>    
+                        <p:column>
+                            <f:facet name="header">
+                                Data para Devolução
+                            </f:facet>
+                            <h:outputText value="#{emprestimo.dataDevPrevista.time}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>    
+                        <p:column>
+                            <f:facet name="header">
+                                Livro
+                            </f:facet>
+                            <h:outputText value="#{emprestimo.livro.nome}">
+                            </h:outputText> 
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                Ação
+                            </f:facet>                                 
+                                <h:commandButton value="Renovar" action="#{controleEmprestimo.renovar(emprestimo)}" class="btn btn-info"/> 
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+        </div>
+            <a href="gerenciarPessoas.xhtml" class="btn btn-danger">Voltar</a>    
         </center>    
-
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script src="../../recursos/js/jquery.min.js"></script>
         <script src="../../recursos/js/bootstrap.min.js"></script>
