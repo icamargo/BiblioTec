@@ -161,6 +161,17 @@ public class ControlePessoa {
                 break;
         }
     }
+    public void exibirHistorico(PessoaPrototype pessoa) throws IOException{
+        String tipoPessoa;
+        
+        tipoPessoa = pessoa.getTipoPessoa();
+        switch(tipoPessoa){
+            case "Usuario":
+                this.usuario = (UsuarioPrototype) pessoa;
+                FacesContext.getCurrentInstance().getExternalContext().redirect("historicoEmprestimos.xhtml");
+                break;
+        }
+    }
     
     public void inativarBalconista() throws IOException{
         if(balconista.isAtivo()==true){
