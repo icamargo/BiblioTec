@@ -29,6 +29,7 @@ public abstract class ItemPrototype implements Serializable{
     @Column(insertable=false, updatable=false)
     protected String tipoItem;
     protected float valorMultaDiaAtraso;
+    protected String codClassificador;
     
     public ItemPrototype(){
     }
@@ -128,5 +129,13 @@ public abstract class ItemPrototype implements Serializable{
 
     public void setTipoItem(String tipoItem) {
         this.tipoItem = tipoItem;
+    }
+
+    public String getCodClassificador() {
+        return codClassificador;
+    }
+
+    public void setCodClassificador(String codClassificador) {
+        this.codClassificador = codClassificador;
     }
 }

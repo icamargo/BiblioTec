@@ -6,6 +6,7 @@ package controle;
 
 import DAO.ItemDAO;
 import entidade.AcademicoPrototype;
+import entidade.CriteriosClassificacao;
 import entidade.ItemPrototype;
 import entidade.LivroPrototype;
 import entidade.PeriodicoPrototype;
@@ -39,6 +40,7 @@ public class ControleItem {
     private String filtroNome, filtroNumCatalogo, filtroAutor, filtroTipo;
     
     private ItemDAO itemDAO = new ItemDAO();
+    private ControleCritClas controleCritClas = new ControleCritClas();
     private List itens;
     
     public ControleItem(){
@@ -46,6 +48,7 @@ public class ControleItem {
     public String adicionarLivro() throws IOException{
         ItemPrototype livroNovo = prototipoLivro.clonar();
         livroNovo = livro;
+        livroNovo.setCodClassificador(controleCritClas.geraCodClassificador("Livro"));
         itemDAO.add(livroNovo);
         livro = new LivroPrototype();
         return "interfaceBibliotecario?faces-redirect=true";     

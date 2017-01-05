@@ -17,6 +17,7 @@ import entidade.ItemPrototype;
 import entidade.LivroPrototype;
 import entidade.PeriodicoPrototype;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -164,6 +165,17 @@ public class ItemDAO {
         //context.getExternalContext().redirect("gerenciarItens.xhtml");
         trans.commit();//confirmaçao
         session.close();
+    }
+    
+    public List<String> buscaCodClasPorPreCod(String preCodigo){
+        List<String> preCodigos = new ArrayList<String>();
+        this.preparaSessao();
+        Criteria cri = session.createCriteria(ItemPrototype.class);
+        cri.add(Restrictions.ilike("codClassificador", preCodigo, MatchMode.START));
+        preCodigos = cri.list();
+        trans.commit();
+        session.close();
+        return preCodigos;
     }
 
     
