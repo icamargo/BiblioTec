@@ -19,5 +19,6 @@
     <mapping class="entidade.Reserva"/>
     <mapping class="entidade.Emprestimo"/>
     <mapping class="entidade.Administrador"/>
+    <mapping class="entidade.CriteriosClassificacao"/>
   </session-factory>
 </hibernate-configuration>

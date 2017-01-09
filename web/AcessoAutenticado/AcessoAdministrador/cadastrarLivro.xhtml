@@ -2,7 +2,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <!--@autor Tatiane-->
     <h:head>
         <meta charset="utf-8"></meta>
@@ -16,7 +17,7 @@
     </h:head>
     <h:body style="background-color: #C1C1C1">
         <center>
-            <h:form>
+            <h:form id="formPrincipal">
                 <div class="panel panel-primary" style="width: 100%;">
                     <div class="panel-heading" align="center"><h3>Cadastro de Livro</h3></div>
                     <div class="panel-body">
@@ -51,7 +52,36 @@
 
                             <p:outputLabel value="ISBN: "/>
                             <p:inputText value="#{controleItem.livro.isbn}" required="true" label="ISBN"/>
-
+                            
+                            <p:outputLabel value="Área de Conhecimento: "/>
+                            <h:panelGrid columns="5">
+                                <p:selectOneMenu id="areasConhec" value="#{controleCritClas.areaConhec}" 
+                                                 converter="critClasConverter"
+                                                  filter="true" filterMatchMode="startsWith">
+                                    <f:selectItem itemLabel="Selecione..."/>
+                                    <f:selectItems value="#{controleCritClas.areasConhec}" var="areaConhec" 
+                                                   itemLabel="#{areaConhec.descCriterio}" itemValue="#{areaConhec}"/>
+                                </p:selectOneMenu>
+                                <p:spacer width="30"/>
+                                <a href="cadastrarAreaConhecimento.xhtml" class="btn btn-info">Cadastrar</a>
+                                <p:spacer width="30"/>
+                                <p:commandButton value="Atualizar" onclick="self.location.reload()"/>
+                            </h:panelGrid>
+                            
+                            <p:outputLabel value="Assunto: "/>
+                            <h:panelGrid columns="5">
+                                <p:selectOneMenu id="assuntos" value="#{controleCritClas.assunto}" 
+                                                 converter="critClasConverter"
+                                                 filter="true" filterMatchMode="startsWith">
+                                    <f:selectItem itemLabel="Selecione..."/>
+                                    <f:selectItems value="#{controleCritClas.assuntos}" var="assunto" 
+                                                   itemLabel="#{assunto.descCriterio}" itemValue="#{assunto}"/>
+                                </p:selectOneMenu>
+                                <p:spacer width="30"/>
+                                <a href="cadastrarAssunto.xhtml" class="btn btn-info">Cadastrar</a>
+                                <p:spacer width="30"/>
+                                <p:commandButton value="Atualizar" onclick="self.location.reload()"/>
+                            </h:panelGrid>
                             <br></br>
                         </h:panelGrid>
                         <h:commandButton value="Cadastrar" action="#{controleItem.adicionarLivro}" class="btn btn-success"/>

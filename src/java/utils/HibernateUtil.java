@@ -9,6 +9,7 @@ import entidade.AcademicoPrototype;
 import entidade.Administrador;
 import entidade.BalconistaPrototype;
 import entidade.BibliotecarioPrototype;
+import entidade.CriteriosClassificacao;
 import entidade.Emprestimo;
 import entidade.ItemPrototype;
 import entidade.LivroPrototype;
@@ -43,6 +44,7 @@ public class HibernateUtil {
             configuration.addAnnotatedClass(PessoaPrototype.class);
             configuration.addAnnotatedClass(UsuarioPrototype.class);
             configuration.addAnnotatedClass(Administrador.class);
+            configuration.addAnnotatedClass(CriteriosClassificacao.class);
             
             ServiceRegistry serviceRegistry
                 = new StandardServiceRegistryBuilder()
