@@ -15,6 +15,9 @@ import entidade.PessoaPrototype;
 import entidade.UsuarioPrototype;
 import java.io.IOException;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -44,14 +47,18 @@ public class ControlePessoa {
         pessoaDAO.add(usuarioNovo);
         usuario = new UsuarioPrototype();
         return "interfaceBalconista?faces-redirect=true";
+        
     }
     
-    public String adicionarUsuarioSemLogin() throws IOException {
-        PessoaPrototype usuarioNovo = prototipoUsuario.clonar();
-        usuarioNovo = usuario;
-        pessoaDAO.addSemLogin(usuarioNovo);
-        usuario = new UsuarioPrototype();
-        return "interfaceLogin?faces-redirect=true";
+    public void adicionarUsuarioSemLogin() throws IOException {
+        if(validarEmail(usuario.getEmail())){
+            PessoaPrototype usuarioNovo = prototipoUsuario.clonar();
+            usuarioNovo = usuario;
+            pessoaDAO.addSemLogin(usuarioNovo);
+            usuario = new UsuarioPrototype();
+            FacesContext.getCurrentInstance().getExternalContext().redirect("*/Bibliotec");
+        }
+        else FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Email invalido"));
     }
     
     public String adicionarBalconista() throws IOException{
@@ -68,6 +75,17 @@ public class ControlePessoa {
         pessoaDAO.add(bibliotecarioNovo);
         bibliotecario = new BibliotecarioPrototype();
         return "interfaceAdministrador?faces-redirect=true";
+    }
+    
+    public static boolean validarEmail(String email){
+        if((email == null) || (email.trim().length() == 0)){
+            return false;
+        }
+        
+        String emailPattern = "\\b(^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@([A-Za-z0-9-])+(\\.[A-Za-z0-9-]+)*((\\.[A-Za-z0-9]{2,})|(\\.[A-Za-z0-9]{2,}\\.[A-Za-z0-9]{2,}))$)\\b";
+        Pattern pattern = Pattern.compile(emailPattern, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
     }
     
     public List listarPessoas() {
