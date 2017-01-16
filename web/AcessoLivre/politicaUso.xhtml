@@ -4,9 +4,9 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-    
+
     <!--@autor Tatiane-->
-      
+
     <h:head>
         <meta charset="utf-8"></meta>
         <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
@@ -19,37 +19,42 @@
         <link rel="stylesheet" href="../recursos/css/bootstrap.min.css" type="text/css"/>
         <link rel="stylesheet" href="../recursos/css/bootstrap.min.css" type="text/css"/>
     </h:head>
-    
+
     <h:body style="background-color: #9acfea">
-            <h:form>
-                <div class="panel panel-primary" style="width: 100%">
+        <h:form>
+            <div class="panel panel-primary" style="width: 100%">
                 <div class="panel-heading"><h1 align="center">Política de privacidade para <a href='/BiblioTec' style="color:#fff ">Bibliotec</a></h1></div>
-                <h:form ><h3>                    
-                    <br></br>
-                    <p>     Todas as suas informações pessoais recolhidas, serão usadas para o ajudar a 
-                        tornar a sua visita no nosso site o mais produtiva e agradável possível.</p>
-                    <p>A garantia da confidencialidade dos dados pessoais dos utilizadores do nosso 
-                        site é importante para o Bibliotec.</p>
-                    <p>     Todas as informações pessoais relativas a usuários ou visitantes que usem o 
-                        Bibliotec serão tratadas em concordância com a Lei da Proteção de Dados 
-                        Pessoais de 26 de outubro de 1998 (Lei n.º 67/98).</p>
-                    <p>     A informação pessoal recolhida pode incluir o seu nome, e-mail, cpf, rg, 
-                        número de telefone e/ou telemóvel, data de nascimento e/ou outros.</p>
-                    <p>     O uso do Bibliotec pressupõe a aceitação deste Acordo de privacidade. A equipa
-                        do Bibliotec reserva-se ao direito de alterar este acordo sem aviso prévio. 
-                        Deste modo, recomendamos que consulte a nossa política de privacidade com 
-                        regularidade de forma a estar sempre atualizado.</p>
+                <p:growl autoUpdate="true"/>
+                <h:form >    
+                    <h3>
+                        <br></br>
+                        <p>Todas as suas informações pessoais recolhidas, serão usadas para o ajudar a 
+                            tornar a sua visita no nosso site o mais produtiva e agradável possível.</p>
+                        <p>A garantia da confidencialidade dos dados pessoais dos utilizadores do nosso 
+                            site é importante para o Bibliotec.</p>
+                        <p>     Todas as informações pessoais relativas a usuários ou visitantes que usem o 
+                            Bibliotec serão tratadas em concordância com a Lei da Proteção de Dados 
+                            Pessoais de 26 de outubro de 1998 (Lei n.º 67/98).</p>
+                        <p>     A informação pessoal recolhida pode incluir o seu nome, e-mail, cpf, rg, 
+                            número de telefone e/ou telemóvel, data de nascimento e/ou outros.</p>
+                        <p>     O uso do Bibliotec pressupõe a aceitação deste Acordo de privacidade. A equipa
+                            do Bibliotec reserva-se ao direito de alterar este acordo sem aviso prévio. 
+                            Deste modo, recomendamos que consulte a nossa política de privacidade com 
+                            regularidade de forma a estar sempre atualizado.</p>
                     </h3>
                     <center>
-                    <h:form>
-                        <input type="checkbox" name="botaoPolitica" value="botaoPolitica" checked=""/>Política de privacidade aceita.
-                    </h:form>
-                    <br></br><br></br>
-                    <h:commandButton value="continuar" class="btn btn-info"/>
-                    <br></br><br></br>
+                        <h:panelGrid columns="2" style="margin-bottom:25px" cellpadding="5">
+                            <p:selectBooleanCheckbox value="#{controleLogin.politicaUso}" />
+                            <p:outputLabel value="Eu aceito a política de privacidade."/>
+                        </h:panelGrid>
+
+                        <h:commandButton value="continuar" action="#{controleLogin.autenticarPolitica}" class="btn btn-info"/>
+                        <p:spacer width="30"/>
+                        <a href="interfaceBalconista.xhtml" class="btn btn-danger">Voltar</a>
+                        <br></br><br></br>
                     </center>
                 </h:form>
-                </div>     
-            </h:form>
+            </div>     
+        </h:form>
     </h:body>
 </html>
