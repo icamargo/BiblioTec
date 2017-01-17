@@ -23,6 +23,7 @@ public class ControleLogin implements Serializable{
     private String email;
     private String senha;
     private String perfil;
+    private boolean politicaUso;
     
     private ControlePessoa controlePessoa;
     
@@ -34,6 +35,15 @@ public class ControleLogin implements Serializable{
     
     public ControleLogin(){
     }
+    
+    public String autenticarPolitica() throws IOException{
+    if(politicaUso){
+        return "cadastrarUsuario?faces-redirect=true";
+    } else {
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("aceite a política de uso para continuar!"));
+       return null;
+    }
+}
     
     public String autenticarAcesso() throws IOException{
         controlePessoa = new ControlePessoa();
@@ -214,6 +224,14 @@ public class ControleLogin implements Serializable{
 
     public void setPerfil(String perfil) {
         this.perfil = perfil;
+    }
+    
+        public boolean getPoliticaUso() {
+        return politicaUso;
+    }
+
+    public void setPoliticaUso(boolean politicaUso) {
+        this.politicaUso = politicaUso;
     }
 
     public Administrador getAdministrador() {
