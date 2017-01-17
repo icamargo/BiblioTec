@@ -29,52 +29,80 @@ public class ControlePessoa {
     private BalconistaPrototype balconista = new BalconistaPrototype();
     private BibliotecarioPrototype bibliotecario = new BibliotecarioPrototype();
     
-    private UsuarioPrototype prototipoUsuario = new UsuarioPrototype();
-    private BalconistaPrototype prototipoBalconista = new BalconistaPrototype();
-    private BibliotecarioPrototype prototipoBibliotecario = new BibliotecarioPrototype();
+    private final UsuarioPrototype prototipoUsuario = new UsuarioPrototype();
+    private final BalconistaPrototype prototipoBalconista = new BalconistaPrototype();
+    private final BibliotecarioPrototype prototipoBibliotecario = new BibliotecarioPrototype();
     
     private String filtroNome, filtroCodigo, filtroCpf, filtroRg, filtroTipo;
     
-    private PessoaDAO pessoaDAO = new PessoaDAO();
+    private final PessoaDAO pessoaDAO = new PessoaDAO();
     private List pessoas;
     
     public ControlePessoa() {
     }
     
     public String adicionarUsuario() throws IOException {
-        PessoaPrototype usuarioNovo = prototipoUsuario.clonar();
-        usuarioNovo = usuario;
-        pessoaDAO.add(usuarioNovo);
-        usuario = new UsuarioPrototype();
-        return "interfaceBalconista?faces-redirect=true";
-        
+        String retorno = null;
+        try{
+            if(validarEmail(usuario.getEmail())){
+                PessoaPrototype usuarioNovo = prototipoUsuario.clonar();
+                usuarioNovo = usuario;
+                pessoaDAO.add(usuarioNovo);
+                usuario = new UsuarioPrototype();
+                retorno =  "interfaceBalconista?faces-redirect=true";
+            }
+            else FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Email invalido")); 
+        }catch(Exception ex){          
+        }
+        return retorno;
     }
     
-    public void adicionarUsuarioSemLogin() throws IOException {
-        if(validarEmail(usuario.getEmail())){
-            PessoaPrototype usuarioNovo = prototipoUsuario.clonar();
-            usuarioNovo = usuario;
-            pessoaDAO.addSemLogin(usuarioNovo);
-            usuario = new UsuarioPrototype();
-            FacesContext.getCurrentInstance().getExternalContext().redirect("*/Bibliotec");
+    public String adicionarUsuarioSemLogin() throws IOException {
+        String retorno = null;
+        try{
+            if(validarEmail(usuario.getEmail())){
+                PessoaPrototype usuarioNovo = prototipoUsuario.clonar();
+                usuarioNovo = usuario;
+                pessoaDAO.addSemLogin(usuarioNovo);
+                usuario = new UsuarioPrototype();
+                retorno = "interfaceLogin?faces-redirect=true";
+            }
+            else FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Email invalido"));            
+        }catch(Exception ex){
         }
-        else FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Email invalido"));
+        return retorno;
     }
     
     public String adicionarBalconista() throws IOException{
-        PessoaPrototype balconistaNovo = prototipoBalconista.clonar();
-        balconistaNovo = balconista;
-        pessoaDAO.add(balconistaNovo);
-        balconista = new BalconistaPrototype();
-        return "interfaceAdministrador?faces-redirect=true";
+        String retorno = null;
+        try{
+                if(validarEmail(balconista.getEmail())){
+                PessoaPrototype balconistaNovo = prototipoBalconista.clonar();
+                balconistaNovo = balconista;
+                pessoaDAO.add(balconistaNovo);
+                balconista = new BalconistaPrototype();
+                retorno = "interfaceAdministrador?faces-redirect=true";
+            }
+            else FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Email invalido"));
+        }catch(Exception e){          
+        }
+        return retorno;
     }
     
     public String adicionarBibliotecario() throws IOException{
-        PessoaPrototype bibliotecarioNovo = prototipoBibliotecario.clonar();
-        bibliotecarioNovo = bibliotecario;
-        pessoaDAO.add(bibliotecarioNovo);
-        bibliotecario = new BibliotecarioPrototype();
-        return "interfaceAdministrador?faces-redirect=true";
+        String retorno = null;
+        try{
+            if(validarEmail(bibliotecario.getEmail())){
+                PessoaPrototype bibliotecarioNovo = prototipoBibliotecario.clonar();
+                bibliotecarioNovo = bibliotecario;
+                pessoaDAO.add(bibliotecarioNovo);
+                bibliotecario = new BibliotecarioPrototype();
+                retorno =  "interfaceAdministrador?faces-redirect=true";
+            }
+            else FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Email invalido"));
+        }catch(Exception e){
+        }
+        return retorno;
     }
     
     public static boolean validarEmail(String email){
