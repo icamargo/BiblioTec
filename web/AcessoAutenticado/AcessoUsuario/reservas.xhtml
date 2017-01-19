@@ -57,7 +57,7 @@
             <div class="jumbotron">
                 <h1>Bem vindo #{controleLogin.usuario.nome}, suas reservas</h1>
                 <h:form>
-                    <p:growl autoUpdate="true"/>
+                    <p:messages id="mensagens" autoUpdate="true" />
                     <p:dataTable id="dataTable" value="#{controleLogin.usuario.reservas}" var="reserva"
                                  rows="5" rowsPerPageTemplate="5,10" paginator="true"
                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
