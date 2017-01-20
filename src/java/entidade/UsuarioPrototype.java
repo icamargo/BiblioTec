@@ -22,6 +22,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 @DiscriminatorValue(value = "Usuario")
 public class UsuarioPrototype extends PessoaPrototype{
     private String situacao;
+    private String detalhesInadimplencia;
     @OneToOne (mappedBy = "usuario")
     @Cascade (CascadeType.ALL)
     private Emprestimo emprestimo;
@@ -74,6 +75,14 @@ public class UsuarioPrototype extends PessoaPrototype{
 
     public void setSituacao(String situacao) {
         this.situacao = situacao;
+    }
+
+    public String getDetalhesInadimplencia() {
+        return detalhesInadimplencia;
+    }
+
+    public void setDetalhesInadimplencia(String detalhesInadimplencia) {
+        this.detalhesInadimplencia = detalhesInadimplencia;
     }
 
     public Emprestimo getEmprestimo() {

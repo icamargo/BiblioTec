@@ -213,6 +213,14 @@ public class ControleEmprestimo {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Item nao encontrado no catalogo!"));
         }
     }
+    
+    public Emprestimo buscaUltimoEmprestimo(LivroPrototype livro){
+        Emprestimo emprestimo = new Emprestimo();
+        
+        emprestimo = emprestimoDAO.buscarUltimoEmprestimo(livro);
+        
+        return emprestimo;
+    }
 
     public int getCodigoUsuario() {
         return codigoUsuario;

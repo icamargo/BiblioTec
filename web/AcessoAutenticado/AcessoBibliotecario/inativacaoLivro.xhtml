@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <!--@autor Tatiane-->
+    <h:head>
+        <meta charset="utf-8"></meta>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+        <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+        <title>Inativação de Livro</title>
+        <link rel="icon" href="../../recursos/imagens/icon-livro.png"></link>
+        <link rel="stylesheet" href="../../recursos/css/bootstrap.min.css"></link>
+        <link rel="stylesheet" href="../../recursos/css/ie10-viewport-bug-workaround.css"></link>
+
+    </h:head>
+    <h:body style="background-color: #C1C1C1">
+        <center>
+            <h:form >
+                <div class="panel panel-primary" style="width: 100%;">
+                    <div class="panel-heading" align="center"><h3>Inativação de Livro</h3></div>
+                    <div class="panel-body">
+                        <p:messages id="mensagens" autoUpdate="true" />
+                        <h:panelGrid columns="3">
+                            <p:outputLabel value="Motivo da Inativação: "/>
+                            <p:spacer width="10"/>
+                            <p:selectOneMenu value="#{controleItem.motivoInativacao}">
+                                <f:selectItem itemLabel="" itemValue=""/>
+                                <f:selectItem itemLabel="Danificado por Usuário" itemValue="UsuárioDanificou"/>
+                                <f:selectItem itemLabel="Extraviado por Usuário" itemValue="UsuárioExtraviou"/>
+                                <f:selectItem itemLabel="Tempo de Uso" itemValue="TempoUso"/>
+                                <f:selectItem itemLabel="Outro" itemValue="Outro"/>
+                            </p:selectOneMenu>
+                            
+                            <p:outputLabel value="Detalhes Inativação (Opcional): "/>
+                            <p:spacer width="10"/>
+                            <p:inputTextarea value="#{controleItem.detalhesInativacao}" label="Detalhes Inativação"/>
+                            
+                            <br></br>
+                        </h:panelGrid>
+                        
+                        <p:commandButton value="Inativar" action="#{controleItem.inativarLivro}" class="btn btn-warning">
+                            <p:confirm header="Inativação" message="Confirma Inativação?" icon="ui-icon-alert"/>
+                        </p:commandButton>
+                        
+                        <p:spacer width="30"/>
+                        
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                            <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        </p:confirmDialog>
+                        
+                        <a href="exibirLivro.xhtml" class="btn btn-danger" onclick="return confirm('Se voltar os dados não serão salvos! Deseja continuar?')">Voltar</a>
+                    </div>
+                </div>
+            </h:form>
+        </center>
+
+        <script src="../../recursos/js/bootstrap.min.js"></script>
+        <script src="../../recursos/js/ie-emulation-modes-warning.js"></script>
+    </h:body>
+</html>

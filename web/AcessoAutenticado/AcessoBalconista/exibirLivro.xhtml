@@ -19,16 +19,16 @@
                 <div class="panel panel-primary" style="width: 100%;">
                     <div class="panel-heading" align="center"><h3>Dados do Livro</h3></div>
                     <div class="panel-body">               
-                        <p:messages id="mensagens" showDetail="true" autoUpdate="true" />
+                        <p:messages id="mensagens" autoUpdate="true" />
                         <h:panelGrid columns="2">
                             <p:outputLabel value="Número de Catálogo: "/>
-                            <p:inputText id="numCatalogo" value="#{controleItem.livro.numeroCatalogo}" disabled="true"/>
+                            <p:inputText id="numCatalogo" value="#{controleItem.livro.numeroCatalogo}" readonly="true"/>
 
                             <p:outputLabel value="Nome: "/>
                             <p:inputText id="nomeTxt" value="#{controleItem.livro.nome}" required="true" label="Nome"/>
 
                             <p:outputLabel value="Status: "/>
-                            <p:inputText id="statusTxt" value="#{controleItem.livro.status}" required="true" label="Status" disabled="true"/>
+                            <p:inputText id="statusTxt" value="#{controleItem.livro.status}" required="true" label="Status" readonly="true"/>
 
                             <p:outputLabel value="Edicao: "/>
                             <p:inputText id="edicaoTxt" value="#{controleItem.livro.edicao}"/>

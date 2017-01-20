@@ -22,13 +22,13 @@
                         <p:messages id="mensagens" showDetail="true" autoUpdate="true" />
                         <h:panelGrid columns="2">
                             <p:outputLabel value="Número de Catálogo: "/>
-                            <p:inputText id="numCatalogo" value="#{controleItem.livro.numeroCatalogo}" disabled="true"/>
+                            <p:inputText id="numCatalogo" value="#{controleItem.livro.numeroCatalogo}" readonly="true"/>
 
                             <p:outputLabel value="Nome: "/>
                             <p:inputText id="nomeTxt" value="#{controleItem.livro.nome}" required="true" label="Nome"/>
 
                             <p:outputLabel value="Status: "/>
-                            <p:inputText id="statusTxt" value="#{controleItem.livro.status}" required="true" label="Status" disabled="true"/>
+                            <p:inputText id="statusTxt" value="#{controleItem.livro.status}" required="true" label="Status" readonly="true"/>
 
                             <p:outputLabel value="Edição: "/>
                             <p:inputText id="edicaoTxt" value="#{controleItem.livro.edicao}" required="true" label="Edição"/>

@@ -4,10 +4,13 @@ import entidade.Emprestimo;
 import entidade.LivroPrototype;
 import java.util.List;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.LogicalExpression;
+import org.hibernate.criterion.ProjectionList;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import utils.HibernateUtil;
 /**
@@ -68,4 +71,36 @@ public class EmprestimoDAO {
         trans.commit();
         session.close();
     }
+    
+    public Emprestimo buscarUltimoEmprestimo(LivroPrototype livro){
+        Emprestimo emprestimo = new Emprestimo();
+        //ProjectionList projList = Projections.projectionList();
+        
+        //this.preparaSessao();
+//        cri = session.createCriteria(Emprestimo.class);
+//        cri.add(Restrictions.eq("livro", livro));
+//        projList.add(Projections.max("idEmprestimo"));
+//        cri.setProjection(projList);
+//        emprestimo = (Emprestimo) cri.setMaxResults(1);
+//        emprestimo =(Emprestimo) cri.uniqueResult();
+        
+        this.preparaSessao();
+        
+        String sql = "FROM Emprestimo WHERE dataDevolucao = (SELECT MAX(dataDevolucao) FROM Emprestimo WHERE livro = :livro) AND livro = :livro";
+        Query consulta = session.createQuery(sql);
+        //consulta.setString("livro", String.valueOf(livro.getNumeroCatalogo()));
+        consulta.setParameter("livro",livro);
+        emprestimo = (Emprestimo) consulta.uniqueResult();
+        
+        trans.commit();
+        session.close();
+
+
+
+        //trans.commit();
+        //session.close();
+        
+        return emprestimo;
+    }
+        
 }

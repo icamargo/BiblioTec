@@ -19,16 +19,16 @@
                 <div class="panel panel-primary" style="width: 100%;">
                     <div class="panel-heading" align="center"><h3>Dados do Livro</h3></div>
                     <div class="panel-body">
-                        <p:messages id="mensagens" showDetail="true" autoUpdate="true" />
+                        <p:messages id="mensagens" autoUpdate="true" />
                         <h:panelGrid columns="2">
                             <p:outputLabel value="Número de Catálogo: "/>
-                            <p:inputText id="numCatalogo" value="#{controleItem.livro.numeroCatalogo}" disabled="true"/>
+                            <p:inputText id="numCatalogo" value="#{controleItem.livro.numeroCatalogo}" readonly="true"/>
 
                             <p:outputLabel value="Nome: "/>
                             <p:inputText id="nomeTxt" value="#{controleItem.livro.nome}" required="true" label="Nome"/>
 
                             <p:outputLabel value="Status: "/>
-                            <p:inputText id="statusTxt" value="#{controleItem.livro.status}" required="true" label="Status" disabled="true"/>
+                            <p:inputText id="statusTxt" value="#{controleItem.livro.status}" required="true" label="Status" readonly="true"/>
 
                             <p:outputLabel value="Edição: "/>
                             <p:inputText id="edicaoTxt" value="#{controleItem.livro.edicao}" required="true" label="Edição"/>
@@ -57,18 +57,29 @@
                             <p:outputLabel value="ISBN: "/>
                             <p:inputText value="#{controleItem.livro.isbn}" label="ISBN" required="true"/>
                             
+                            <p:outputLabel value="Motivo Inativação: "/>
+                            <p:inputText value="#{controleItem.livro.motivoInativacao}" readonly="true" label="motivoInativacao"/>
+                            
+                            <p:outputLabel value="Detalhes Inativação: " />
+                            <p:inputTextarea id="detalhesInativacao" value="#{controleItem.livro.detalhesInativacao}" rows="7" readonly="true" label="Detalhes Inativação"/>
+                            
                             <br></br>
                         </h:panelGrid>
-                            <p:commandButton value="Ativar/Inativar" action="#{controleItem.inativarLivro}" class="btn btn-warning">
-                                <p:confirm header="Inativação" message="Confirma Inativação?" icon="ui-icon-alert"/>
-                            </p:commandButton>
                         
+                        <p:commandButton value="Ativar" action="#{controleItem.ativarLivro}" class="btn btn-sucess">
+                            <p:confirm header="Ativação" message="Confirma Ativação?" icon="ui-icon-alert"/>
+                        </p:commandButton>
+
+                        <p:spacer width="30"/>
+                        
+                        <p:commandButton value="Inativar" action="#{controleItem.verificaInativacaoLivro}" class="btn btn-warning"/>
+
                         <p:spacer width="30"/>
 
-                            <p:commandButton value="Atualizar" action="#{controleItem.atualizarLivro}" class="btn btn-success">
-                                <p:confirm header="Atualização" message="Confirma Modificações?" icon="ui-icon-alert"/>
-                            </p:commandButton>
-                        
+                        <p:commandButton value="Atualizar" action="#{controleItem.atualizarLivro}" class="btn btn-success">
+                            <p:confirm header="Atualização" message="Confirma Modificações?" icon="ui-icon-alert"/>
+                        </p:commandButton>
+
                         <p:spacer width="30"/>
 
                             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
