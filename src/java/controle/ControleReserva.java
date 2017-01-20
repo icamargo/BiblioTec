@@ -15,9 +15,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import utils.HibernateUtil;
 /**
  *
  * @author Igor
@@ -29,7 +26,6 @@ public class ControleReserva {
     private List reservas;
     private ItemPrototype item;
     private Reserva novaReserva;
-    private Session session;
     private final ReservaDAO reservaDAO = new ReservaDAO();
     private final EmprestimoDAO emprestimoDAO = new EmprestimoDAO();
     
@@ -103,14 +99,14 @@ public class ControleReserva {
         List<Reserva> todasReservas;
         Calendar dataHoje = Calendar.getInstance();
         todasReservas = reservaDAO.todasReservas();
-        for(Reserva res: todasReservas){
-            if(res.getDataRetirada().compareTo(dataHoje) == -1){
-                res.setStatusReserva("Cancelada");
-                reservaDAO.cancelaReserva(res);
+        for(Reserva reserva: todasReservas){
+            if(reserva.getDataRetirada().compareTo(dataHoje) == -1){
+                reserva.setStatusReserva("Cancelada");
+                reservaDAO.cancelaReserva(reserva);
             }           
         }
     }
-    
+
     public boolean existeReserva(UsuarioPrototype usuario, ItemPrototype item){
         return reservaDAO.buscaReservaExistente(usuario.getCodigo(), item.getNumeroCatalogo()) != null;
     }
@@ -130,5 +126,5 @@ public class ControleReserva {
     public void setItem(ItemPrototype item) {
         this.item = item;
     }
-  
+
 }

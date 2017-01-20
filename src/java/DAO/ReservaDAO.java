@@ -2,6 +2,7 @@ package DAO;
 
 import entidade.PessoaPrototype;
 import entidade.Reserva;
+import entidade.UsuarioPrototype;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.List;
@@ -102,7 +103,7 @@ public class ReservaDAO {
         session.merge(pessoa);
         trans.commit();//confirmaçao
     }
-    
+       
     public Reserva buscarReseva(int livro){
         Reserva reserva = null;       
         this.preparaSessao();

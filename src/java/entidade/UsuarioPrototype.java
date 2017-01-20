@@ -29,8 +29,6 @@ public class UsuarioPrototype extends PessoaPrototype{
     @OneToMany (mappedBy = "usuario")
     @Cascade (CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
-    //@JoinTable(name = "usuario_emprestimo",joinColumns = 
-    //        @JoinColumn(name = "usuario_id"),inverseJoinColumns = @JoinColumn(name = "empretimo_id"))
     private List<Emprestimo> emprestimos;
 
         public List<Emprestimo> getEmprestimos() {
@@ -76,5 +74,13 @@ public class UsuarioPrototype extends PessoaPrototype{
 
     public void setSituacao(String situacao) {
         this.situacao = situacao;
+    }
+
+    public Emprestimo getEmprestimo() {
+        return emprestimo;
+    }
+
+    public void setEmprestimo(Emprestimo emprestimo) {
+        this.emprestimo = emprestimo;
     }
 }

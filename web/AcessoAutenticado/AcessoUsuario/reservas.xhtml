@@ -61,11 +61,11 @@
                     <p:dataTable id="dataTable" value="#{controleLogin.usuario.reservas}" var="reserva"
                                  rows="5" rowsPerPageTemplate="5,10" paginator="true"
                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
-                        <p:column>
+                        <p:column >
                             <f:facet name="header">
-                                Id
+                                Numero do item
                             </f:facet>
-                            <h:outputText value="#{reserva.idReserva}"/>
+                            <h:outputText value="#{reserva.numeroCatalogo}"/>
                         </p:column>
                         <p:column filterBy="#{reserva.statusReserva}">
                             <f:facet name="filter">
