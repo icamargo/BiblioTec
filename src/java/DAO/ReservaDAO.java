@@ -1,6 +1,5 @@
 package DAO;
 
-import entidade.LivroPrototype;
 import entidade.PessoaPrototype;
 import entidade.Reserva;
 import java.io.IOException;
@@ -11,6 +10,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.LogicalExpression;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
@@ -49,7 +49,7 @@ public class ReservaDAO {
         session.close();
     }
     
-    public void add(Reserva reserva) throws IOException{
+    public void novaReserva(Reserva reserva) throws IOException{
         this.preparaSessao();
         session.save(reserva);
         trans.commit();
@@ -70,12 +70,23 @@ public class ReservaDAO {
         return lista;
     }
     
+    public List<Reserva> todasReservas(){
+        this.preparaSessao();       
+        cri = session.createCriteria(Reserva.class);
+        Criterion aberta = Restrictions.eq("statusReserva", "Aberta");
+        Disjunction expOu = Restrictions.or(aberta);
+        cri.add(expOu);
+        lista = cri.list();
+        trans.commit();
+        session.close();
+        return lista;
+    }
+    
     public Calendar getMaiorDataDisponibilizacao(int numeroCatalogo){
         this.preparaSessao();
         cri = session.createCriteria(Reserva.class);
         ProjectionList projList = Projections.projectionList();
-        Calendar maiorDataDisponibilizacao = Calendar.getInstance();
-        
+        Calendar maiorDataDisponibilizacao = Calendar.getInstance();      
         projList.add(Projections.max("dataDisponibilizacao"));
         cri.add(Restrictions.eq("numeroCatalogo", numeroCatalogo));
         cri.setProjection(projList);
@@ -93,29 +104,25 @@ public class ReservaDAO {
     }
     
     public Reserva buscarReseva(int livro){
-        Reserva reserva = null;
-        
+        Reserva reserva = null;       
         this.preparaSessao();
-        cri = session.createCriteria(Reserva.class);
-        
+        cri = session.createCriteria(Reserva.class);       
         cri.add(Restrictions.eq("numeroCatalogo", livro));
         cri.setMaxResults(1);
-        reserva = (Reserva) cri.uniqueResult();
-        
+        reserva = (Reserva) cri.uniqueResult();        
         trans.commit();
         session.close();
         return reserva;
     }
+    
     public Reserva buscaReservaExistente(int codigoUsuario, int numeroCatalogo){
         Reserva reserva = null;
         this.preparaSessao();
-        cri = session.createCriteria(Reserva.class);
-        
+        cri = session.createCriteria(Reserva.class);        
         cri.add(Restrictions.eq("codigoUsuario", codigoUsuario));
         cri.add(Restrictions.eq("numeroCatalogo", numeroCatalogo));
         cri.add(Restrictions.eq("statusReserva", "Aberta"));
-        reserva = (Reserva) cri.uniqueResult();
-        
+        reserva = (Reserva) cri.uniqueResult();      
         trans.commit();
         session.close();
         return reserva;

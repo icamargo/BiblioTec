@@ -2,7 +2,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <!--@autor Tatiane-->
     <h:head>
         <meta charset="utf-8"></meta>
@@ -56,15 +57,42 @@
             </nav>
 
             <div class="jumbotron">
-                <h1>Bem vindo #{controleLogin.usuario.nome}, suas notificações</h1>
-            </div>
+            <h2>Bem vindo #{controleLogin.usuario.nome}, suas notificações</h2>
+            <!--Tabela de notificações do emprestimo-->
+            <br></br>
+            <p:dataTable id="dataTable" value="#{controleLogin.usuario.emprestimos}" var="emprestimo">
+                <p:column headerText="nome">
+                    <h:outputText value="#{emprestimo.livro.nome}"/>
+                </p:column>
+                
+                <p:column headerText="Data de Devolucao">
+                    <h:outputText value="#{emprestimo.dataDevPrevista.time}">
+                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                    </h:outputText>    
+                </p:column> 
+            </p:dataTable>
+            
+            <br></br>
+            <!--Tabela de notificações de reservas-->
+            <p:dataTable value="#{controleLogin.usuario.reservas}" var="reserva">
+                <p:column headerText="Número do catálogo">
+                    <h:outputText value="#{reserva.numeroCatalogo}"/>
+                </p:column>
+                
+                <p:column headerText="Data de retirada da reserva">
+                    <h:outputText value="#{reserva.dataRetirada.time}">
+                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                    </h:outputText>    
+                </p:column>    
+                
+            </p:dataTable>
+            
             <br></br>
             <h:form>
                 <p:commandButton value="Sair" action="#{controleLogin.logout()}" class="btn btn-primary"/>
             </h:form>
-            
-        </div>
-
+            </div>
+        </div>  
         <script src="../../recursos/js/jquery.min.js"></script>
         <script src="../../recursos/js/bootstrap.min.js"></script>
         <script src="../../recursos/js/ie-emulation-modes-warning.js"></script>

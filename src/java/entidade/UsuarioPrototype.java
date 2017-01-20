@@ -34,7 +34,7 @@ public class UsuarioPrototype extends PessoaPrototype{
     //        @JoinColumn(name = "usuario_id"),inverseJoinColumns = @JoinColumn(name = "empretimo_id"))
     private List<Emprestimo> emprestimos;
 
-    public List<Emprestimo> getEmprestimos() {
+        public List<Emprestimo> getEmprestimos() {
         return emprestimos;
     }
 

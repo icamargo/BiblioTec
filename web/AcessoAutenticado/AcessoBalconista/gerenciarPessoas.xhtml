@@ -48,47 +48,49 @@
                     <div class="panel-heading"><h4>Pessoas</h4></div>
                     <div class="panel-body">
                         <p:dataTable value="#{controlePessoa.pessoas}" var="pessoa" id="tabelaAtt">
-                            <p:column>
-                                <f:facet name="header">
+                            <p:column width = "50">
+                                <f:facet name="header" >
                                     Id
                                 </f:facet>
                                 <h:outputText value="#{pessoa.codigo}" />
                             </p:column>
-                            <p:column>
+                            <p:column width = "60">
                                 <f:facet name="header">
                                     Ativo
                                 </f:facet>
                                 <h:outputText value="#{pessoa.ativo}" />
                             </p:column>
-                            <p:column>
+                            <p:column width = "80">
                                 <f:facet name="header">
                                     Tipo
                                 </f:facet>
                                 <h:outputText value="#{pessoa.tipoPessoa}" />
                             </p:column>
-                            <p:column>
+                            <p:column width = "250">
                                 <f:facet name="header">
                                     Nome
                                 </f:facet>
                                 <h:outputText value="#{pessoa.nome}"/>
                             </p:column>
-                            <p:column>
+                            <p:column width = "100">
                                 <f:facet name="header">
                                     CPF
                                 </f:facet>
                                 <h:outputText value="#{pessoa.cpf}"/>
                             </p:column>
-                            <p:column>
+                            <p:column width = "150">
                                 <f:facet name="header">
                                     Email
                                 </f:facet>
                                 <h:outputText value="#{pessoa.email}"/>
                             </p:column>
-                            <p:column>
+                            
+                            <p:column width = "130">
                                 <f:facet name="header">
                                     Ação
                                 </f:facet>
-                                <h:commandButton value="Exibir" action="#{controlePessoa.exibirPessoa(pessoa)}" class="btn btn-info"/>
+                                <h:commandButton value="Histórico" action="#{controlePessoa.exibirHistorico(pessoa)}" class="btn btn-info"/>
+                                <h:commandButton value="Alterar" action="#{controlePessoa.exibirPessoa(pessoa)}" class="btn btn-info"  />
                             </p:column>
                         </p:dataTable>
                     </div>

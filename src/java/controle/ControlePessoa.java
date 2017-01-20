@@ -15,6 +15,9 @@ import entidade.PessoaPrototype;
 import entidade.UsuarioPrototype;
 import java.io.IOException;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -26,48 +29,91 @@ public class ControlePessoa {
     private BalconistaPrototype balconista = new BalconistaPrototype();
     private BibliotecarioPrototype bibliotecario = new BibliotecarioPrototype();
     
-    private UsuarioPrototype prototipoUsuario = new UsuarioPrototype();
-    private BalconistaPrototype prototipoBalconista = new BalconistaPrototype();
-    private BibliotecarioPrototype prototipoBibliotecario = new BibliotecarioPrototype();
+    private final UsuarioPrototype prototipoUsuario = new UsuarioPrototype();
+    private final BalconistaPrototype prototipoBalconista = new BalconistaPrototype();
+    private final BibliotecarioPrototype prototipoBibliotecario = new BibliotecarioPrototype();
     
     private String filtroNome, filtroCodigo, filtroCpf, filtroRg, filtroTipo;
     
-    private PessoaDAO pessoaDAO = new PessoaDAO();
+    private final PessoaDAO pessoaDAO = new PessoaDAO();
     private List pessoas;
     
     public ControlePessoa() {
     }
     
     public String adicionarUsuario() throws IOException {
-        PessoaPrototype usuarioNovo = prototipoUsuario.clonar();
-        usuarioNovo = usuario;
-        pessoaDAO.add(usuarioNovo);
-        usuario = new UsuarioPrototype();
-        return "interfaceBalconista?faces-redirect=true";
+        String retorno = null;
+        try{
+            if(validarEmail(usuario.getEmail())){
+                PessoaPrototype usuarioNovo = prototipoUsuario.clonar();
+                usuarioNovo = usuario;
+                pessoaDAO.add(usuarioNovo);
+                usuario = new UsuarioPrototype();
+                retorno =  "interfaceBalconista?faces-redirect=true";
+            }
+            else FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Email invalido")); 
+        }catch(Exception ex){          
+        }
+        return retorno;
     }
     
     public String adicionarUsuarioSemLogin() throws IOException {
-        PessoaPrototype usuarioNovo = prototipoUsuario.clonar();
-        usuarioNovo = usuario;
-        pessoaDAO.addSemLogin(usuarioNovo);
-        usuario = new UsuarioPrototype();
-        return "interfaceLogin?faces-redirect=true";
+        String retorno = null;
+        try{
+            if(validarEmail(usuario.getEmail())){
+                PessoaPrototype usuarioNovo = prototipoUsuario.clonar();
+                usuarioNovo = usuario;
+                pessoaDAO.addSemLogin(usuarioNovo);
+                usuario = new UsuarioPrototype();
+                retorno = "interfaceLogin?faces-redirect=true";
+            }
+            else FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Email invalido"));            
+        }catch(Exception ex){
+        }
+        return retorno;
     }
     
     public String adicionarBalconista() throws IOException{
-        PessoaPrototype balconistaNovo = prototipoBalconista.clonar();
-        balconistaNovo = balconista;
-        pessoaDAO.add(balconistaNovo);
-        balconista = new BalconistaPrototype();
-        return "interfaceAdministrador?faces-redirect=true";
+        String retorno = null;
+        try{
+                if(validarEmail(balconista.getEmail())){
+                PessoaPrototype balconistaNovo = prototipoBalconista.clonar();
+                balconistaNovo = balconista;
+                pessoaDAO.add(balconistaNovo);
+                balconista = new BalconistaPrototype();
+                retorno = "interfaceAdministrador?faces-redirect=true";
+            }
+            else FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Email invalido"));
+        }catch(Exception e){          
+        }
+        return retorno;
     }
     
     public String adicionarBibliotecario() throws IOException{
-        PessoaPrototype bibliotecarioNovo = prototipoBibliotecario.clonar();
-        bibliotecarioNovo = bibliotecario;
-        pessoaDAO.add(bibliotecarioNovo);
-        bibliotecario = new BibliotecarioPrototype();
-        return "interfaceAdministrador?faces-redirect=true";
+        String retorno = null;
+        try{
+            if(validarEmail(bibliotecario.getEmail())){
+                PessoaPrototype bibliotecarioNovo = prototipoBibliotecario.clonar();
+                bibliotecarioNovo = bibliotecario;
+                pessoaDAO.add(bibliotecarioNovo);
+                bibliotecario = new BibliotecarioPrototype();
+                retorno =  "interfaceAdministrador?faces-redirect=true";
+            }
+            else FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Email invalido"));
+        }catch(Exception e){
+        }
+        return retorno;
+    }
+    
+    public static boolean validarEmail(String email){
+        if((email == null) || (email.trim().length() == 0)){
+            return false;
+        }
+        
+        String emailPattern = "\\b(^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@([A-Za-z0-9-])+(\\.[A-Za-z0-9-]+)*((\\.[A-Za-z0-9]{2,})|(\\.[A-Za-z0-9]{2,}\\.[A-Za-z0-9]{2,}))$)\\b";
+        Pattern pattern = Pattern.compile(emailPattern, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
     }
     
     public List listarPessoas() {
@@ -158,6 +204,17 @@ public class ControlePessoa {
             case "Usuario":
                 this.usuario = (UsuarioPrototype) pessoa;
                 FacesContext.getCurrentInstance().getExternalContext().redirect("exibirUsuario.xhtml");
+                break;
+        }
+    }
+    public void exibirHistorico(PessoaPrototype pessoa) throws IOException{
+        String tipoPessoa;
+        
+        tipoPessoa = pessoa.getTipoPessoa();
+        switch(tipoPessoa){
+            case "Usuario":
+                this.usuario = (UsuarioPrototype) pessoa;
+                FacesContext.getCurrentInstance().getExternalContext().redirect("historicoEmprestimos.xhtml");
                 break;
         }
     }

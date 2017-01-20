@@ -33,10 +33,15 @@ public class ControleReserva {
     private final ReservaDAO reservaDAO = new ReservaDAO();
     private final EmprestimoDAO emprestimoDAO = new EmprestimoDAO();
     
-    public void cancelaReserva(Reserva reservaUser){
-        reservaUser.setStatusReserva("Cancelada");
-        reservaDAO.cancelaReserva(reservaUser);
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Reserva Cancelada com Sucesso!"));    
+    public void cancelaReserva(Reserva reserva){
+        if(reserva.getStatusReserva().equals("Cancelada")){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Reserva ja Cancelada!"));
+        }
+        else{
+            reserva.setStatusReserva("Cancelada");
+            reservaDAO.cancelaReserva(reserva);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Reserva Cancelada com Sucesso!"));           
+        }
     }
     
     public void solicitarReserva(ItemPrototype item, UsuarioPrototype usuario) throws IOException{
@@ -45,21 +50,15 @@ public class ControleReserva {
         if(!(usuario.getSituacao().equals("Inadimplente"))){
             if (!(item.getStatus().equals("Inativo"))){
                 if(!(this.existeReserva(usuario, item))){
-                    context.getExternalContext().redirect("reservasItem.xhtml");
                     this.item = item;
                     this.reservas = reservaDAO.getReservas(item.getNumeroCatalogo());
+                    context.getExternalContext().redirect("reservasItem.xhtml");
                 }
-                else {
-                    context.addMessage(null, new FacesMessage("Você possui uma reserva em aberto para este item!"));
-                }
+                else context.addMessage(null, new FacesMessage("Você possui uma reserva em aberto para este item!"));               
             }
-            else{
-                context.addMessage(null, new FacesMessage("Item Inativo! Não pode ser reservado!"));
-            }
+            else context.addMessage(null, new FacesMessage("Item Inativo! Não pode ser reservado!"));          
         }
-        else{
-            context.addMessage(null, new FacesMessage("Usuário Inadimplente! Regularize a situação para então solicitar uma reserva"));
-        }
+        else context.addMessage(null, new FacesMessage("Usuário Inadimplente! Regularize a situação para então solicitar uma reserva"));
     }
     
     public void criarReserva(UsuarioPrototype usuario) throws IOException {
@@ -68,14 +67,13 @@ public class ControleReserva {
         Calendar dataDisponibilizacao = Calendar.getInstance();
         int numeroCatalogo;
         
-        if (reservas!=null && reservas.size() > 0){
-           
+        if (reservas!=null && reservas.size() > 0){          
             //pega a maior data de disponibilização e acrescenta um dia e o resultado sera a data de retirada da reserva
             dataRetirada.setTime(reservaDAO.getMaiorDataDisponibilizacao(item.getNumeroCatalogo()).getTime());
         }
+        
         if(item.getStatus().equals("Emprestado")){
             Emprestimo emprestimo;
-            
             emprestimo = emprestimoDAO.getEmprestimo((LivroPrototype) item);
             dataRetirada = emprestimo.getDataDevPrevista();
             dataRetirada.add(Calendar.DAY_OF_MONTH, 1);
@@ -92,33 +90,29 @@ public class ControleReserva {
         novaReserva = new Reserva(dataRetirada, dataDisponibilizacao, usuario.getCodigo(), dataReserva, numeroCatalogo, "Aberta");
         
         usuario.getReservas().add(novaReserva);
-        
-        try{
-            session = HibernateUtil.getSessionFactory().getCurrentSession();
-        }catch(HibernateException e){
-            session = HibernateUtil.getSessionFactory().openSession();
-        }
-        session.beginTransaction();
-        session.save(novaReserva);
-        session.update(usuario);
-        session.getTransaction().commit();
-        session.close();
+        reservaDAO.novaReserva(novaReserva);
 
         DateFormat formataData = DateFormat.getDateInstance();
-
         FacesContext context = FacesContext.getCurrentInstance();
-        context.getExternalContext().redirect("gerenciarItens.xhtml");
+        //context.getExternalContext().redirect("gerenciarItens.xhtml");
         context.addMessage(null, new FacesMessage("Reserva Criada com Sucesso! Data de Retirada do Item: " + formataData.format(dataRetirada.getTime())));
 
     }
-    // Método que busca se o usuáiro já possui uma reserva em aberto para um determinado item
+    
+    public void verificaReservas(){
+        List<Reserva> todasReservas;
+        Calendar dataHoje = Calendar.getInstance();
+        todasReservas = reservaDAO.todasReservas();
+        for(Reserva res: todasReservas){
+            if(res.getDataRetirada().compareTo(dataHoje) == -1){
+                res.setStatusReserva("Cancelada");
+                reservaDAO.cancelaReserva(res);
+            }           
+        }
+    }
+    
     public boolean existeReserva(UsuarioPrototype usuario, ItemPrototype item){
-        if(reservaDAO.buscaReservaExistente(usuario.getCodigo(), item.getNumeroCatalogo()) == null){
-           return false; 
-        }
-        else {
-            return true;
-        }
+        return reservaDAO.buscaReservaExistente(usuario.getCodigo(), item.getNumeroCatalogo()) != null;
     }
 
     public List getReservas() {
@@ -136,5 +130,5 @@ public class ControleReserva {
     public void setItem(ItemPrototype item) {
         this.item = item;
     }
-    
+  
 }
