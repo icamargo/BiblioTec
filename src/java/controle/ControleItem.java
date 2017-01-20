@@ -5,12 +5,15 @@
 package controle;
 
 import DAO.ItemDAO;
+import DAO.PessoaDAO;
 import entidade.AcademicoPrototype;
-import entidade.CriteriosClassificacao;
+import entidade.Emprestimo;
 import entidade.ItemPrototype;
 import entidade.LivroPrototype;
 import entidade.PeriodicoPrototype;
+import entidade.UsuarioPrototype;
 import java.io.IOException;
+import java.text.DateFormat;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -43,6 +46,16 @@ public class ControleItem {
     private ControleCritClas controleCritClas = new ControleCritClas();
     private List itens;
     
+    private String motivoInativacao, detalhesInativacao;
+    private ControleEmprestimo controleEmprestimo = new ControleEmprestimo();
+    private PessoaDAO pessoaDAO = new PessoaDAO();
+    
+    private UsuarioPrototype usuario = new UsuarioPrototype();
+    private Emprestimo emprestimo = new Emprestimo();
+    private StringBuffer detalhesInadimplencia = new StringBuffer("Usuário inadimplente por ");
+    private StringBuffer usuarioResponsavel = new StringBuffer("Usuário responsável: ");
+    private DateFormat formataData = DateFormat.getDateInstance();
+    
     public ControleItem(){
     }
     public String adicionarLivro() throws IOException{
@@ -51,7 +64,7 @@ public class ControleItem {
         livroNovo.setCodClassificador(controleCritClas.geraCodClassificador("Livro"));
         itemDAO.add(livroNovo);
         livro = new LivroPrototype();
-        return "interfaceBibliotecario?faces-redirect=true";     
+        return "interfaceBibliotecario?faces-redirect=true";
     }
     public String adicionarAcademico() throws IOException{
         ItemPrototype academicoNovo = prototipoAcademico.clonar();
@@ -159,15 +172,64 @@ public class ControleItem {
         FacesContext.getCurrentInstance().getExternalContext().redirect("gerenciarItens.xhtml");
     }
     
-    public void inativarLivro() throws IOException{
-        if(livro.getStatus().equals("Disponível")){
-            livro.setStatus("Inativo");
+    public String verificaInativacaoLivro(){
+        if(livro.getStatus().equals("Inativo")){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Livro já está Inativo!"));
+            return null;
         }
         else{
-            livro.setStatus("Disponível");
+            return "inativacaoLivro?faces-redirect=true";
         }
-        itemDAO.atualizarItem(livro);
+    }
+    
+    public void ativarLivro() throws IOException{
+        if (!(livro.getStatus().equals("Inativo"))){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Livro já está ativo!"));
+        }
+        else {
+            livro.setStatus("Disponível");
+            itemDAO.atualizarItem(livro);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Livro Ativado com Sucesso!"));
+        }
         FacesContext.getCurrentInstance().getExternalContext().redirect("gerenciarItens.xhtml");
+    }
+    
+    public void inativarLivro() throws IOException {
+        if (!(livro.getStatus().equals("Inativo"))) {
+            if ((motivoInativacao.equals("UsuárioDanificou")) || (motivoInativacao.equals("UsuárioExtraviou"))) {
+                emprestimo = controleEmprestimo.buscaUltimoEmprestimo(livro);
+                usuario = emprestimo.getUsuario();
+                switch (motivoInativacao) {
+                    case "UsuárioDanificou":
+                        detalhesInadimplencia.append("danificar o seguinte item: ");
+                        break;
+                    case "UsuárioExtraviou":
+                        detalhesInadimplencia.append("extraviar o seguinte item: ");
+                        break;
+                }
+                detalhesInadimplencia.append(livro.getNome());
+                detalhesInadimplencia.append(", no emprestimo devolvido em: ");
+                detalhesInadimplencia.append(formataData.format(emprestimo.getDataDevolucao().getTime()));
+                detalhesInadimplencia.append(".");
+
+                usuario.setSituacao("Inadimplente");
+                usuario.setDetalhesInadimplencia(detalhesInadimplencia.toString());
+
+                usuarioResponsavel.append(String.valueOf(usuario.getCodigo()));
+                usuarioResponsavel.append(" - ");
+                usuarioResponsavel.append(usuario.getNome());
+
+                detalhesInativacao = detalhesInativacao + usuarioResponsavel.toString();
+            }
+            livro.setMotivoInativacao(motivoInativacao);
+            livro.setDetalhesInativacao(detalhesInativacao);
+
+            livro.setStatus("Inativo");
+            itemDAO.atualizarItem(livro);
+            pessoaDAO.atualizarPessoa(usuario);
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Livro já está Inativo!"));
+        }
     }
     
     public void inativarPeriodico() throws IOException{
@@ -231,6 +293,22 @@ public class ControleItem {
 
     public void setFiltroTipo(String filtroTipo) {
         this.filtroTipo = filtroTipo;
+    }
+
+    public String getMotivoInativacao() {
+        return motivoInativacao;
+    }
+
+    public void setMotivoInativacao(String motivoInativacao) {
+        this.motivoInativacao = motivoInativacao;
+    }
+
+    public String getDetalhesInativacao() {
+        return detalhesInativacao;
+    }
+
+    public void setDetalhesInativacao(String detalhesInativacao) {
+        this.detalhesInativacao = detalhesInativacao;
     }
     
     

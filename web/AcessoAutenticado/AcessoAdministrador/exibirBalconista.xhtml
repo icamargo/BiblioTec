@@ -24,10 +24,10 @@
                         <p:messages id="mensagens" autoUpdate="true" />
                         <h:panelGrid columns="2">
                             <p:outputLabel value="Código: "/>
-                            <p:inputText value="#{controlePessoa.balconista.codigo}" disabled="true" label="Código"/>
+                            <p:inputText value="#{controlePessoa.balconista.codigo}" readonly="true" label="Código"/>
                             
                             <p:outputLabel value="Ativo: "/>
-                            <p:inputText value="#{controlePessoa.balconista.ativo}" disabled="true" label="Ativo"/>
+                            <p:inputText value="#{controlePessoa.balconista.ativo}" readonly="true" label="Ativo"/>
                             
                             <p:outputLabel value="Nome: "/>
                             <p:inputText id="nomeTxt" value="#{controlePessoa.balconista.nome}" required="true" label="Nome"/>
