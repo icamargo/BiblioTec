@@ -9,7 +9,7 @@
         <meta charset="utf-8"></meta>
         <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
         <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
-        <title>Inativação de Artigo Acadêmico</title>
+        <title>Inativação de Periódico</title>
         <link rel="icon" href="../../recursos/imagens/icon-livro.png"></link>
         <link rel="stylesheet" href="../../recursos/css/bootstrap.min.css"></link>
         <link rel="stylesheet" href="../../recursos/css/ie10-viewport-bug-workaround.css"></link>
@@ -19,7 +19,7 @@
         <center>
             <h:form >
                 <div class="panel panel-primary" style="width: 100%;">
-                    <div class="panel-heading" align="center"><h3>Inativação de Artigo Acadêmico</h3></div>
+                    <div class="panel-heading" align="center"><h3>Inativação de Periódico</h3></div>
                     <div class="panel-body">
                         <p:messages id="mensagens" autoUpdate="true" />
                         <h:panelGrid columns="3">
@@ -38,7 +38,7 @@
                             <br></br>
                         </h:panelGrid>
                         
-                        <p:commandButton value="Inativar" action="#{controleItem.inativarAcademico}" class="btn btn-warning">
+                        <p:commandButton value="Inativar" action="#{controleItem.inativarPeriodico}" class="btn btn-warning">
                             <p:confirm header="Inativação" message="Confirma Inativação?" icon="ui-icon-alert"/>
                         </p:commandButton>
                         
@@ -49,7 +49,7 @@
                             <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
                         </p:confirmDialog>
                         
-                        <a href="exibirAcademico.xhtml" class="btn btn-danger" onclick="return confirm('Se voltar os dados não serão salvos! Deseja continuar?')">Voltar</a>
+                        <a href="exibirPeriodico.xhtml" class="btn btn-danger" onclick="return confirm('Se voltar os dados não serão salvos! Deseja continuar?')">Voltar</a>
                     </div>
                 </div>
             </h:form>

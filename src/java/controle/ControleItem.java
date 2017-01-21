@@ -252,15 +252,35 @@ public class ControleItem {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Livro Inativado com Sucesso!"));
     }
     
-    public void inativarPeriodico() throws IOException{
-        if(periodico.getStatus().equals("Disponível")){
-            periodico.setStatus("Inativo");
+    public String verificaInativacaoPeriodico(){
+        if(periodico.getStatus().equals("Inativo")){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Periódico já está Inativo!"));
+            return null;
         }
         else{
-            periodico.setStatus("Disponível");
+            return "inativacaoPeriodico?faces-redirect=true";
         }
+    }
+    
+    public void ativarPeriodico() throws IOException{
+        if (!(periodico.getStatus().equals("Inativo"))){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Periódico já está ativo!"));
+        }
+        else {
+            periodico.setStatus("Disponível");
+            periodico.setMotivoInativacao("");
+            periodico.setDetalhesInativacao("");
+            itemDAO.atualizarItem(periodico);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Periódico Ativado com Sucesso!"));
+        }
+    }
+    
+    public void inativarPeriodico() throws IOException{
+        periodico.setMotivoInativacao(motivoInativacao);
+        periodico.setDetalhesInativacao(detalhesInativacao);
+        periodico.setStatus("Inativo");
         itemDAO.atualizarItem(periodico);
-        FacesContext.getCurrentInstance().getExternalContext().redirect("gerenciarItens.xhtml");
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Periódico Inativado com Sucesso!"));
     }
     
     public LivroPrototype getLivro() {
