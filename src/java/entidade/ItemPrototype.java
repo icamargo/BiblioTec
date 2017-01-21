@@ -30,6 +30,7 @@ public abstract class ItemPrototype implements Serializable{
     protected String tipoItem;
     protected float valorMultaDiaAtraso;
     protected String codClassificador;
+    protected String motivoInativacao, detalhesInativacao;
     
     public ItemPrototype(){
     }
@@ -137,5 +138,21 @@ public abstract class ItemPrototype implements Serializable{
 
     public void setCodClassificador(String codClassificador) {
         this.codClassificador = codClassificador;
+    }
+    
+    public String getMotivoInativacao() {
+        return motivoInativacao;
+    }
+
+    public void setMotivoInativacao(String motivoInativacao) {
+        this.motivoInativacao = motivoInativacao;
+    }
+
+    public String getDetalhesInativacao() {
+        return detalhesInativacao;
+    }
+
+    public void setDetalhesInativacao(String detalhesInativacao) {
+        this.detalhesInativacao = detalhesInativacao;
     }
 }

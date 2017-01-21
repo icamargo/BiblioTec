@@ -13,7 +13,7 @@ import org.hibernate.annotations.CascadeType;
 @Entity
 @DiscriminatorValue (value = "Livro")
 public class LivroPrototype extends ItemPrototype{
-    private String isbn, motivoInativacao, detalhesInativacao;
+    private String isbn;
     @OneToOne (mappedBy = "livro")
     @Cascade (CascadeType.ALL)
     private Emprestimo emprestimo;
@@ -36,22 +36,6 @@ public class LivroPrototype extends ItemPrototype{
 
     public void setIsbn(String isbn) {
         this.isbn = isbn;
-    }
-
-    public String getMotivoInativacao() {
-        return motivoInativacao;
-    }
-
-    public void setMotivoInativacao(String motivoInativacao) {
-        this.motivoInativacao = motivoInativacao;
-    }
-
-    public String getDetalhesInativacao() {
-        return detalhesInativacao;
-    }
-
-    public void setDetalhesInativacao(String detalhesInativacao) {
-        this.detalhesInativacao = detalhesInativacao;
     }
 
     public Emprestimo getEmprestimo() {
