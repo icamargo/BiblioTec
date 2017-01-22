@@ -60,7 +60,7 @@ public class PessoaDAO {
         this.preparaSessao();
         Criteria cri = session.createCriteria(PessoaPrototype.class);
         cri.add(Restrictions.eq("codigo", vlrFiltroCodigo));
-        this.lista = cri.list();
+        this.lista = eliminaDuplicidade(cri.list());
         trans.commit();
         session.close();
         return lista;
@@ -70,7 +70,7 @@ public class PessoaDAO {
         this.preparaSessao();
         Criteria cri = session.createCriteria(UsuarioPrototype.class);
         cri.add(Restrictions.eq("codigo", vlrFiltroCodigo));
-        this.listaUsuarios = cri.list();
+        this.listaUsuarios = eliminaDuplicidade(cri.list());
         trans.commit();
         session.close();
         return listaUsuarios;
@@ -80,7 +80,7 @@ public class PessoaDAO {
         this.preparaSessao();
         Criteria cri = session.createCriteria(PessoaPrototype.class);
         cri.add(Restrictions.eq("cpf", vlrFiltroCpf));
-        this.lista = cri.list();
+        this.lista = eliminaDuplicidade(cri.list());
         trans.commit();
         session.close();
         return lista;
@@ -90,7 +90,7 @@ public class PessoaDAO {
         this.preparaSessao();
         Criteria cri = session.createCriteria(UsuarioPrototype.class);
         cri.add(Restrictions.eq("cpf", vlrFiltroCpf));
-        this.listaUsuarios = cri.list();
+        this.listaUsuarios = eliminaDuplicidade(cri.list());
         trans.commit();
         session.close();
         return listaUsuarios;
@@ -100,7 +100,7 @@ public class PessoaDAO {
         this.preparaSessao();
         Criteria cri = session.createCriteria(PessoaPrototype.class);
         cri.add(Restrictions.eq("rg", vlrFiltroRg));
-        this.lista = cri.list();
+        this.lista = eliminaDuplicidade(cri.list());
         trans.commit();
         session.close();
         return lista;
@@ -110,7 +110,7 @@ public class PessoaDAO {
         this.preparaSessao();
         Criteria cri = session.createCriteria(UsuarioPrototype.class);
         cri.add(Restrictions.eq("rg", vlrFiltroRg));
-        this.listaUsuarios = cri.list();
+        this.listaUsuarios = eliminaDuplicidade(cri.list());
         trans.commit();
         session.close();
         return listaUsuarios;
@@ -120,7 +120,7 @@ public class PessoaDAO {
         this.preparaSessao();
         Criteria cri = session.createCriteria(UsuarioPrototype.class);
         cri.add(Restrictions.ilike("nome", vlrFiltroNome, MatchMode.ANYWHERE));
-        this.listaUsuarios = cri.list();
+        this.listaUsuarios = eliminaDuplicidade(cri.list());
         trans.commit();
         session.close();
         return listaUsuarios;
@@ -129,7 +129,7 @@ public class PessoaDAO {
     public List<UsuarioPrototype> getUsuarios(){
         this.preparaSessao();
         Criteria cri = session.createCriteria(UsuarioPrototype.class);
-        this.listaUsuarios = cri.list();
+        this.listaUsuarios = eliminaDuplicidade(cri.list());
         trans.commit();
         session.close();
         return listaUsuarios;
@@ -174,7 +174,7 @@ public class PessoaDAO {
                 break;
             
         }
-        this.lista = duplicidade(cri.list());
+        this.lista = eliminaDuplicidade(cri.list());
         trans.commit();
         session.close();
         return lista;
@@ -187,7 +187,7 @@ public class PessoaDAO {
         session.close();
     }
     
-    private List<PessoaPrototype> duplicidade(List<PessoaPrototype> pessoas){
+    private List<PessoaPrototype> eliminaDuplicidade(List<PessoaPrototype> pessoas){
         List<PessoaPrototype> pessoasTemp = new ArrayList<PessoaPrototype>();
         for (int i = 0; i < pessoas.size(); i++) {
             if(!pessoasTemp.contains(pessoas.get(i))){
