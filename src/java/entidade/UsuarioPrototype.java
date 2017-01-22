@@ -6,6 +6,7 @@ package entidade;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -22,6 +23,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 @DiscriminatorValue(value = "Usuario")
 public class UsuarioPrototype extends PessoaPrototype{
     private String situacao;
+    @Column (columnDefinition = "TEXT")
     private String detalhesInadimplencia;
     @OneToOne (mappedBy = "usuario")
     @Cascade (CascadeType.ALL)

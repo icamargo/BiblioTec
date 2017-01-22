@@ -161,15 +161,36 @@ public class ControleItem {
     public void atualizarPeriodico() throws IOException{
         itemDAO.atualizarItem(periodico);
     }
-    public void inativarAcademico() throws IOException{
-        if(academico.getStatus().equals("Disponível")){
-            academico.setStatus("Inativo");
+    
+    public String verificaInativacaoAcademico(){
+        if(academico.getStatus().equals("Inativo")){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Artigo Acadêmico já está Inativo!"));
+            return null;
         }
         else{
-            academico.setStatus("Disponível");
+            return "inativacaoAcademico?faces-redirect=true";
         }
+    }
+    
+    public void ativarAcademico() throws IOException{
+        if (!(academico.getStatus().equals("Inativo"))){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Artigo Acadêmico já está ativo!"));
+        }
+        else {
+            academico.setStatus("Disponível");
+            academico.setMotivoInativacao("");
+            academico.setDetalhesInativacao("");
+            itemDAO.atualizarItem(academico);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Artigo Acadêmico Ativado com Sucesso!"));
+        }
+    }
+    
+    public void inativarAcademico() throws IOException{
+        academico.setMotivoInativacao(motivoInativacao);
+        academico.setDetalhesInativacao(detalhesInativacao);
+        academico.setStatus("Inativo");
         itemDAO.atualizarItem(academico);
-        FacesContext.getCurrentInstance().getExternalContext().redirect("gerenciarItens.xhtml");
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Artigo Acadêmico Inativado com Sucesso!"));
     }
     
     public String verificaInativacaoLivro(){
@@ -188,59 +209,91 @@ public class ControleItem {
         }
         else {
             livro.setStatus("Disponível");
+            livro.setMotivoInativacao("");
+            livro.setDetalhesInativacao("");
             itemDAO.atualizarItem(livro);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Livro Ativado com Sucesso!"));
         }
-        FacesContext.getCurrentInstance().getExternalContext().redirect("gerenciarItens.xhtml");
     }
     
     public void inativarLivro() throws IOException {
-        if (!(livro.getStatus().equals("Inativo"))) {
-            if ((motivoInativacao.equals("UsuárioDanificou")) || (motivoInativacao.equals("UsuárioExtraviou"))) {
-                emprestimo = controleEmprestimo.buscaUltimoEmprestimo(livro);
-                usuario = emprestimo.getUsuario();
-                switch (motivoInativacao) {
-                    case "UsuárioDanificou":
-                        detalhesInadimplencia.append("danificar o seguinte item: ");
-                        break;
-                    case "UsuárioExtraviou":
-                        detalhesInadimplencia.append("extraviar o seguinte item: ");
-                        break;
-                }
-                detalhesInadimplencia.append(livro.getNome());
-                detalhesInadimplencia.append(", no emprestimo devolvido em: ");
-                detalhesInadimplencia.append(formataData.format(emprestimo.getDataDevolucao().getTime()));
-                detalhesInadimplencia.append(".");
-
-                usuario.setSituacao("Inadimplente");
-                usuario.setDetalhesInadimplencia(detalhesInadimplencia.toString());
-
-                usuarioResponsavel.append(String.valueOf(usuario.getCodigo()));
-                usuarioResponsavel.append(" - ");
-                usuarioResponsavel.append(usuario.getNome());
-
-                detalhesInativacao = detalhesInativacao + usuarioResponsavel.toString();
-            }
-            livro.setMotivoInativacao(motivoInativacao);
+        if ((motivoInativacao.equals("UsuárioDanificou")) || (motivoInativacao.equals("UsuárioExtraviou"))) {
+            this.insereInadimplenciaUsuario();
+            detalhesInativacao = detalhesInativacao + "." + "\n" + usuarioResponsavel.toString();
             livro.setDetalhesInativacao(detalhesInativacao);
+        }
+        else{
+            livro.setDetalhesInativacao(detalhesInativacao + ".");
+        }
+        livro.setMotivoInativacao(motivoInativacao);
+        livro.setStatus("Inativo");
+        itemDAO.atualizarItem(livro);   
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Livro Inativado com Sucesso!"));
+    }
+    
+    private void insereInadimplenciaUsuario() throws IOException {
+        emprestimo = controleEmprestimo.buscaUltimoEmprestimo(livro);
+        usuario = emprestimo.getUsuario();
+        String detalhesInadimplenciaAnterior = usuario.getDetalhesInadimplencia();
+        
+        switch (motivoInativacao) {
+            case "UsuárioDanificou":
+                detalhesInadimplencia.append("danificar o seguinte item: ");
+                break;
+            case "UsuárioExtraviou":
+                detalhesInadimplencia.append("extraviar o seguinte item: ");
+                break;
+        }
+        detalhesInadimplencia.append(livro.getNome());
+        detalhesInadimplencia.append(", no emprestimo devolvido em: ");
+        detalhesInadimplencia.append(formataData.format(emprestimo.getDataDevolucao().getTime()));
+        detalhesInadimplencia.append(".");
 
-            livro.setStatus("Inativo");
-            itemDAO.atualizarItem(livro);
-            pessoaDAO.atualizarPessoa(usuario);
-        } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Livro já está Inativo!"));
+        if (usuario.getSituacao().equals("Inadimplente")) {
+            usuario.setDetalhesInadimplencia(detalhesInadimplenciaAnterior + "\n\n" + detalhesInadimplencia.toString());
+        }
+        else{
+            usuario.setDetalhesInadimplencia(detalhesInadimplencia.toString());
+        }
+        
+        usuario.setSituacao("Inadimplente");
+
+        usuarioResponsavel.append(String.valueOf(usuario.getCodigo()));
+        usuarioResponsavel.append(" - ");
+        usuarioResponsavel.append(usuario.getNome());
+
+        pessoaDAO.atualizarPessoa(usuario);
+    }
+    
+    public String verificaInativacaoPeriodico(){
+        if(periodico.getStatus().equals("Inativo")){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Periódico já está Inativo!"));
+            return null;
+        }
+        else{
+            return "inativacaoPeriodico?faces-redirect=true";
+        }
+    }
+    
+    public void ativarPeriodico() throws IOException{
+        if (!(periodico.getStatus().equals("Inativo"))){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Periódico já está ativo!"));
+        }
+        else {
+            periodico.setStatus("Disponível");
+            periodico.setMotivoInativacao("");
+            periodico.setDetalhesInativacao("");
+            itemDAO.atualizarItem(periodico);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Periódico Ativado com Sucesso!"));
         }
     }
     
     public void inativarPeriodico() throws IOException{
-        if(periodico.getStatus().equals("Disponível")){
-            periodico.setStatus("Inativo");
-        }
-        else{
-            periodico.setStatus("Disponível");
-        }
+        periodico.setMotivoInativacao(motivoInativacao);
+        periodico.setDetalhesInativacao(detalhesInativacao);
+        periodico.setStatus("Inativo");
         itemDAO.atualizarItem(periodico);
-        FacesContext.getCurrentInstance().getExternalContext().redirect("gerenciarItens.xhtml");
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Periódico Inativado com Sucesso!"));
     }
     
     public LivroPrototype getLivro() {

@@ -30,7 +30,7 @@
                             <p:inputText value="#{controlePessoa.usuario.situacao}" readonly="true" label="Situação"/>
                             
                             <p:outputLabel value="Ativo: "/>
-                            <p:inputText value="#{controlePessoa.usuario.ativo}" disabled="true" lang="Ativo"/>
+                            <p:inputText value="#{controlePessoa.usuario.ativo}" readonly="true" lang="Ativo"/>
                             
                             <p:outputLabel value="Nome: "/>
                             <p:inputText id="nomeTxt" value="#{controlePessoa.usuario.nome}" required="true" label="Nome"/>
@@ -61,6 +61,7 @@
                             
                             <p:outputLabel value="Detalhes Inadimplência: " />
                             <p:inputTextarea id="detalhesInadimplencia" value="#{controlePessoa.usuario.detalhesInadimplencia}" rows="7" readonly="true" label="Detalhes Inadimplência"/>
+                            <p:tooltip for="detalhesInadimplencia" value="Clique para exibir detalhes" trackMouse="true"/>
                             
                             <br></br>
                         </h:panelGrid>

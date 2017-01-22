@@ -56,12 +56,22 @@
 
                             <p:outputLabel value="Modalidade: "/>
                             <p:inputText value="#{controleItem.academico.modalidade}" label="Modalidade" required="true"/>
+                            
+                            <p:outputLabel value="Motivo Inativação: "/>
+                            <p:inputText value="#{controleItem.academico.motivoInativacao}" readonly="true" label="motivoInativacao"/>
+                            
+                            <p:outputLabel value="Detalhes Inativação: " />
+                            <p:inputTextarea id="detalhesInativacao" value="#{controleItem.academico.detalhesInativacao}" rows="7" readonly="true" label="Detalhes Inativação"/>
 
                             <br></br>
                         </h:panelGrid>
-                        <p:commandButton value="Ativar/Inativar" action="#{controleItem.inativarAcademico}" class="btn btn-warning">
-                            <p:confirm header="Inativação" message="Confirma Inativação?" icon="ui-icon-alert"/>
+                        <p:commandButton value="Ativar" action="#{controleItem.ativarAcademico}" class="btn btn-sucess">
+                            <p:confirm header="Ativação" message="Confirma Ativação?" icon="ui-icon-alert"/>
                         </p:commandButton>
+                        
+                        <p:spacer width="30"/>
+                        
+                        <p:commandButton value="Inativar" action="#{controleItem.verificaInativacaoAcademico}" class="btn btn-warning"/>
 
                         <p:spacer width="30"/>
 

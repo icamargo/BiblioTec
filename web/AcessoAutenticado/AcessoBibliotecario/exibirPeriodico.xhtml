@@ -60,24 +60,33 @@
                             <p:outputLabel value="Tipo: "/>
                             <p:inputText value="#{controleItem.periodico.tipoPeriodico}" label="Tipo" required="true"/>
                             
+                            <p:outputLabel value="Motivo Inativação: "/>
+                            <p:inputText value="#{controleItem.periodico.motivoInativacao}" readonly="true" label="motivoInativacao"/>
+                            
+                            <p:outputLabel value="Detalhes Inativação: " />
+                            <p:inputTextarea id="detalhesInativacao" value="#{controleItem.periodico.detalhesInativacao}" rows="7" readonly="true" label="Detalhes Inativação"/>
+                            
                             <br></br>
                         </h:panelGrid>
-                            <p:commandButton value="Ativar/Inativar" action="#{controleItem.inativarPeriodico}" class="btn btn-warning">
-                                <p:confirm header="Inativação" message="Confirma Inativação?" icon="ui-icon-alert"/>
-                            </p:commandButton>
-                        
+                        <p:commandButton value="Ativar" action="#{controleItem.ativarPeriodico}" class="btn btn-sucess">
+                            <p:confirm header="Ativação" message="Confirma Ativação?" icon="ui-icon-alert"/>
+                        </p:commandButton>
+
                         <p:spacer width="30"/>
 
-                            <p:commandButton value="Atualizar" action="#{controleItem.atualizarPeriodico}" class="btn btn-success">
-                                <p:confirm header="Atualização" message="Confirma Modificações?" icon="ui-icon-alert"/>
-                            </p:commandButton>
-                        
+                        <p:commandButton value="Inativar" action="#{controleItem.verificaInativacaoPeriodico}" class="btn btn-warning"/>
                         <p:spacer width="30"/>
 
-                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                                <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                                <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-                            </p:confirmDialog>
+                        <p:commandButton value="Atualizar" action="#{controleItem.atualizarPeriodico}" class="btn btn-success">
+                            <p:confirm header="Atualização" message="Confirma Modificações?" icon="ui-icon-alert"/>
+                        </p:commandButton>
+
+                        <p:spacer width="30"/>
+
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                            <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        </p:confirmDialog>
 
                         <a href="gerenciarItens.xhtml" class="btn btn-danger" onclick="return confirm('Se voltar os dados não serão salvos! Deseja continuar?')">Voltar</a>
                     </div>

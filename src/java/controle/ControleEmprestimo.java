@@ -38,9 +38,9 @@ public class ControleEmprestimo {
     public void devolucao() throws IOException{
         UsuarioPrototype usuario;
         LivroPrototype livro, livro2, livro3;
-
-        Calendar dataDevolvido = Calendar.getInstance();
         
+        Calendar dataDevolvido = Calendar.getInstance();
+       
         usuario = pessoaDAO.getUsuarioPorCodigo(codigoUsuario);
         emprestimo = emprestimoDAO.ultimoEmprestomoUsuario(usuario);
         
@@ -62,7 +62,7 @@ public class ControleEmprestimo {
         }
         
         if (!((emprestimo.getDataDevPrevista().compareTo(dataDevolvido) == 1) || (emprestimo.getDataDevPrevista().compareTo(dataDevolvido) == 0))){
-            //this.insereInadimplenciaUsuario(usuario, emprestimo, emprestimo.getDataDevPrevista(), dataDevolvido);
+            this.insereInadimplenciaUsuario(usuario, emprestimo, emprestimo.getDataDevPrevista(), dataDevolvido);
              int calculaMulta;
              calculaMulta = dataDevolvido.get(Calendar.DAY_OF_MONTH) - emprestimo.getDataDevPrevista().get(Calendar.DAY_OF_MONTH);
              FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Atraso na entrega multa de: R$"
@@ -86,6 +86,7 @@ public class ControleEmprestimo {
             if(l==0) livro = emprestimo.getLivro();
             if(l==1) livro = emprestimo.getLivro2();
             if(l==2) livro = emprestimo.getLivro3();
+            
             novoDetalhesInadimplencia.append(String.valueOf(livro.getNumeroCatalogo()));
             novoDetalhesInadimplencia.append(" - ");
             novoDetalhesInadimplencia.append(livro.getNome());
