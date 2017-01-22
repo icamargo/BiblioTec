@@ -77,6 +77,12 @@
                         
                         <p:spacer width="30"/>
                         
+                        <p:commandButton action="#{controlePessoa.removerInadimplenciaUsuario}" value="Remover Inadimplência" class="btn btn-info">
+                            <p:confirm header="Remover Inadimplência" message="Deseja remover a inadimplência desse usuário para que ele volte a utilizar os serviços da biblioteca?" icon="ui-icon-alert"/>
+                        </p:commandButton>
+                        
+                        <p:spacer width="30"/>
+                        
                         <a href="gerenciarPessoas.xhtml" class="btn btn-danger" onclick="return confirm('Se voltar os dados não serão salvos! Deseja continuar?')">Voltar</a>
                         
                         <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">

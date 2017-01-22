@@ -278,6 +278,13 @@ public class ControlePessoa {
         return perfil;
     }
     
+    public void removerInadimplenciaUsuario() throws IOException{
+        usuario.setSituacao("Normal");
+        usuario.setDetalhesInadimplencia("");
+        pessoaDAO.atualizarPessoa(usuario);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Inadimplência removida!"));
+    }
+    
 
     public UsuarioPrototype getUsuario() {
         return usuario;
