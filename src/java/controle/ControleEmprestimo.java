@@ -9,6 +9,7 @@ import entidade.LivroPrototype;
 import entidade.Reserva;
 import entidade.UsuarioPrototype;
 import java.io.IOException;
+import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.List;
 import javax.faces.application.FacesMessage;
@@ -42,34 +43,58 @@ public class ControleEmprestimo {
             emprestimos = emprestimoDAO.getEmprestimos(livro);
             if(emprestimos!=null && emprestimos.size() > 0){
                 for(Emprestimo emp: emprestimos){
-                    if(emp.getStatusEmprestimo().equals("Aberto")){
+                    if (emp.getStatusEmprestimo().equals("Aberto")) {
                         emprestimo = emp;
                         livro.setStatus("Disponível");
                         itemDAO.atualizarItem(livro);
-                        if(emprestimo.getDataDevPrevista().compareTo(dataDevolvido) == 1 || emprestimo.getDataDevPrevista().compareTo(dataDevolvido) == 0){
-
-                            emprestimo.setStatusEmprestimo("Fechado");
-                            emprestimo.setDataDevolucao(dataDevolvido);
-                            emprestimoDAO.atualizar(emprestimo); 
-                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Item devolvido com sucesso!"));
-                            //FacesContext.getCurrentInstance().getExternalContext().redirect("interfaceBalconista.xhtml");
-                        }
-                        else{
+                        if (!((emprestimo.getDataDevPrevista().compareTo(dataDevolvido) == 1) || (emprestimo.getDataDevPrevista().compareTo(dataDevolvido) == 0))) {
                             usuario = emprestimo.getUsuario();
-                            usuario.setSituacao("Inadimplente");
-                            pessoaDAO.atualizarPessoa(usuario);
+                            this.insereInadimplenciaUsuario(usuario, livro, emprestimo.getDataDevPrevista(), dataDevolvido);
                             int calculaMulta;
                             calculaMulta = dataDevolvido.get(Calendar.DAY_OF_MONTH) - emprestimo.getDataDevPrevista().get(Calendar.DAY_OF_MONTH);
-                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Atraso na entrega multa de: R$" +
-                                     livro.getValorMultaDiaAtraso() * calculaMulta));
-                        }  
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Atraso na entrega multa de: R$"
+                                    + livro.getValorMultaDiaAtraso() * calculaMulta));
+
+                        }
+                        emprestimo.setStatusEmprestimo("Fechado");
+                        emprestimo.setDataDevolucao(dataDevolvido);
+                        emprestimoDAO.atualizar(emprestimo);
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Item devolvido com sucesso!"));
                     }
                 }                      
             }
         }
         else{
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Item nao encontrado"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Item não encontrado"));
         }
+    }
+    
+    private void insereInadimplenciaUsuario(UsuarioPrototype usuario, LivroPrototype livro, Calendar dataPrevista, Calendar dataDevolucao) throws IOException {
+        StringBuffer novoDetalhesInadimplencia = new StringBuffer("Usuário inadimplente por realizar devolução em atraso do seguinte item: ");
+        String detalhesInadimplenciaAnterior = usuario.getDetalhesInadimplencia();
+        DateFormat formataData = DateFormat.getDateInstance();
+
+        novoDetalhesInadimplencia.append(String.valueOf(livro.getNumeroCatalogo()));
+        novoDetalhesInadimplencia.append(" - ");
+        novoDetalhesInadimplencia.append(livro.getNome());
+        novoDetalhesInadimplencia.append(".");
+        novoDetalhesInadimplencia.append("\n");
+        novoDetalhesInadimplencia.append("Data na qual devia ser devolvido: ");
+        novoDetalhesInadimplencia.append(formataData.format(dataPrevista.getTime()));
+        novoDetalhesInadimplencia.append(".");
+        novoDetalhesInadimplencia.append("\n");
+        novoDetalhesInadimplencia.append("Data que foi feita a devolução: ");
+        novoDetalhesInadimplencia.append(formataData.format(dataDevolucao.getTime()));
+        novoDetalhesInadimplencia.append(".");
+
+        if (usuario.getSituacao().equals("Inadimplente")) {
+            usuario.setDetalhesInadimplencia(detalhesInadimplenciaAnterior + "\n\n" + novoDetalhesInadimplencia.toString());
+        }
+        else{
+            usuario.setDetalhesInadimplencia(novoDetalhesInadimplencia.toString());
+        }
+        usuario.setSituacao("Inadimplente");
+        pessoaDAO.atualizarPessoa(usuario);
     }
     
     public void renovar(Emprestimo emprestimo) throws IOException{

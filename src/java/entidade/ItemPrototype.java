@@ -30,7 +30,9 @@ public abstract class ItemPrototype implements Serializable{
     protected String tipoItem;
     protected float valorMultaDiaAtraso;
     protected String codClassificador;
-    protected String motivoInativacao, detalhesInativacao;
+    protected String motivoInativacao;
+    @Column (columnDefinition = "TEXT")
+    protected String detalhesInativacao;
     
     public ItemPrototype(){
     }

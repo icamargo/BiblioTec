@@ -218,38 +218,51 @@ public class ControleItem {
     
     public void inativarLivro() throws IOException {
         if ((motivoInativacao.equals("UsuárioDanificou")) || (motivoInativacao.equals("UsuárioExtraviou"))) {
-            emprestimo = controleEmprestimo.buscaUltimoEmprestimo(livro);
-            usuario = emprestimo.getUsuario();
-            switch (motivoInativacao) {
-                case "UsuárioDanificou":
-                    detalhesInadimplencia.append("danificar o seguinte item: ");
-                    break;
-                case "UsuárioExtraviou":
-                    detalhesInadimplencia.append("extraviar o seguinte item: ");
-                    break;
-            }
-            detalhesInadimplencia.append(livro.getNome());
-            detalhesInadimplencia.append(", no emprestimo devolvido em: ");
-            detalhesInadimplencia.append(formataData.format(emprestimo.getDataDevolucao().getTime()));
-            detalhesInadimplencia.append(".");
-
-            usuario.setSituacao("Inadimplente");
-            usuario.setDetalhesInadimplencia(detalhesInadimplencia.toString());
-
-            usuarioResponsavel.append(String.valueOf(usuario.getCodigo()));
-            usuarioResponsavel.append(" - ");
-            usuarioResponsavel.append(usuario.getNome());
-
-            detalhesInativacao = detalhesInativacao + usuarioResponsavel.toString();
-            
-            pessoaDAO.atualizarPessoa(usuario);
+            this.insereInadimplenciaUsuario();
+            detalhesInativacao = detalhesInativacao + "." + "\n" + usuarioResponsavel.toString();
+            livro.setDetalhesInativacao(detalhesInativacao);
+        }
+        else{
+            livro.setDetalhesInativacao(detalhesInativacao + ".");
         }
         livro.setMotivoInativacao(motivoInativacao);
-        livro.setDetalhesInativacao(detalhesInativacao);
-
         livro.setStatus("Inativo");
         itemDAO.atualizarItem(livro);   
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Livro Inativado com Sucesso!"));
+    }
+    
+    private void insereInadimplenciaUsuario() throws IOException {
+        emprestimo = controleEmprestimo.buscaUltimoEmprestimo(livro);
+        usuario = emprestimo.getUsuario();
+        String detalhesInadimplenciaAnterior = usuario.getDetalhesInadimplencia();
+        
+        switch (motivoInativacao) {
+            case "UsuárioDanificou":
+                detalhesInadimplencia.append("danificar o seguinte item: ");
+                break;
+            case "UsuárioExtraviou":
+                detalhesInadimplencia.append("extraviar o seguinte item: ");
+                break;
+        }
+        detalhesInadimplencia.append(livro.getNome());
+        detalhesInadimplencia.append(", no emprestimo devolvido em: ");
+        detalhesInadimplencia.append(formataData.format(emprestimo.getDataDevolucao().getTime()));
+        detalhesInadimplencia.append(".");
+
+        if (usuario.getSituacao().equals("Inadimplente")) {
+            usuario.setDetalhesInadimplencia(detalhesInadimplenciaAnterior + "\n\n" + detalhesInadimplencia.toString());
+        }
+        else{
+            usuario.setDetalhesInadimplencia(detalhesInadimplencia.toString());
+        }
+        
+        usuario.setSituacao("Inadimplente");
+
+        usuarioResponsavel.append(String.valueOf(usuario.getCodigo()));
+        usuarioResponsavel.append(" - ");
+        usuarioResponsavel.append(usuario.getNome());
+
+        pessoaDAO.atualizarPessoa(usuario);
     }
     
     public String verificaInativacaoPeriodico(){
