@@ -56,7 +56,7 @@ public class ItemDAO {
         this.preparaSessao();
         Criteria cri = session.createCriteria(ItemPrototype.class);
         cri.add(Restrictions.eq("numeroCatalogo", vlrFiltroNumCatalogo));
-        this.lista = cri.list();
+        this.lista = eliminaDuplicidade(cri.list());
         trans.commit();
         session.close();
         return lista;
@@ -151,7 +151,7 @@ public class ItemDAO {
                 cri.add(Restrictions.ilike("autor", vlrFiltroAutor, MatchMode.ANYWHERE));
                 break;                        
         }
-        this.lista = cri.list();
+        this.lista = eliminaDuplicidade(cri.list());
         trans.commit();
         session.close();
         return lista;
@@ -177,6 +177,15 @@ public class ItemDAO {
         session.close();
         return preCodigos;
     }
-
+    
+    private List<ItemPrototype> eliminaDuplicidade(List<ItemPrototype> itens){
+        List<ItemPrototype> itensTemp = new ArrayList<ItemPrototype>();
+        for (int i = 0; i < itens.size(); i++) {
+            if(!itensTemp.contains(itens.get(i))){
+                itensTemp.add(itens.get(i));
+            }
+        }
+        return itensTemp;
+    }
     
 }

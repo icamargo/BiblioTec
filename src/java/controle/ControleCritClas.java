@@ -233,5 +233,37 @@ public class ControleCritClas {
     public void setDescAssunto(String descAssunto) {
         this.descAssunto = descAssunto;
     }
+    
+    /**
+     * <p:outputLabel value="Área de Conhecimento: "/>
+                            <h:panelGrid columns="5">
+                                <p:selectOneMenu id="areasConhec" value="#{controleCritClas.areaConhec}" 
+                                                 converter="critClasConverter"
+                                                  filter="true" filterMatchMode="startsWith">
+                                    <f:selectItem itemLabel="Selecione..."/>
+                                    <f:selectItems value="#{controleCritClas.areasConhec}" var="areaConhec" 
+                                                   itemLabel="#{areaConhec.descCriterio}" itemValue="#{areaConhec}"/>
+                                </p:selectOneMenu>
+                                <p:spacer width="30"/>
+                                <a href="cadastrarAreaConhecimento.xhtml" class="btn btn-info">Cadastrar</a>
+                                <p:spacer width="30"/>
+                                <p:commandButton value="Atualizar" onclick="self.location.reload()"/>
+                            </h:panelGrid>
+                            
+                            <p:outputLabel value="Assunto: "/>
+                            <h:panelGrid columns="5">
+                                <p:selectOneMenu id="assuntos" value="#{controleCritClas.assunto}" 
+                                                 converter="critClasConverter"
+                                                 filter="true" filterMatchMode="startsWith">
+                                    <f:selectItem itemLabel="Selecione..."/>
+                                    <f:selectItems value="#{controleCritClas.assuntos}" var="assunto" 
+                                                   itemLabel="#{assunto.descCriterio}" itemValue="#{assunto}"/>
+                                </p:selectOneMenu>
+                                <p:spacer width="30"/>
+                                <a href="cadastrarAssunto.xhtml" class="btn btn-info">Cadastrar</a>
+                                <p:spacer width="30"/>
+                                <p:commandButton value="Atualizar" onclick="self.location.reload()"/>
+                            </h:panelGrid>
+     */
 
 }

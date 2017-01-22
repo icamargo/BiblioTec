@@ -61,7 +61,7 @@ public class ControleItem {
     public String adicionarLivro() throws IOException{
         ItemPrototype livroNovo = prototipoLivro.clonar();
         livroNovo = livro;
-        livroNovo.setCodClassificador(controleCritClas.geraCodClassificador("Livro"));
+        //livroNovo.setCodClassificador(controleCritClas.geraCodClassificador("Livro"));
         itemDAO.add(livroNovo);
         livro = new LivroPrototype();
         return "interfaceBibliotecario?faces-redirect=true";
