@@ -32,7 +32,7 @@ public class UsuarioPrototype extends PessoaPrototype{
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Emprestimo> emprestimos;
 
-        public List<Emprestimo> getEmprestimos() {
+    public List<Emprestimo> getEmprestimos() {
         return emprestimos;
     }
 

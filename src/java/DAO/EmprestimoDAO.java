@@ -2,6 +2,7 @@ package DAO;
 
 import entidade.Emprestimo;
 import entidade.LivroPrototype;
+import entidade.UsuarioPrototype;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -29,7 +30,7 @@ public class EmprestimoDAO {
         }
         trans = session.beginTransaction();
     }
-    public void add(Emprestimo emprestimo){
+    public void novoEmprestimo(Emprestimo emprestimo){
         this.preparaSessao();
         session.persist(emprestimo);
         trans.commit();
@@ -72,34 +73,32 @@ public class EmprestimoDAO {
         session.close();
     }
     
+    public Emprestimo ultimoEmprestomoUsuario(UsuarioPrototype usuario){
+        Emprestimo emprestimo;
+        this.preparaSessao();
+        String sql = "FROM Emprestimo WHERE dataDevPrevista = (SELECT MAX(dataDevPrevista) FROM Emprestimo WHERE usuario = :usuario) AND usuario = :usuario";
+        Query consulta = session.createQuery(sql);
+        consulta.setParameter("usuario", usuario);
+        emprestimo = (Emprestimo) consulta.uniqueResult();
+        
+        trans.commit();
+        session.close();
+        return emprestimo;
+    }
+    
     public Emprestimo buscarUltimoEmprestimo(LivroPrototype livro){
         Emprestimo emprestimo = new Emprestimo();
-        //ProjectionList projList = Projections.projectionList();
-        
-        //this.preparaSessao();
-//        cri = session.createCriteria(Emprestimo.class);
-//        cri.add(Restrictions.eq("livro", livro));
-//        projList.add(Projections.max("idEmprestimo"));
-//        cri.setProjection(projList);
-//        emprestimo = (Emprestimo) cri.setMaxResults(1);
-//        emprestimo =(Emprestimo) cri.uniqueResult();
-        
+
         this.preparaSessao();
         
         String sql = "FROM Emprestimo WHERE dataDevolucao = (SELECT MAX(dataDevolucao) FROM Emprestimo WHERE livro = :livro) AND livro = :livro";
         Query consulta = session.createQuery(sql);
-        //consulta.setString("livro", String.valueOf(livro.getNumeroCatalogo()));
         consulta.setParameter("livro",livro);
         emprestimo = (Emprestimo) consulta.uniqueResult();
         
         trans.commit();
         session.close();
 
-
-
-        //trans.commit();
-        //session.close();
-        
         return emprestimo;
     }
         

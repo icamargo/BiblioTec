@@ -30,8 +30,12 @@ public class Emprestimo implements Serializable {
     @JoinColumn (name = "idLivro")
     private LivroPrototype livro;
     @OneToOne
-    @JoinColumn (name = "idPeriodico")
-    private PeriodicoPrototype periodico;
+    @JoinColumn (name = "idLivro2")
+    private LivroPrototype livro2;
+    @OneToOne
+    @JoinColumn (name = "idLivro3")
+    private LivroPrototype livro3;
+    private int numeroLivros;
     @Temporal(TemporalType.DATE)
     private Calendar dataEmprestimo;
     @Temporal(TemporalType.DATE)
@@ -106,11 +110,27 @@ public class Emprestimo implements Serializable {
         this.livro = livro;
     }
 
-    public PeriodicoPrototype getPeriodico() {
-        return periodico;
+    public LivroPrototype getLivro2() {
+        return livro2;
     }
 
-    public void setPeriodico(PeriodicoPrototype periodico) {
-        this.periodico = periodico;
+    public void setLivro2(LivroPrototype livro2) {
+        this.livro2 = livro2;
+    }
+
+    public LivroPrototype getLivro3() {
+        return livro3;
+    }
+
+    public void setLivro3(LivroPrototype livro3) {
+        this.livro3 = livro3;
+    }
+
+    public int getNumeroLivros() {
+        return numeroLivros;
+    }
+
+    public void setNumeroLivros(int numeroLivros) {
+        this.numeroLivros = numeroLivros;
     }
 }

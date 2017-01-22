@@ -1,6 +1,7 @@
 package controle;
 
 import DAO.EmprestimoDAO;
+import DAO.PessoaDAO;
 import DAO.ReservaDAO;
 import entidade.Emprestimo;
 import entidade.ItemPrototype;
@@ -28,6 +29,7 @@ public class ControleReserva {
     private Reserva novaReserva;
     private final ReservaDAO reservaDAO = new ReservaDAO();
     private final EmprestimoDAO emprestimoDAO = new EmprestimoDAO();
+    private final PessoaDAO pessoaDAO = new PessoaDAO();
     
     public void cancelaReserva(Reserva reserva){
         if(reserva.getStatusReserva().equals("Cancelada")){
@@ -85,12 +87,12 @@ public class ControleReserva {
         
         novaReserva = new Reserva(dataRetirada, dataDisponibilizacao, usuario.getCodigo(), dataReserva, numeroCatalogo, "Aberta");
         
-        usuario.getReservas().add(novaReserva);
         reservaDAO.novaReserva(novaReserva);
+        usuario.getReservas().add(novaReserva);
+        pessoaDAO.atualizarPessoa(usuario);
 
         DateFormat formataData = DateFormat.getDateInstance();
         FacesContext context = FacesContext.getCurrentInstance();
-        //context.getExternalContext().redirect("gerenciarItens.xhtml");
         context.addMessage(null, new FacesMessage("Reserva Criada com Sucesso! Data de Retirada do Item: " + formataData.format(dataRetirada.getTime())));
 
     }

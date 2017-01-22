@@ -15,9 +15,9 @@ import org.hibernate.annotations.CascadeType;
 public class PeriodicoPrototype extends ItemPrototype{
     private String issn;
     private String tipoPeriodico;
-    @OneToOne (mappedBy = "periodico")
-    @Cascade (CascadeType.ALL)
-    private Emprestimo emprestimo;
+    //@OneToOne (mappedBy = "periodico")
+    //@Cascade (CascadeType.ALL)
+    //private Emprestimo emprestimo;
     
     public PeriodicoPrototype(){
         status = "Disponível";
@@ -47,11 +47,11 @@ public class PeriodicoPrototype extends ItemPrototype{
         this.tipoPeriodico = tipoPeriodico;
     }
 
-    public Emprestimo getEmprestimo() {
-        return emprestimo;
-    }
+    //public Emprestimo getEmprestimo() {
+    //    return emprestimo;
+    //}
 
-    public void setEmprestimo(Emprestimo emprestimo) {
-        this.emprestimo = emprestimo;
-    }
+    //public void setEmprestimo(Emprestimo emprestimo) {
+    //    this.emprestimo = emprestimo;
+    //}
 }
