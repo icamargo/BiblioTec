@@ -168,7 +168,7 @@ public class ControleLogin implements Serializable{
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
         FacesContext.getCurrentInstance().getExternalContext().redirect("/BiblioTec");            
     }
-
+    
     public UsuarioPrototype getUsuario() {
         if(usuario == null){
             usuario = new UsuarioPrototype();

@@ -15,12 +15,20 @@ import entidade.PessoaPrototype;
 import entidade.UsuarioPrototype;
 import java.io.IOException;
 import java.util.List;
+import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.mail.Message;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.MimeMessage;
+import org.apache.commons.mail.EmailException;
+import org.apache.commons.mail.SimpleEmail;
 
 @ManagedBean(name = "controlePessoa")
 @SessionScoped
@@ -64,6 +72,7 @@ public class ControlePessoa {
                 PessoaPrototype usuarioNovo = prototipoUsuario.clonar();
                 usuarioNovo = usuario;
                 pessoaDAO.addSemLogin(usuarioNovo);
+                //send_email();
                 usuario = new UsuarioPrototype();
                 retorno = "interfaceLogin?faces-redirect=true";
             }
@@ -277,6 +286,76 @@ public class ControlePessoa {
         
         return perfil;
     }
+    
+    public void sendEmail() throws EmailException {
+    
+        SimpleEmail emailEnvia = new SimpleEmail();
+
+        emailEnvia.setHostName("smtp.gmail.com");
+        emailEnvia.setSmtpPort(587);
+        emailEnvia.addTo(usuario.getEmail(), usuario.getNome());
+        emailEnvia.setFrom("bibliotecsistema@gmail.com", "Bibliotec");
+        emailEnvia.setSubject("Bem-vindo ao Bibliotec");
+        //Adicione a mensagem do email
+        emailEnvia.setMsg("Obrigado por se cadastrar.\nSeu login é: " + usuario.getEmail() + 
+                "\nSua senha é: " + usuario.getSenha() +
+                "\nSeja bem vindo! Bibliotec");
+      
+        emailEnvia.setSSL(true);
+        emailEnvia.setAuthentication("bibliotecsistema@gmail.com", "iss2016b");
+        System.out.println("enviando... para " + usuario.getEmail());
+        emailEnvia.send();
+        System.out.println("Email enviado!");
+    }
+    
+    private void send_email() throws Exception {
+    
+    Properties props = new Properties();
+    props.put("mail.smtp.host", "smtp.gmail.com");
+    props.put("mail.from", "bibliotecsistema@gmail.com");
+    props.put("mail.smtp.starttls.enable", "true");
+    props.put("mail.smtp.ssl.enable", "false");
+    props.put("mail.smtp.auth", "true");
+    props.put("mail.smtp.port", "465");
+
+    Authenticator authenticator = new Authenticator();
+    props.setProperty("mail.smtp.submitter", authenticator.getPasswordAuthentication().getUserName());
+
+    Session session = Session.getInstance(props, authenticator);
+    MimeMessage msg = new MimeMessage(session);
+    msg.setFrom();
+    msg.setRecipients(Message.RecipientType.TO, usuario.getEmail());  
+    // also tried @gmail.com
+    msg.setSubject("Bem-vindo ao BiblioTec");
+    //msg.setSentDate(new Date());
+    msg.setText("Obrigado por se cadastrar.\nSeu login é: " + usuario.getEmail() + 
+                "\nSua senha é: " + usuario.getSenha() +
+                "\nSeja bem vindo! BiblioTec");
+
+    Transport transport;
+    transport = session.getTransport("smtp");
+    transport.connect();
+    msg.saveChanges(); 
+    transport.sendMessage(msg, msg.getAllRecipients());
+    System.out.println("Email enviado!");
+    transport.close();
+}
+
+private class Authenticator extends javax.mail.Authenticator {
+   
+    private final PasswordAuthentication passwordAuthentication;
+    public Authenticator() {
+        
+        String username = "bibliotecsistema@gmail.com";
+        String password = "iss2016b";
+        passwordAuthentication = new PasswordAuthentication(username, password);
+    }
+    
+    @Override
+    protected PasswordAuthentication getPasswordAuthentication() {
+        return passwordAuthentication;
+    }
+}
     
 
     public UsuarioPrototype getUsuario() {

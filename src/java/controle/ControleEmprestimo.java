@@ -37,45 +37,65 @@ public class ControleEmprestimo {
     
     public void devolucao() throws IOException{
         UsuarioPrototype usuario;
-        LivroPrototype livro, livro2, livro3;
-        
+        Emprestimo emprestimo1 = null;
+        LivroPrototype livro = null, livro2 = null, livro3 = null;      
         Calendar dataDevolvido = Calendar.getInstance();
        
-        usuario = pessoaDAO.getUsuarioPorCodigo(codigoUsuario);
-        emprestimo = emprestimoDAO.ultimoEmprestomoUsuario(usuario);
+        usuario = pessoaDAO.getUsuarioPorCodigo(codigoUsuario);       
+      
+        if(numeroCatalogo!=0) livro = itemDAO.getLivroPorNumeroCatalogo(numeroCatalogo);
+        if(numeroCatalogo2!=0) livro2 = itemDAO.getLivroPorNumeroCatalogo(numeroCatalogo2);
+        if(numeroCatalogo3!=0) livro3 = itemDAO.getLivroPorNumeroCatalogo(numeroCatalogo3);
         
-        livro = emprestimo.getLivro();
-        livro2 = emprestimo.getLivro2();
-        livro3 = emprestimo.getLivro3();
+        emprestimo1 = emprestimoDAO.ultimoEmprestimoUsuario(usuario, livro, livro2, livro3);
+
+        if(emprestimo1!=null){
+            if(emprestimo1.getLivro()!= null){
+                livro = emprestimo1.getLivro();
+                livro.setStatus("Disponível");
+                itemDAO.atualizarItem(livro);
+            }
+            if(emprestimo1.getLivro2()!= null){
+                livro2 = emprestimo1.getLivro2();
+                livro2.setStatus("Disponível");
+                itemDAO.atualizarItem(livro2);
+            }
+            if(emprestimo1.getLivro3()!= null){
+                livro3 = emprestimo1.getLivro3();
+                livro3.setStatus("Disponível");
+                itemDAO.atualizarItem(livro3);
+            }
+        }else{
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Emprestimo não encontrado!"));
+        }
+     
+        if(emprestimo1.getDataDevPrevista().compareTo(dataDevolvido) == -1){
+            int calculaMulta;
+            float multaLivros = multa(emprestimo1);
+            calculaMulta = dataDevolvido.get(Calendar.DAY_OF_MONTH) - emprestimo1.getDataDevPrevista().get(Calendar.DAY_OF_MONTH);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Atraso na entrega multa de: R$"
+                                     + multaLivros * calculaMulta));
+            this.insereInadimplenciaUsuario(usuario, emprestimo1, emprestimo1.getDataDevPrevista(), dataDevolvido, multaLivros);
+        }
         
-        if(livro.getNumeroCatalogo() == numeroCatalogo){
-            livro.setStatus("Disponível");
-            itemDAO.atualizarItem(livro);
-        }
-        if(livro.getNumeroCatalogo() == numeroCatalogo2){
-            livro.setStatus("Disponível");
-            itemDAO.atualizarItem(livro2);
-        }
-        if(livro.getNumeroCatalogo() == numeroCatalogo3){
-            livro.setStatus("Disponível");
-            itemDAO.atualizarItem(livro3);
-        }
-        
-        if (!((emprestimo.getDataDevPrevista().compareTo(dataDevolvido) == 1) || (emprestimo.getDataDevPrevista().compareTo(dataDevolvido) == 0))){
-            this.insereInadimplenciaUsuario(usuario, emprestimo, emprestimo.getDataDevPrevista(), dataDevolvido);
-             int calculaMulta;
-             calculaMulta = dataDevolvido.get(Calendar.DAY_OF_MONTH) - emprestimo.getDataDevPrevista().get(Calendar.DAY_OF_MONTH);
-             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Atraso na entrega multa de: R$"
-                                     + livro.getValorMultaDiaAtraso() * calculaMulta));
-        }
-        emprestimo.setStatusEmprestimo("Fechado");
-        emprestimo.setDataDevolucao(dataDevolvido);
-        emprestimoDAO.atualizar(emprestimo);
+        emprestimo1.setStatusEmprestimo("Fechado");
+        emprestimo1.setDataDevolucao(dataDevolvido);
+        emprestimoDAO.atualizar(emprestimo1);
+        codigoUsuario = 0; numeroCatalogo = 0; numeroCatalogo2 = 0; numeroCatalogo3 = 0;
+        emprestimo1 = null;
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Item devolvido com sucesso!"));
         
     }
     
-    private void insereInadimplenciaUsuario(UsuarioPrototype usuario, Emprestimo emprestimo, Calendar dataPrevista, Calendar dataDevolucao) throws IOException {
+    public float multa(Emprestimo emprestimo){
+        float valor1 = 0, valor2 = 0, valor3 = 0;
+        if(emprestimo.getLivro()!=null) valor1 = emprestimo.getLivro().getValorMultaDiaAtraso();
+        if(emprestimo.getLivro2()!=null) valor2 = emprestimo.getLivro2().getValorMultaDiaAtraso();
+        if(emprestimo.getLivro3()!=null) valor3 = emprestimo.getLivro3().getValorMultaDiaAtraso();
+        return (valor1 + valor2 + valor3);
+    }
+    
+    private void insereInadimplenciaUsuario(UsuarioPrototype usuario, Emprestimo emprestimo, Calendar dataPrevista, Calendar dataDevolucao, float multa) throws IOException {
         StringBuffer novoDetalhesInadimplencia = new StringBuffer("Usuário inadimplente por realizar devolução em atraso dos seguintes itens: ");
         String detalhesInadimplenciaAnterior = usuario.getDetalhesInadimplencia();
         DateFormat formataData = DateFormat.getDateInstance();
@@ -100,6 +120,7 @@ public class ControleEmprestimo {
             novoDetalhesInadimplencia.append(formataData.format(dataDevolucao.getTime()));
             novoDetalhesInadimplencia.append(".\n");
         }
+        novoDetalhesInadimplencia.append("Valor da multa R$: ").append(multa);
         if (usuario.getSituacao().equals("Inadimplente")) {
             usuario.setDetalhesInadimplencia(detalhesInadimplenciaAnterior + "\n\n" + novoDetalhesInadimplencia.toString());
         }else{
@@ -169,10 +190,12 @@ public class ControleEmprestimo {
         LivroPrototype livro;
         UsuarioPrototype usuario;
         List<Reserva> reservas;
+        livrosPorCodigo.clear();
         int numeroLivros;
         feito = true;
         Calendar dataEmprestimo = Calendar.getInstance();
         Calendar dataDevPrevista = Calendar.getInstance();
+        
         
         livrosPorCodigo.add(numeroCatalogo);
         if(numeroCatalogo2 != 0) livrosPorCodigo.add(numeroCatalogo2);
@@ -235,7 +258,9 @@ public class ControleEmprestimo {
             emprestimoDAO.novoEmprestimo(emprestimo);           
             usuario.getEmprestimos().add(emprestimo);
             pessoaDAO.atualizarPessoa(usuario);
-
+            
+            codigoUsuario = 0; numeroCatalogo = 0; numeroCatalogo2 = 0; numeroCatalogo3 = 0;
+            emprestimo = null;
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Emprestimo realizado com sucesso"));
             
         }else FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Emprestimo não realizado"));

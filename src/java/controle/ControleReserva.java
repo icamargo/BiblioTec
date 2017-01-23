@@ -73,6 +73,12 @@ public class ControleReserva {
         if(item.getStatus().equals("Emprestado")){
             Emprestimo emprestimo;
             emprestimo = emprestimoDAO.getEmprestimo((LivroPrototype) item);
+            if(emprestimo == null){
+                emprestimo = emprestimoDAO.getEmprestimo2((LivroPrototype) item);
+                if(emprestimo == null){
+                    emprestimo = emprestimoDAO.getEmprestimo3((LivroPrototype) item);
+                }
+            }
             dataRetirada = emprestimo.getDataDevPrevista();
             dataRetirada.add(Calendar.DAY_OF_MONTH, 1);
         }

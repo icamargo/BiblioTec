@@ -9,6 +9,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.LogicalExpression;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
@@ -38,14 +39,44 @@ public class EmprestimoDAO {
     }
     
     public Emprestimo getEmprestimo (LivroPrototype livro){
-        Emprestimo emprestimo = null;
+        Emprestimo emprestimo;
         
         this.preparaSessao();
         Criteria crit = session.createCriteria(Emprestimo.class);
         
         crit.add(Restrictions.eq("livro", livro));
-        crit.setMaxResults(1);
-        emprestimo = (Emprestimo) crit.uniqueResult();
+        crit.setMaxResults(1);        
+        emprestimo = (Emprestimo) crit.uniqueResult(); 
+        
+        trans.commit();
+        session.close();
+        return emprestimo;
+    }
+    
+     public Emprestimo getEmprestimo2 (LivroPrototype livro){
+        Emprestimo emprestimo;
+        
+        this.preparaSessao();
+        Criteria crit = session.createCriteria(Emprestimo.class);
+        
+        crit.add(Restrictions.eq("livro2", livro));
+        crit.setMaxResults(1);        
+        emprestimo = (Emprestimo) crit.uniqueResult(); 
+        
+        trans.commit();
+        session.close();
+        return emprestimo;
+    }
+     
+      public Emprestimo getEmprestimo3 (LivroPrototype livro){
+        Emprestimo emprestimo;
+        
+        this.preparaSessao();
+        Criteria crit = session.createCriteria(Emprestimo.class);
+        
+        crit.add(Restrictions.eq("livro3", livro));
+        crit.setMaxResults(1);        
+        emprestimo = (Emprestimo) crit.uniqueResult(); 
         
         trans.commit();
         session.close();
@@ -73,14 +104,19 @@ public class EmprestimoDAO {
         session.close();
     }
     
-    public Emprestimo ultimoEmprestomoUsuario(UsuarioPrototype usuario){
-        Emprestimo emprestimo;
+    public Emprestimo ultimoEmprestimoUsuario(UsuarioPrototype usuario, LivroPrototype l1,LivroPrototype l2,LivroPrototype l3){
         this.preparaSessao();
-        String sql = "FROM Emprestimo WHERE dataDevPrevista = (SELECT MAX(dataDevPrevista) FROM Emprestimo WHERE usuario = :usuario) AND usuario = :usuario";
-        Query consulta = session.createQuery(sql);
-        consulta.setParameter("usuario", usuario);
-        emprestimo = (Emprestimo) consulta.uniqueResult();
-        
+        Emprestimo emprestimo;
+        cri = session.createCriteria(Emprestimo.class);
+        cri.add(Restrictions.eq("usuario", usuario));
+        cri.add(Restrictions.eq("livro", l1));
+        cri.add(Restrictions.eq("livro2", l2));
+        cri.add(Restrictions.eq("livro3", l3));
+        Criterion aberto =  Restrictions.eq("statusEmprestimo", "Aberto");
+        Disjunction expOu = Restrictions.or(aberto);
+        cri.add(expOu);
+        cri.setMaxResults(1);
+        emprestimo = (Emprestimo) cri.uniqueResult(); 
         trans.commit();
         session.close();
         return emprestimo;
