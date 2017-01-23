@@ -104,19 +104,20 @@ public class EmprestimoDAO {
         session.close();
     }
     
-    public Emprestimo ultimoEmprestimoUsuario(UsuarioPrototype usuario, LivroPrototype l1,LivroPrototype l2,LivroPrototype l3){
+    public Emprestimo ultimoEmprestimoUsuario(UsuarioPrototype usuario, LivroPrototype livro, LivroPrototype livro2, LivroPrototype livro3, String status){
         this.preparaSessao();
         Emprestimo emprestimo;
-        cri = session.createCriteria(Emprestimo.class);
-        cri.add(Restrictions.eq("usuario", usuario));
-        cri.add(Restrictions.eq("livro", l1));
-        cri.add(Restrictions.eq("livro2", l2));
-        cri.add(Restrictions.eq("livro3", l3));
-        Criterion aberto =  Restrictions.eq("statusEmprestimo", "Aberto");
-        Disjunction expOu = Restrictions.or(aberto);
-        cri.add(expOu);
-        cri.setMaxResults(1);
-        emprestimo = (Emprestimo) cri.uniqueResult(); 
+        
+        Criteria crit = session.createCriteria(Emprestimo.class);
+        
+        if(livro != null)crit.add(Restrictions.eq("livro", livro));
+        if(livro2 != null)crit.add(Restrictions.eq("livro2", livro2));
+        if(livro3 != null)crit.add(Restrictions.eq("livro3", livro3));
+        crit.add(Restrictions.eq("usuario", usuario));
+        crit.add(Restrictions.eq("statusEmprestimo", status));
+        crit.setMaxResults(1);        
+        emprestimo = (Emprestimo) crit.uniqueResult(); 
+        
         trans.commit();
         session.close();
         return emprestimo;

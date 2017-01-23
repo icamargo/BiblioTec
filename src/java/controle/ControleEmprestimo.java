@@ -37,7 +37,6 @@ public class ControleEmprestimo {
     
     public void devolucao() throws IOException{
         UsuarioPrototype usuario;
-        Emprestimo emprestimo1 = null;
         LivroPrototype livro = null, livro2 = null, livro3 = null;      
         Calendar dataDevolvido = Calendar.getInstance();
        
@@ -47,21 +46,21 @@ public class ControleEmprestimo {
         if(numeroCatalogo2!=0) livro2 = itemDAO.getLivroPorNumeroCatalogo(numeroCatalogo2);
         if(numeroCatalogo3!=0) livro3 = itemDAO.getLivroPorNumeroCatalogo(numeroCatalogo3);
         
-        emprestimo1 = emprestimoDAO.ultimoEmprestimoUsuario(usuario, livro, livro2, livro3);
+        emprestimo = emprestimoDAO.ultimoEmprestimoUsuario(usuario, livro, livro2, livro3,"Aberto");
 
-        if(emprestimo1!=null){
-            if(emprestimo1.getLivro()!= null){
-                livro = emprestimo1.getLivro();
+        if(emprestimo!=null){
+            if(emprestimo.getLivro()!= null){
+                livro = emprestimo.getLivro();
                 livro.setStatus("Disponível");
                 itemDAO.atualizarItem(livro);
             }
-            if(emprestimo1.getLivro2()!= null){
-                livro2 = emprestimo1.getLivro2();
+            if(emprestimo.getLivro2()!= null){
+                livro2 = emprestimo.getLivro2();
                 livro2.setStatus("Disponível");
                 itemDAO.atualizarItem(livro2);
             }
-            if(emprestimo1.getLivro3()!= null){
-                livro3 = emprestimo1.getLivro3();
+            if(emprestimo.getLivro3()!= null){
+                livro3 = emprestimo.getLivro3();
                 livro3.setStatus("Disponível");
                 itemDAO.atualizarItem(livro3);
             }
@@ -69,20 +68,20 @@ public class ControleEmprestimo {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Emprestimo não encontrado!"));
         }
      
-        if(emprestimo1.getDataDevPrevista().compareTo(dataDevolvido) == -1){
+        if(!((emprestimo.getDataDevPrevista().compareTo(dataDevolvido) == 1) || (emprestimo.getDataDevPrevista().compareTo(dataDevolvido) == 0))){
             int calculaMulta;
-            float multaLivros = multa(emprestimo1);
-            calculaMulta = dataDevolvido.get(Calendar.DAY_OF_MONTH) - emprestimo1.getDataDevPrevista().get(Calendar.DAY_OF_MONTH);
+            float multaLivros = multa(emprestimo);
+            calculaMulta = dataDevolvido.get(Calendar.DAY_OF_MONTH) - emprestimo.getDataDevPrevista().get(Calendar.DAY_OF_MONTH);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Atraso na entrega multa de: R$"
                                      + multaLivros * calculaMulta));
-            this.insereInadimplenciaUsuario(usuario, emprestimo1, emprestimo1.getDataDevPrevista(), dataDevolvido, multaLivros);
+            this.insereInadimplenciaUsuario(usuario, emprestimo, emprestimo.getDataDevPrevista(), dataDevolvido, multaLivros);
         }
         
-        emprestimo1.setStatusEmprestimo("Fechado");
-        emprestimo1.setDataDevolucao(dataDevolvido);
-        emprestimoDAO.atualizar(emprestimo1);
+        emprestimo.setStatusEmprestimo("Fechado");
+        emprestimo.setDataDevolucao(dataDevolvido);
+        emprestimoDAO.atualizar(emprestimo);
         codigoUsuario = 0; numeroCatalogo = 0; numeroCatalogo2 = 0; numeroCatalogo3 = 0;
-        emprestimo1 = null;
+        emprestimo = null;
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Item devolvido com sucesso!"));
         
     }
@@ -96,20 +95,22 @@ public class ControleEmprestimo {
     }
     
     private void insereInadimplenciaUsuario(UsuarioPrototype usuario, Emprestimo emprestimo, Calendar dataPrevista, Calendar dataDevolucao, float multa) throws IOException {
-        StringBuffer novoDetalhesInadimplencia = new StringBuffer("Usuário inadimplente por realizar devolução em atraso dos seguintes itens: ");
+        StringBuffer novoDetalhesInadimplencia = new StringBuffer("Usuário inadimplente por realizar devolução em atraso dos seguintes itens:\n");
         String detalhesInadimplenciaAnterior = usuario.getDetalhesInadimplencia();
         DateFormat formataData = DateFormat.getDateInstance();
-        int quantidade = emprestimo.getNumeroLivros();
-        LivroPrototype livro = null;
-        for(int l = 0; l < quantidade; l++){
-            
-            if(l==0) livro = emprestimo.getLivro();
-            if(l==1) livro = emprestimo.getLivro2();
-            if(l==2) livro = emprestimo.getLivro3();
-            
-            novoDetalhesInadimplencia.append(String.valueOf(livro.getNumeroCatalogo()));
+        if(emprestimo.getLivro()!=null){
+            novoDetalhesInadimplencia.append(String.valueOf(emprestimo.getLivro().getNumeroCatalogo()));
             novoDetalhesInadimplencia.append(" - ");
-            novoDetalhesInadimplencia.append(livro.getNome());
+            novoDetalhesInadimplencia.append(emprestimo.getLivro().getNome()).append("\n");
+        }if(emprestimo.getLivro2()!=null){
+            novoDetalhesInadimplencia.append(String.valueOf(emprestimo.getLivro2().getNumeroCatalogo()));
+            novoDetalhesInadimplencia.append(" - ");
+            novoDetalhesInadimplencia.append(emprestimo.getLivro2().getNome()).append("\n");
+        }if(emprestimo.getLivro3()!=null){
+            novoDetalhesInadimplencia.append(String.valueOf(emprestimo.getLivro3().getNumeroCatalogo()));
+            novoDetalhesInadimplencia.append(" - ");
+            novoDetalhesInadimplencia.append(emprestimo.getLivro3().getNome()).append("\n");
+        }
             novoDetalhesInadimplencia.append(".");
             novoDetalhesInadimplencia.append("\n");
             novoDetalhesInadimplencia.append("Data na qual devia ser devolvido: ");
@@ -119,8 +120,8 @@ public class ControleEmprestimo {
             novoDetalhesInadimplencia.append("Data que foi feita a devolução: ");
             novoDetalhesInadimplencia.append(formataData.format(dataDevolucao.getTime()));
             novoDetalhesInadimplencia.append(".\n");
-        }
-        novoDetalhesInadimplencia.append("Valor da multa R$: ").append(multa);
+            novoDetalhesInadimplencia.append("Valor da multa R$: ").append(multa);
+            
         if (usuario.getSituacao().equals("Inadimplente")) {
             usuario.setDetalhesInadimplencia(detalhesInadimplenciaAnterior + "\n\n" + novoDetalhesInadimplencia.toString());
         }else{
