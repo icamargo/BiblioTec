@@ -16,11 +16,12 @@
         <link rel="stylesheet" href="../../recursos/css/ie10-viewport-bug-workaround.css"></link>
     </h:head>
     
-    <h:body style="background-color: #C1C1C1">
+    <h:body style="background-color: #9acfea">
         <center>
-        <div class="jumbotron">
-            <h2>Histórico de empréstimos</h2>
-            <p:messages autoUpdate="true"/>
+            <div class="panel panel-primary" style="width: 100%">
+                <div class="panel-heading"><h2>Histórico de empréstimos</h2></div>
+                <p:growl autoUpdate="true"/>
+            
                 <h:form>
                     <p:dataTable id="dataTable" value="#{controleLogin.usuario.emprestimos}" var="emprestimo"
                                  rows="5" rowsPerPageTemplate="5,10" paginator="true"

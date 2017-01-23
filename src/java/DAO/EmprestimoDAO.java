@@ -127,9 +127,11 @@ public class EmprestimoDAO {
 
         this.preparaSessao();
         
-        String sql = "FROM Emprestimo WHERE dataDevolucao = (SELECT MAX(dataDevolucao) FROM Emprestimo WHERE livro = :livro) AND livro = :livro";
+        String sql = "FROM Emprestimo WHERE dataDevolucao = (SELECT MAX(dataDevolucao) FROM Emprestimo WHERE livro = :livro OR livro2 = :livro OR livro3 = :livro) AND livro = :livro OR livro2 = :livro OR livro3 = :livro";
         Query consulta = session.createQuery(sql);
         consulta.setParameter("livro",livro);
+        consulta.setParameter("livro2",livro);
+        consulta.setParameter("livro3",livro);
         emprestimo = (Emprestimo) consulta.uniqueResult();
         
         trans.commit();
