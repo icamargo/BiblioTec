@@ -19,7 +19,7 @@
         </style>
     </h:head>
 
-    <h:body styleClass="img">
+    <h:body styleClass="img" onload="#{controleLogin.notificacao(controleLogin.usuario)}">
         <div class="container">
 
             <nav class="navbar navbar-inverse">
@@ -60,7 +60,7 @@
             <h2>Bem vindo #{controleLogin.usuario.nome}, suas notificações</h2>
             <!--Tabela de notificações do emprestimo-->
             <br></br>
-            <p:dataTable id="dataTable" value="#{controleLogin.usuario.emprestimos}" var="emprestimo">
+            <p:dataTable id="dataTable" value="#{controleLogin.emprestimoNotificacao}" var="emprestimo">
                 <p:column headerText="nome">
                     <h:outputText value="#{emprestimo.livro.nome}"/>
                 </p:column>
@@ -74,7 +74,7 @@
             
             <br></br>
             <!--Tabela de notificações de reservas-->
-            <p:dataTable value="#{controleLogin.usuario.reservas}" var="reserva">
+            <p:dataTable value="#{controleLogin.reservaNotificacao}" var="reserva">
                 <p:column headerText="Número do catálogo">
                     <h:outputText value="#{reserva.numeroCatalogo}"/>
                 </p:column>
