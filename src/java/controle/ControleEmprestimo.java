@@ -46,44 +46,44 @@ public class ControleEmprestimo {
         if(numeroCatalogo2!=0) livro2 = itemDAO.getLivroPorNumeroCatalogo(numeroCatalogo2);
         if(numeroCatalogo3!=0) livro3 = itemDAO.getLivroPorNumeroCatalogo(numeroCatalogo3);
         
-        emprestimo = emprestimoDAO.ultimoEmprestimoUsuario(usuario, livro, livro2, livro3,"Aberto");
+        setEmprestimo(emprestimoDAO.ultimoEmprestimoUsuario(usuario, livro, livro2, livro3,"Aberto"));
 
-        if(emprestimo!=null){
-            if(emprestimo.getLivro()!= null){
-                livro = emprestimo.getLivro();
+        if(getEmprestimo()!=null){
+            if(getEmprestimo().getLivro()!= null){
+                livro = getEmprestimo().getLivro();
                 livro.setStatus("Disponível");
                 itemDAO.atualizarItem(livro);
             }
-            if(emprestimo.getLivro2()!= null){
-                livro2 = emprestimo.getLivro2();
+            if(getEmprestimo().getLivro2()!= null){
+                livro2 = getEmprestimo().getLivro2();
                 livro2.setStatus("Disponível");
                 itemDAO.atualizarItem(livro2);
             }
-            if(emprestimo.getLivro3()!= null){
-                livro3 = emprestimo.getLivro3();
+            if(getEmprestimo().getLivro3()!= null){
+                livro3 = getEmprestimo().getLivro3();
                 livro3.setStatus("Disponível");
                 itemDAO.atualizarItem(livro3);
             }
+            
+            if(!((emprestimo.getDataDevPrevista().compareTo(dataDevolvido) == 1) || (emprestimo.getDataDevPrevista().compareTo(dataDevolvido) == 0))){
+                int calculaMulta;
+                float multaLivros = multa(getEmprestimo());
+                calculaMulta = dataDevolvido.get(Calendar.DAY_OF_MONTH) - getEmprestimo().getDataDevPrevista().get(Calendar.DAY_OF_MONTH);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Atraso na entrega multa de: R$"
+                                         + multaLivros * calculaMulta));
+                this.insereInadimplenciaUsuario(usuario, getEmprestimo(), getEmprestimo().getDataDevPrevista(), dataDevolvido, multaLivros);
+            }
+        
+            getEmprestimo().setStatusEmprestimo("Fechado");
+            getEmprestimo().setDataDevolucao(dataDevolvido);
+            emprestimoDAO.atualizar(getEmprestimo());
+  
+            codigoUsuario = 0; numeroCatalogo = 0; numeroCatalogo2 = 0; numeroCatalogo3 = 0;
+            setEmprestimo(null);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Item devolvido com sucesso!"));
         }else{
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Emprestimo não encontrado!"));
-        }
-     
-        if(!((emprestimo.getDataDevPrevista().compareTo(dataDevolvido) == 1) || (emprestimo.getDataDevPrevista().compareTo(dataDevolvido) == 0))){
-            int calculaMulta;
-            float multaLivros = multa(emprestimo);
-            calculaMulta = dataDevolvido.get(Calendar.DAY_OF_MONTH) - emprestimo.getDataDevPrevista().get(Calendar.DAY_OF_MONTH);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Atraso na entrega multa de: R$"
-                                     + multaLivros * calculaMulta));
-            this.insereInadimplenciaUsuario(usuario, emprestimo, emprestimo.getDataDevPrevista(), dataDevolvido, multaLivros);
-        }
-        
-        emprestimo.setStatusEmprestimo("Fechado");
-        emprestimo.setDataDevolucao(dataDevolvido);
-        emprestimoDAO.atualizar(emprestimo);
-        codigoUsuario = 0; numeroCatalogo = 0; numeroCatalogo2 = 0; numeroCatalogo3 = 0;
-        emprestimo = null;
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Item devolvido com sucesso!"));
-        
+        }       
     }
     
     public float multa(Emprestimo emprestimo){
@@ -202,7 +202,7 @@ public class ControleEmprestimo {
         if(numeroCatalogo2 != 0) livrosPorCodigo.add(numeroCatalogo2);
         if(numeroCatalogo3 != 0) livrosPorCodigo.add(numeroCatalogo3);
         
-        emprestimo = new Emprestimo();
+        setEmprestimo(new Emprestimo());
         numeroLivros = livrosPorCodigo.size();
         usuario = pessoaDAO.getUsuarioPorCodigo(codigoUsuario);
         
@@ -217,9 +217,9 @@ public class ControleEmprestimo {
                         if(livro.getStatus().equals("Disponível")){
                             reservas = reservaDAO.getReservas(numeroCatalogo);
                             if(verificaReservaDoUsuario(reservas, usuario)){
-                                if(l==0) emprestimo.setLivro(livro);
-                                if(l==1) emprestimo.setLivro2(livro);
-                                if(l==2) emprestimo.setLivro3(livro);
+                                if(l==0) getEmprestimo().setLivro(livro);
+                                if(l==1) getEmprestimo().setLivro2(livro);
+                                if(l==2) getEmprestimo().setLivro3(livro);
                             }       
                         }else{
                             feito = false;
@@ -250,23 +250,30 @@ public class ControleEmprestimo {
             }
             
             dataDevPrevista.add(Calendar.DAY_OF_MONTH, 10);
-            emprestimo.setDataDevPrevista(dataDevPrevista);
-            emprestimo.setDataEmprestimo(dataEmprestimo);
-            emprestimo.setUsuario(usuario);
-            emprestimo.setNumeroLivros(numeroLivros);
-            emprestimo.setQtdeRenovacoes(0);
-            emprestimo.setStatusEmprestimo("Aberto");
-            emprestimoDAO.novoEmprestimo(emprestimo);           
-            usuario.getEmprestimos().add(emprestimo);
+            getEmprestimo().setDataDevPrevista(dataDevPrevista);
+            getEmprestimo().setDataEmprestimo(dataEmprestimo);
+            getEmprestimo().setUsuario(usuario);
+            getEmprestimo().setNumeroLivros(numeroLivros);
+            getEmprestimo().setQtdeRenovacoes(0);
+            getEmprestimo().setStatusEmprestimo("Aberto");
+            emprestimoDAO.novoEmprestimo(getEmprestimo());           
+            usuario.getEmprestimos().add(getEmprestimo());
             pessoaDAO.atualizarPessoa(usuario);
-            
-            codigoUsuario = 0; numeroCatalogo = 0; numeroCatalogo2 = 0; numeroCatalogo3 = 0;
-            emprestimo = null;
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Emprestimo realizado com sucesso"));
+
+            //codigoUsuario = 0; numeroCatalogo = 0; numeroCatalogo2 = 0; numeroCatalogo3 = 0;
+            //setEmprestimo(null);
+            //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Emprestimo realizado com sucesso"));
+            FacesContext.getCurrentInstance().getExternalContext().redirect("verEmprestimo.xhtml");
             
         }else FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Emprestimo não realizado"));
     }
     
+    public void limpar() throws IOException{
+       codigoUsuario = 0; numeroCatalogo = 0; numeroCatalogo2 = 0; numeroCatalogo3 = 0;
+       setEmprestimo(null); 
+       FacesContext.getCurrentInstance().getExternalContext().redirect("interfaceAdministrador.xhtml");
+    }
+ 
     public boolean verificaReservaDoUsuario(List<Reserva> reservas, UsuarioPrototype usuario){
          if(reservas!=null && reservas.size() > 0){
                 for(Reserva res: reservas){
@@ -286,10 +293,10 @@ public class ControleEmprestimo {
     }
     
     public Emprestimo buscaUltimoEmprestimo(LivroPrototype livro){
-        emprestimo = new Emprestimo();
-        emprestimo = emprestimoDAO.buscarUltimoEmprestimo(livro);
+        setEmprestimo(new Emprestimo());
+        setEmprestimo(emprestimoDAO.buscarUltimoEmprestimo(livro));
         
-        return emprestimo;
+        return getEmprestimo();
     }
 
     public int getCodigoUsuario() {
@@ -330,5 +337,13 @@ public class ControleEmprestimo {
 
     public void setFeito(boolean feito) {
         this.feito = feito;
+    }
+
+    public Emprestimo getEmprestimo() {
+        return emprestimo;
+    }
+
+    public void setEmprestimo(Emprestimo emprestimo) {
+        this.emprestimo = emprestimo;
     }
 }

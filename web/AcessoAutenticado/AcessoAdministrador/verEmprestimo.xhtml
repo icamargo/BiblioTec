@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html   xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <head>
+        <meta charset="utf-8"></meta>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+        <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+        <title>Ver Empréstimo</title>
+        <link rel="icon" href="../../recursos/imagens/icon-livro.png"></link>
+        <link rel="stylesheet" href="../../recursos/css/bootstrap.min.css"></link>
+        <link rel="stylesheet" href="../../recursos/css/ie10-viewport-bug-workaround.css"></link>
+        
+        <script>
+            function cont(){
+            var conteudo = document.getElementById('print').innerHTML,
+            tela_impressao = window.open('about:blank');
+            tela_impressao.document.write(conteudo);
+            tela_impressao.window.print();
+            tela_impressao.window.close();
+
+            }
+        </script>
+    </head>
+    <h:body style="background-color: #ffffff">
+        <center>
+            <h:form >
+                <div id="print">
+                    <h3>Emprestimo Realizado com sucesso</h3><br></br>
+                    Id do emprestimo:
+                    <h:outputText value="#{controleEmprestimo.emprestimo.idEmprestimo}" ></h:outputText><br></br>
+                    Id do livro 1:
+                    <h:outputText value="#{controleEmprestimo.numeroCatalogo}" ></h:outputText><br></br>
+                    Id do livro 2:
+                    <h:outputText value="#{controleEmprestimo.numeroCatalogo2}" ></h:outputText><br></br>
+                    Id do livro 3:
+                    <h:outputText value="#{controleEmprestimo.numeroCatalogo3}" ></h:outputText><br></br>
+                    Data de emprestimo:
+                    <h:outputText value="#{controleEmprestimo.emprestimo.dataEmprestimo.time}" >
+                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                    </h:outputText><br></br>
+                    Data de devolucao prevista:
+                    <h:outputText value="#{controleEmprestimo.emprestimo.dataDevPrevista.time}" >
+                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                    </h:outputText><br></br>
+                </div>
+                <br></br>
+                <h:commandButton value="Imprimir" onclick="cont()" type="button"></h:commandButton>
+                <br></br>
+                <h:commandButton action="#{controleEmprestimo.limpar()}" type="button" value="Voltar"></h:commandButton>
+            </h:form>
+        </center>
+        <script src="../../recursos/js/bootstrap.min.js"></script>
+        <script src="../../recursos/js/ie-emulation-modes-warning.js"></script>
+    </h:body>
+</html>
