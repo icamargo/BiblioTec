@@ -61,8 +61,14 @@
             <!--Tabela de notificações do emprestimo-->
             <br></br>
             <p:dataTable id="dataTable" value="#{controleLogin.emprestimoNotificacao}" var="emprestimo">
-                <p:column headerText="nome">
+                <p:column headerText="Livo 1">
                     <h:outputText value="#{emprestimo.livro.nome}"/>
+                </p:column>
+                <p:column headerText="Livro 2">
+                    <h:outputText value="#{emprestimo.livro2.nome}"/>
+                </p:column>
+                <p:column headerText="Livro 3">
+                    <h:outputText value="#{emprestimo.livro3.nome}"/>
                 </p:column>
                 
                 <p:column headerText="Data de Devolucao">
