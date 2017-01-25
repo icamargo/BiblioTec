@@ -36,6 +36,18 @@ public class ReservaDAO {
         trans = session.beginTransaction();
     }
     
+        public List<Reserva> getNotificacaoReserva(int codUsuario){
+        this.preparaSessao();
+        cri = session.createCriteria(Reserva.class);
+        //comparando o usuario do BD com o passado em parâmetro
+        cri.add(Restrictions.eq("codigoUsuario", codUsuario));
+        cri.add(Restrictions.eq("statusReserva", "Aberta"));
+        lista = cri.list();
+        trans.commit();
+        session.close();
+        return lista;
+    }
+        
     public void atualizaReserva(Reserva reserva){
         this.preparaSessao();
         session.merge(reserva);

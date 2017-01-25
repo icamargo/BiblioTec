@@ -1,12 +1,17 @@
 package controle;
 
+import DAO.EmprestimoDAO;
 import DAO.PessoaDAO;
+import DAO.ReservaDAO;
 import entidade.Administrador;
 import entidade.BalconistaPrototype;
 import entidade.BibliotecarioPrototype;
+import entidade.Emprestimo;
+import entidade.Reserva;
 import entidade.UsuarioPrototype;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -32,10 +37,22 @@ public class ControleLogin implements Serializable{
     private BibliotecarioPrototype bibliotecario;
     private Administrador administrador;
     private PessoaDAO pessoaDAO;
+        
+    private final ReservaDAO reservaDAO = new ReservaDAO();
+    private final EmprestimoDAO emprestimoDAO = new EmprestimoDAO();
+    private List<Reserva> reservaNotificacao;
+    private List<Emprestimo> emprestimoNotificacao;
+    
     
     public ControleLogin(){
     }
     
+    public void notificacao(UsuarioPrototype usuario) throws IOException {
+        emprestimoNotificacao = emprestimoDAO.getNotificacaoEmprestimo(usuario);
+        reservaNotificacao = reservaDAO.getNotificacaoReserva(usuario.getCodigo());
+
+    }
+        
     public String autenticarPolitica() throws IOException{
     if(politicaUso){
         return "cadastrarUsuario?faces-redirect=true";
@@ -226,19 +243,27 @@ public class ControleLogin implements Serializable{
         this.perfil = perfil;
     }
     
-        public boolean getPoliticaUso() {
-        return politicaUso;
-    }
-
-    public void setPoliticaUso(boolean politicaUso) {
-        this.politicaUso = politicaUso;
-    }
-
     public Administrador getAdministrador() {
         return administrador;
     }
 
     public void setAdministrador(Administrador administrador) {
         this.administrador = administrador;
+    }
+    
+    public List<Reserva> getReservaNotificacao() {
+        return reservaNotificacao;
+    }
+
+    public void setReservaNotificacao(List<Reserva> reservaNotificacao) {
+        this.reservaNotificacao = reservaNotificacao;
+    }
+    
+    public List<Emprestimo> getEmprestimoNotificacao() {
+        return emprestimoNotificacao;
+    }
+
+    public void setEmprestimoNotificacao(List<Emprestimo> emprestimoNotificacao) {
+        this.emprestimoNotificacao = emprestimoNotificacao;
     }
 }

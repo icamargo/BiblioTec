@@ -9,10 +9,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.LogicalExpression;
-import org.hibernate.criterion.ProjectionList;
-import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import utils.HibernateUtil;
 /**
@@ -38,6 +35,18 @@ public class EmprestimoDAO {
         session.close();
     }
     
+        public List<Emprestimo> getNotificacaoEmprestimo(UsuarioPrototype usuario){
+        this.preparaSessao();
+        cri = session.createCriteria(Emprestimo.class);
+        //comparando o usuario do BD com o passado em parâmetro
+        cri.add(Restrictions.eq("usuario", usuario));
+        cri.add(Restrictions.eq("statusEmprestimo", "Aberto"));
+        lista = cri.list();
+        trans.commit();
+        session.close();
+        return lista;
+    }
+        
     public Emprestimo getEmprestimo (LivroPrototype livro){
         Emprestimo emprestimo;
         
