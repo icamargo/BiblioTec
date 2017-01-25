@@ -266,4 +266,12 @@ public class ControleLogin implements Serializable{
     public void setEmprestimoNotificacao(List<Emprestimo> emprestimoNotificacao) {
         this.emprestimoNotificacao = emprestimoNotificacao;
     }
+    
+    public boolean isPoliticaUso() {
+        return politicaUso;
+    }
+
+    public void setPoliticaUso(boolean politicaUso) {
+        this.politicaUso = politicaUso;
+    }
 }
