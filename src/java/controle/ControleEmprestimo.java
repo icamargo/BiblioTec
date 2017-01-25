@@ -271,7 +271,6 @@ public class ControleEmprestimo {
     public void limpar() throws IOException{
        codigoUsuario = 0; numeroCatalogo = 0; numeroCatalogo2 = 0; numeroCatalogo3 = 0;
        setEmprestimo(null); 
-       FacesContext.getCurrentInstance().getExternalContext().redirect("interfaceAdministrador.xhtml");
     }
  
     public boolean verificaReservaDoUsuario(List<Reserva> reservas, UsuarioPrototype usuario){
@@ -298,7 +297,7 @@ public class ControleEmprestimo {
         
         return getEmprestimo();
     }
-
+    
     public int getCodigoUsuario() {
         return codigoUsuario;
     }

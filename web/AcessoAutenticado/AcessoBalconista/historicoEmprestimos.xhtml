@@ -23,7 +23,7 @@
                 <p:growl autoUpdate="true"/>
             
                 <h:form>
-                    <p:dataTable id="dataTable" value="#{controleLogin.usuario.emprestimos}" var="emprestimo"
+                    <p:dataTable id="dataTable" value="#{controlePessoa.usuario.emprestimos}" var="emprestimo"
                                  rows="5" rowsPerPageTemplate="5,10" paginator="true"
                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
                         <p:column>
@@ -59,6 +59,20 @@
                                 Livro
                             </f:facet>
                             <h:outputText value="#{emprestimo.livro.nome}">
+                            </h:outputText> 
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                Livro 2
+                            </f:facet>
+                            <h:outputText value="#{emprestimo.livro2.nome}">
+                            </h:outputText> 
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                Livro 3
+                            </f:facet>
+                            <h:outputText value="#{emprestimo.livro3.nome}">
                             </h:outputText> 
                         </p:column>
                         <p:column>
